@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Keys</title>
+    <link href="/Html/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Html/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header keys-header" style="font-size:18px;"> </div>
+                    <div class="layui-card-body" style="height: 28px;">
+                        <div>
+                            <div class="layui-col-md9">
+                                <div>
+                                    <label class="layui-form-label">Key查询</label>
+                                    <div class="layui-input-block">
+                                        <input id="search-key" type="text" name="search_key" lay-verify="title" autocomplete="off" placeholder="请输入key" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md3">
+                                <div>
+                                    <div class="layui-input-block">
+                                        <button id="search_btn" type="button" class="layui-btn">查询</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header"></div>
+                    <div class="layui-card-body">
+                        <button id="add_link" class="layui-btn" data-type="parseTable">
+                            <i class="layui-icon layui-icon-add-1"></i>
+                            <span>新增</span>
+                        </button>
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="150">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>key</th>
+                                    <th>type</th>
+                                    <th>签名</th>
+                                </tr>
+                            </thead>
+                            <tbody id="redis-data-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Content/js/echarts.common.min.js"></script>
+    <script src="Content/js/requestpamars.js"></script>
+    <script src="Content/js/layui.js"></script>
+    <script>
+        layui.use(['jquery', 'layer', 'form'], function () {
+
+            var layer = layui.layer, form = layui.form, $ = layui.$;
+
+            var layerIndex = -1;
+
+            layerIndex = layer.msg('加载中', {
+                icon: 16
+                , shade: 0.01
+            });
+
+            var redis_name = GetRequest().name;
+            var db_index = GetRequest().db;
+
+            $(".keys-header").html(`${redis_name} db:${db_index} keys列表`);
+
+            //
+
+
+            //加载列表
+
+            function loadList(searchKey) {
+                var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}`;
+                $.get(rurl, null, function (jdata) {
+
+                    if (jdata.Code == 1) {
+
+                        $("#redis-data-body").html("");
+
+                        for (var i = 0; i < jdata.Data.length; i++) {
+                            var thtml = `<tr>
+                                                <th>${jdata.Data[i].Key}</th>
+                                                <th>${jdata.Data[i].Type}</th>
+                                                <th>签名</th>
+                                            </tr>`;
+                            $("#redis-data-body").append(thtml);
+                        }
+
+                        layer.close(layerIndex);
+                    }
+                    else {
+                        layer.msg("操作失败:" + sdata.Message, { time: 2000 });
+                    }
+
+                });
+            }
+
+            loadList("*");
+
+
+            //查询
+            $("#search_btn").click(function () {
+                
+                var searchKey = $("#search-key").val();
+
+                if (searchKey == undefined || searchKey == "") {
+                    loadList("*");
+                }
+                else {
+                    loadList(searchKey);
+                }
+            });
+
+
+            //添加redis按钮
+            $("#add_link").on("click", function () {
+                layer.open({
+                    title: '添加redis服务器',
+                    type: 2,
+                    area: ['580px', '318px'],
+                    fixed: true,
+                    resize: false,
+                    move: false,
+                    maxmin: false,
+                    time: 0,
+                    content: [`/html/additem.html?name=${redis_name}&dbindex=${db_index}`, 'no']
+                });
+            });
+        });
+    </script>
+</body>
+</html>
