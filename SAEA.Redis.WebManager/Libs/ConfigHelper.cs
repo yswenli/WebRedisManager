@@ -34,15 +34,7 @@ namespace SAEA.Redis.WebManager.Libs
                 _list.Add(config);
             }
 
-            var json = SerializeHelper.Serialize(_list);
-
-            var filePath = Path.Combine(PathHelper.GetCurrentPath("Config"), "config.json");
-
-            if (File.Exists(filePath))
-            {
-                File.Delete(filePath);
-            }
-            File.AppendAllText(filePath, json);
+            Save();
         }
 
         /// <summary>
@@ -69,6 +61,22 @@ namespace SAEA.Redis.WebManager.Libs
         }
 
         /// <summary>
+        /// 保存到文件
+        /// </summary>
+        public static void Save()
+        {
+            var json = SerializeHelper.Serialize(_list);
+
+            var filePath = Path.Combine(PathHelper.GetCurrentPath("Config"), "config.json");
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            File.AppendAllText(filePath, json);
+        }
+
+        /// <summary>
         /// 获取配置
         /// </summary>
         /// <param name="name"></param>
@@ -78,6 +86,25 @@ namespace SAEA.Redis.WebManager.Libs
             if (_list == null || _list.Count < 1) ReadList();
 
             return _list.Where(b => b.Name == name).FirstOrDefault();
+        }
+
+
+        /// <summary>
+        /// 移除配置
+        /// </summary>
+        /// <param name="name"></param>
+        public static void Rem(string name)
+        {
+            if (_list == null || _list.Count < 1) ReadList();
+
+            var config= _list.Where(b => b.Name == name).FirstOrDefault();
+
+            if (config != null)
+            {
+                _list.Remove(config);
+            }
+
+            Save();
         }
 
     }

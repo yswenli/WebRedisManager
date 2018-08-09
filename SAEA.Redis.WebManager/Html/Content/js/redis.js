@@ -65,7 +65,7 @@
                                             var sname = $(this).attr("data-name");
                                             var dbindex = $(this).attr("data-db");
 
-                                            $(".layadmin-iframe").attr("src", "/html/keys.html?name=" + sname + "&db=" + dbindex);
+                                            $(".layadmin-iframe").attr("src", "/html/keys.html?name=" + sname + "&dbindex=" + dbindex);
 
                                         });
                                     }
@@ -96,7 +96,25 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: ['/html/add.html', 'no']
+            content: ['/html/add.html', 'no'],
+            end: function () {
+                location.reload();
+            }
+        });
+    });
+
+    //移除redis按钮
+    $("#rem_link").on("click", function () {
+        layer.open({
+            title: '删除redis服务器',
+            type: 2,
+            area: ['580px', '200px'],
+            fixed: true,
+            resize: false,
+            move: false,
+            maxmin: false,
+            time: 0,
+            content: ['/html/remove.html', 'no']
         });
     });
 
@@ -111,6 +129,25 @@
                 layer.msg("操作失败:" + data.Message, { time: 2000 });
             }
         });
+    });
+    //提交删除redis表单
+    $("#rem_btn").on("click", function () {
+        layer.confirm("确认要删除此项redis配置么?", {
+            btn: ['确定', '取消']
+        },
+            function (index) {
+                layer.close(index);
+                var json = $("#add_form").serialize();
+                $.get("/api/config/rem", json, function (data) {
+                    if (data.Code == 1) {
+                        parent.location.reload();
+                    }
+                    else {
+                        layer.msg("操作失败:" + data.Message, { time: 2000 });
+                    }
+                });
+            }
+        );
     });
 });
 

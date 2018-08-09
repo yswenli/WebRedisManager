@@ -43,6 +43,11 @@ namespace SAEA.Redis.WebManager.Controllers
             }
         }
 
+        /// <summary>
+        /// 获取服务器信息
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public ActionResult GetInfoString(string name)
         {
             try
@@ -162,6 +167,55 @@ namespace SAEA.Redis.WebManager.Controllers
             return Json(result);
         }
 
+        /// <summary>
+        /// 删除项
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <returns></returns>
+        public ActionResult Del(RedisData redisData)
+        {
+            var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                if (redisData != null)
+                {
+                    CurrentRedisClient.Del(redisData.Name, redisData.DBIndex, redisData.Key);
+                }
+                result.Code = 1;
+                result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
+
+        /// <summary>
+        /// 获取string
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <returns></returns>
+        public ActionResult Get(RedisData redisData)
+        {
+            var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                var data = string.Empty;
+                if (redisData != null)
+                {
+                    data = CurrentRedisClient.Get(redisData.Name, redisData.DBIndex, redisData.Key);
+                }
+                result.Data = data;
+                result.Code = 1;
+                result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
 
     }
 }

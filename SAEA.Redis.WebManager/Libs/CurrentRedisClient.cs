@@ -253,6 +253,45 @@ namespace SAEA.Redis.WebManager.Libs
             }
         }
 
+        /// <summary>
+        /// 移除项
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <param name="key"></param>
+        public static void Del(string name, int dbIndex, string key)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    redisClient.GetDataBase(dbIndex).Del(key);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取string
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <param name="key"></param>
+        public static string Get(string name, int dbIndex, string key)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.GetDataBase(dbIndex).Get(key);
+                }
+            }
+            return string.Empty;
+        }
+
 
     }
 }

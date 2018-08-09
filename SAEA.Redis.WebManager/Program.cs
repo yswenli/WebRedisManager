@@ -19,9 +19,9 @@ namespace SAEA.Redis.WebManager
 
             mvcApplication.Start();
 
-            ConsoleHelper.WriteLine("WebRedisManager服务已启动，按回车结束...");
+            ConsoleHelper.WriteLine("WebRedisManager服务已启动");
 
-            ConsoleHelper.WriteLine("http://localhost:39654/html/index.html，按回车结束...");
+            ConsoleHelper.WriteLine("http://localhost:39654/html/index.html，按回车结束......");
 
             Process.Start("http://localhost:39654/html/index.html");
 

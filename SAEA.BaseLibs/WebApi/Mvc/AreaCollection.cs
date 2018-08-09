@@ -127,13 +127,21 @@ namespace SAEA.WebAPI.Mvc
                     }
                     else
                     {
+
                         var filePath = httpContext.Server.MapPath(httpContext.Request.Url);
                         if (File.Exists(filePath))
                         {
                             return new FileResult(filePath);
                         }
                     }
-
+                }
+                else
+                {
+                    var filePath = httpContext.Server.MapPath(httpContext.Request.Url);
+                    if (File.Exists(filePath))
+                    {
+                        return new FileResult(filePath);
+                    }
                 }
 
                 return new ContentResult("o_o，找不到任何内容", System.Net.HttpStatusCode.NotFound);

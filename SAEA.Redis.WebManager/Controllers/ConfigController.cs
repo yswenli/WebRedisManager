@@ -62,5 +62,19 @@ namespace SAEA.Redis.WebManager.Controllers
             }
         }
 
+        public ActionResult Rem(string name)
+        {
+            try
+            {
+                ConfigHelper.Rem(name);
+
+                return Json(new JsonResult<string>() { Code = 1, Data = "Ok", Message = "Ok" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+        }
+
     }
 }
