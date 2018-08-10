@@ -68,8 +68,11 @@
 
             var db_index = GetRequest().dbindex;
 
-            var item_type = 1;
+            var item_type = GetRequest().type;
 
+            var item_id = GetRequest().id;
+
+            //增加下拉列表改变事件
             form.on('select(type-select)', function (data) {
 
                 item_type = data.value;
@@ -87,8 +90,13 @@
                     $("#id-div").hide();
                 }
             });
+            //选中默认类型
+            var select = 'dd[lay-value=' + item_type + ']';
+            $('#type-select').siblings("div.layui-form-select").find('dl').find(select).click();
 
-            
+            $("input[name='id']").val(item_id);
+
+
             //提交数据
             $("#add_btn").click(function () {
 

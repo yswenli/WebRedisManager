@@ -292,6 +292,57 @@ namespace SAEA.Redis.WebManager.Libs
             return string.Empty;
         }
 
+        /// <summary>
+        /// 获取子项
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <returns></returns>
+        public static object GetItems(RedisData redisData)
+        {
+            object result = new object();
 
+            if (_redisClients.ContainsKey(redisData.Name))
+            {
+                var redisClient = _redisClients[redisData.Name];
+
+                if (redisClient.IsConnected)
+                {
+                    switch (redisData.Type)
+                    {
+                        case 2:
+                            result = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, 0, redisData.Key, 50).Data;
+                            break;
+                        case 3:
+                            result = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, 0, redisData.Key, 50).Data;
+                            break;
+                        case 4:
+                            result = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, 0, redisData.Key, 50).Data;
+                            break;
+                        case 5:
+                            result = redisClient.GetDataBase(redisData.DBIndex).LRang(redisData.ID, 0, 50);
+                            break;
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 修改id
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <param name="newID"></param>
+        public static void Rename(RedisData redisData, string newID)
+        {
+            if (_redisClients.ContainsKey(redisData.Name))
+            {
+                var redisClient = _redisClients[redisData.Name];
+
+                if (redisClient.IsConnected)
+                {
+                    redisClient.GetDataBase(redisData.DBIndex).Rename(redisData.ID, newID);
+                }
+            }
+        }
     }
 }

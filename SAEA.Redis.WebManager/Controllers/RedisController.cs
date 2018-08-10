@@ -57,7 +57,10 @@ namespace SAEA.Redis.WebManager.Controllers
                 if (!string.IsNullOrEmpty(data))
                 {
                     data = data.Replace("\r\n", "<br/>");
-                    return Json(new JsonResult<string>() { Code = 1, Data = data, Message = "OK" });
+
+                    var obj = new { Config = ConfigHelper.Get(name), Info = data };
+
+                    return Json(new JsonResult<object>() { Code = 1, Data = obj, Message = "OK" });
                 }
                 return Json(new JsonResult<string>() { Code = 2, Message = "暂未读取数据" });
             }
@@ -207,6 +210,58 @@ namespace SAEA.Redis.WebManager.Controllers
                     data = CurrentRedisClient.Get(redisData.Name, redisData.DBIndex, redisData.Key);
                 }
                 result.Data = data;
+                result.Code = 1;
+                result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
+
+        /// <summary>
+        /// 获取子项
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <returns></returns>
+        public ActionResult GetItems(RedisData redisData)
+        {
+            var result = new JsonResult<object>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                object data = string.Empty;
+                if (redisData != null)
+                {
+                    data = CurrentRedisClient.GetItems(redisData);
+                }
+                result.Data = data;
+                result.Code = 1;
+                result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
+
+        /// <summary>
+        /// 修改名称
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <param name="newID"></param>
+        /// <returns></returns>
+        public ActionResult Rename(RedisData redisData,string newID)
+        {
+            var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                object data = string.Empty;
+                if (redisData != null)
+                {
+                    CurrentRedisClient.Rename(redisData, newID);
+                }
                 result.Code = 1;
                 result.Message = "ok";
             }

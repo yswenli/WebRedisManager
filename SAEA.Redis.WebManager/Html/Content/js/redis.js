@@ -20,7 +20,7 @@
                     if (data.Data != undefined && data.Data.length > 0) {
                         for (var i = 0; i < data.Data.length; i++) {
                             var html = `<dd class="layui-nav-itemed">
-                                <a class='redis_link' href="javascript:;" data-name='${data.Data[i].Name}'>${data.Data[i].Name}</a>                                
+                                <a class='redis_link' href="javascript:;" data-name='${data.Data[i].Name}' alt='${JSON.stringify(data.Data[i])}'>${data.Data[i].Name}</a>                                
                             </dd>`
                             $("dl.redis-dbs").append(html);
                         }
