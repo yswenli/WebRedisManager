@@ -16,6 +16,7 @@ namespace SAEA.Redis.WebManager.Controllers
         /// </summary>
         /// <param name="config"></param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult Set(Config config)
         {
             try
@@ -61,7 +62,7 @@ namespace SAEA.Redis.WebManager.Controllers
                 return Json(new JsonResult<Config>() { Code = 2, Message = ex.Message });
             }
         }
-
+        [HttpPost]
         public ActionResult Rem(string name)
         {
             try
