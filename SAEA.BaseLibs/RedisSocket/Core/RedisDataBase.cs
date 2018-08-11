@@ -187,9 +187,9 @@ namespace SAEA.RedisSocket.Core
             return result;
         }
 
-        public bool SExists(string key)
+        public bool SExists(string key, string value)
         {
-            var result = base.Do(RequestType.SISMEMBER, key).Type;
+            var result = base.Do(RequestType.SISMEMBER, key, value).Type;
             return result == ResponseType.Empty ? false : true;
         }
 
@@ -249,7 +249,7 @@ namespace SAEA.RedisSocket.Core
             return base.Do(RequestType.ZREVRANGE, key, begin, end).ToList();
         }
 
-        public int ZRemove(string key, string[] values)
+        public int ZRemove(string key, params string[] values)
         {
             var result = 0;
             int.TryParse(base.DoBatch(RequestType.ZREM, key, values).Data, out result);

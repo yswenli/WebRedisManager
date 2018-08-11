@@ -56,11 +56,12 @@ namespace SAEA.RedisSocket.Core
         {
             _autoResetEvent.WaitOne();
             _commandName = commandName;
-            var sb = new StringBuilder();
+            var sb = new StringBuilder();            
             sb.AppendLine("*" + @params.Length);
             foreach (var param in @params)
             {
-                sb.AppendLine("$" + param.Length);
+                var length = Encoding.UTF8.GetBytes(param).Length;
+                sb.AppendLine("$" + length);
                 sb.AppendLine(param);
             }
             _sendCommand = sb.ToString();

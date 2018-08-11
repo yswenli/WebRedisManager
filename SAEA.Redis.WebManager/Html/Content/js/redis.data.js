@@ -78,6 +78,7 @@
                             resize: false,
                             move: false,
                             maxmin: true,
+                            scrollbar:true,
                             time: 0,
                             content: [`/html/ItemsView.html?name=${redis_name}&dbindex=${db_index}&id=${key}&type=${typeid}`, 'no']
                         }));
@@ -93,7 +94,7 @@
                     },
                         function (index) {
                             layer.close(index);
-                            $.get(`/api/redis/del?name=${redis_name}&dbindex=${db_index}&key=${key}`, null, function (data) {
+                            $.post(`/api/redis/del?name=${redis_name}&dbindex=${db_index}&key=${key}`, null, function (data) {
                                 if (data.Code == 1) {
                                     location.reload();
                                 }

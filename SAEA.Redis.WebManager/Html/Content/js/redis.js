@@ -20,7 +20,7 @@
                     if (data.Data != undefined && data.Data.length > 0) {
                         for (var i = 0; i < data.Data.length; i++) {
                             var html = `<dd class="layui-nav-itemed">
-                                <a class='redis_link' href="javascript:;" data-name='${data.Data[i].Name}' alt='${JSON.stringify(data.Data[i])}'>${data.Data[i].Name}</a>                                
+                                <a class='redis_link' href="javascript:;" data-name='${data.Data[i].Name}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-template-1"></i> ${data.Data[i].Name}</a>                                
                             </dd>`
                             $("dl.redis-dbs").append(html);
                         }
@@ -43,7 +43,7 @@
                                 icon: 16
                                 , shade: 0.01
                             });
-                            $.get("/api/redis/connect", "name=" + name, function (dbData) {
+                            $.post("/api/redis/connect", "name=" + name, function (dbData) {
                                 layer.close(layerIndex);
                                 if (dbData.Code == 1) {
                                     if (dbData.Data != undefined && dbData.Data.length > 0) {
@@ -51,7 +51,7 @@
                                         _parent.append('<dl class="layui-nav-child redis-db"></dl>');
                                         var db_dl = _parent.find("dl");
                                         for (var j = 0; j < dbData.Data.length; j++) {
-                                            var shtml = `<dd><a class='redis_db_link' href='javascript:;' data-name='${name}' data-db='${j}'>db${j}</a></dd>`;
+                                            var shtml = `<dd><a class='redis_db_link' href='javascript:;' data-name='${name}' data-db='${j}'>&nbsp;&nbsp;&nbsp;&nbsp;<i class="layui-icon layui-icon-circle"></i> db${j}</a></dd>`;
                                             db_dl.append(shtml);
                                         }
 
@@ -96,7 +96,7 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: ['/html/add.html', 'no'],
+            content: ['/html/RedisAdd.html', 'no'],
             end: function () {
                 location.reload();
             }
@@ -121,7 +121,7 @@
     //提交添加redis表单
     $("#add_btn").on("click", function () {
         var json = $("#add_form").serialize();
-        $.get("/api/config/set", json, function (data) {
+        $.post("/api/config/set", json, function (data) {
             if (data.Code == 1) {
                 parent.location.reload();
             }
@@ -138,7 +138,7 @@
             function (index) {
                 layer.close(index);
                 var json = $("#add_form").serialize();
-                $.get("/api/config/rem", json, function (data) {
+                $.post("/api/config/rem", json, function (data) {
                     if (data.Code == 1) {
                         parent.location.reload();
                     }

@@ -307,6 +307,8 @@ namespace SAEA.Redis.WebManager.Libs
 
                 if (redisClient.IsConnected)
                 {
+                    if (redisData.Key == null) redisData.Key = "*";
+
                     switch (redisData.Type)
                     {
                         case 2:
@@ -344,5 +346,72 @@ namespace SAEA.Redis.WebManager.Libs
                 }
             }
         }
+
+
+        /// <summary>
+        /// 修改数据项
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <returns></returns>
+        public static void Edit(RedisData redisData)
+        {
+            if (_redisClients.ContainsKey(redisData.Name))
+            {
+                var redisClient = _redisClients[redisData.Name];
+
+                if (redisClient.IsConnected)
+                {
+                    switch (redisData.Type)
+                    {
+                        case 2:
+                            redisClient.GetDataBase(redisData.DBIndex).HSet(redisData.ID, redisData.Key, redisData.Value);
+                            break;
+                        case 3:
+                            redisClient.GetDataBase(redisData.DBIndex).SRemove(redisData.ID, redisData.Key);
+                            redisClient.GetDataBase(redisData.DBIndex).SAdd(redisData.ID, redisData.Value);
+                            break;
+                        case 4:
+                            redisClient.GetDataBase(redisData.DBIndex).ZAdd(redisData.ID, double.Parse(redisData.Key), redisData.Value);
+                            break;
+                        case 5:
+                            redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.ID, int.Parse(redisData.Key), redisData.Value);
+                            break;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// 移除项
+        /// </summary>
+        /// <param name="redisData"></param>
+        public static void DelItem(RedisData redisData)
+        {
+            if (_redisClients.ContainsKey(redisData.Name))
+            {
+                var redisClient = _redisClients[redisData.Name];
+
+                if (redisClient.IsConnected)
+                {
+                    switch (redisData.Type)
+                    {
+                        case 2:
+                            redisClient.GetDataBase(redisData.DBIndex).HDel(redisData.ID, redisData.Key);
+                            break;
+                        case 3:
+                            redisClient.GetDataBase(redisData.DBIndex).SRemove(redisData.ID, redisData.Key);
+                            break;
+                        case 4:
+                            redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID, redisData.Value);
+                            break;
+                        case 5:
+                            redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.ID, int.Parse(redisData.Key), "---VALUE REMOVED BY WEBREDISMANAGER---");
+                            redisClient.GetDataBase(redisData.DBIndex).LRemove(redisData.ID, 0, "---VALUE REMOVED BY WEBREDISMANAGER---");
+                            break;
+                    }
+                }
+            }
+        }
+
+
     }
 }

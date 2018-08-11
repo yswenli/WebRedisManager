@@ -9,9 +9,9 @@ using System.Security;
 [assembly: AssemblyTitle("SAEA.Redis.WebManager")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("yswenli")]
 [assembly: AssemblyProduct("SAEA.Redis.WebManager")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright ©  wenli 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

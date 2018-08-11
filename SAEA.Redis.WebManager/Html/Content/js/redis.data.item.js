@@ -63,7 +63,7 @@
                             var thtml = `<tr>
                                                                 <td>${datakey}</td>
                                                                 <td>${jdata.Data[datakey]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-id="${datakey}" data-val="${jdata.Data[datakey]}">
+                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-id="${item_id}" data-key="${datakey}" data-val="${jdata.Data[datakey]}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -91,7 +91,7 @@
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
                                                                 <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i]}">
-<a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
+<a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
                         }
@@ -117,8 +117,8 @@
                             var thtml = `<tr>
                                                                 <td>${jdata.Data[i].Value}</td>
                                                                 <td>${jdata.Data[i].Score}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Value}">
-<a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
+                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${jdata.Data[i].Value}">
+<a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
                         }
@@ -144,8 +144,8 @@
                             var thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i]}">
-<a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
+                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${i}" data-val="${jdata.Data[i]}">
+<a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
                         }
@@ -153,35 +153,122 @@
                 }
 
                 //编辑
+                $(".edit-link").off();
                 $(".edit-link").on("click", function () {
                     var type = $(this).parent().attr("data-type");
                     var key = $(this).parent().attr("data-key");
-                    if (type == "string") {
-                        var info_url = `/api/redis/get?name=${redis_name}&dbindex=${db_index}&key=${key}`;
-                        $.get(info_url, null, function (vdata) {
-                            if (vdata.Code == 1) {
-                                layer.alert(vdata.Data);
-                            }
-                            else {
-                                layer.msg("操作失败:" + data.Message, { time: 2000 });
-                            }
-                        });
+
+                    var edit_form_html = "";
+                    switch (item_type * 1) {
+                        case 2:
+                            var val = $(this).parent().attr("data-val");
+                            edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
+                                                <input type="hidden" name="name" value="${redis_name}" />
+                                                <input type="hidden" name="dbindex" value="${db_index}" />
+                                                <input type="hidden" name="type" value="${item_type}" />
+                                                <input type="hidden" name="id" value="${item_id}" />
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">key</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="key" autocomplete="off" placeholder="key" class="layui-input" value="${key}" readonly="readonly" />
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">value</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val}" />
+                                                    </div>
+                                                </div>
+                                            </form>`;
+                            $("#edit-form-container").html(edit_form_html);
+                            break;
+                        case 3:
+                            edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
+                                                <input type="hidden" name="name" value="${redis_name}" />
+                                                <input type="hidden" name="dbindex" value="${db_index}" />
+                                                <input type="hidden" name="type" value="${item_type}" />
+                                                <input type="hidden" name="id" value="${item_id}" />
+                                                <input type="hidden" name="key" value="${key}" />
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">value</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${key}" />
+                                                    </div>
+                                                </div>
+                                            </form>`;
+                            $("#edit-form-container").html(edit_form_html);
+                            break;
+                        case 4:
+                            var val = $(this).parent().attr("data-val");
+                            edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
+                                                <input type="hidden" name="name" value="${redis_name}" />
+                                                <input type="hidden" name="dbindex" value="${db_index}" />
+                                                <input type="hidden" name="type" value="${item_type}" />
+                                                <input type="hidden" name="id" value="${item_id}" />
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">score</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="key" autocomplete="off" placeholder="score" class="layui-input" value="${key}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">value</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val}" />
+                                                    </div>
+                                                </div>
+                                            </form>`;
+                            $("#edit-form-container").html(edit_form_html);
+
+                            $.ajaxSettings.async = false;
+                            $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&id=${item_id}&type=${item_type}&key=${key}&value=${val}`, null, null);
+                            $.ajaxSettings.async = true;
+                            break;
+
+                        case 5:
+                            var val = $(this).parent().attr("data-val");
+                            edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
+                                                <input type="hidden" name="name" value="${redis_name}" />
+                                                <input type="hidden" name="dbindex" value="${db_index}" />
+                                                <input type="hidden" name="type" value="${item_type}" />
+                                                <input type="hidden" name="id" value="${item_id}" />
+                                                <input type="hidden" name="key" value="${key}" />
+                                                <div class="layui-form-item">
+                                                    <label class="layui-form-label">value</label>
+                                                    <div class="layui-input-block">
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val}" />
+                                                    </div>
+                                                </div>
+                                            </form>`;
+                            $("#edit-form-container").html(edit_form_html);
+                            break;
                     }
-                    else {
-                        layer.full(layer.open({
-                            title: '查看数据',
-                            type: 2,
-                            area: ['580px', '318px'],
-                            fixed: true,
-                            resize: false,
-                            move: false,
-                            maxmin: true,
-                            time: 0,
-                            content: [`/html/ItemsView.html?name=${redis_name}&dbindex=${db_index}&key=${key}&type=${type}`, 'no']
-                        }));
-                    }
+
+                    layer.open({
+                        title: '编辑',
+                        type: 1,
+                        area: ['580px', '210px'],
+                        fixed: true,
+                        resize: false,
+                        move: false,
+                        anim: 1,
+                        time: 0,
+                        content: $("#edit-form-container").html(),
+                        btn: ['确定', '关闭'],
+                        yes: function (index, layero) {
+                            var pdata = $("#edit_form").serialize()
+                            $.post("/api/redis/edit", pdata, function (edata) {
+                                layer.close(index);
+                                location.reload();
+                            });
+                        },
+                        btn2: function (index, layero) {
+                            layer.close(index);
+                        }
+                    })
                 });
                 //移除
+                $(".del-link").off();
                 $(".del-link").on("click", function () {
 
                     var key = $(this).parent().attr("data-key");
@@ -190,15 +277,50 @@
                         btn: ['确定', '取消']
                     },
                         function (index) {
-                            layer.close(index);
-                            $.get(`/api/redis/del?name=${redis_name}&dbindex=${db_index}&key=${key}`, null, function (data) {
-                                if (data.Code == 1) {
-                                    location.reload();
-                                }
-                                else {
-                                    layer.msg("操作失败:" + data.Message, { time: 2000 });
-                                }
-                            });
+                            switch (item_type * 1) {
+                                case 2:
+                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
+                                        if (data.Code == 1) {
+                                            location.reload();
+                                        }
+                                        else {
+                                            layer.msg("操作失败:" + data.Message, { time: 2000 });
+                                        }
+                                    });
+                                    break;
+                                case 3:
+                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
+                                        if (data.Code == 1) {
+                                            location.reload();
+                                        }
+                                        else {
+                                            layer.msg("操作失败:" + data.Message, { time: 2000 });
+                                        }
+                                    });
+                                    break;
+                                case 4:
+                                    var val = $(this).parent().attr("data-val");
+                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&value=${val}`, null, function (data) {
+                                        if (data.Code == 1) {
+                                            location.reload();
+                                        }
+                                        else {
+                                            layer.msg("操作失败:" + data.Message, { time: 2000 });
+                                        }
+                                    });
+                                    break;
+                                case 5:
+                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
+                                        if (data.Code == 1) {
+                                            location.reload();
+                                        }
+                                        else {
+                                            layer.msg("操作失败:" + data.Message, { time: 2000 });
+                                        }
+                                    });
+                                    break;
+                            }
+
                         }
                     );
                 });

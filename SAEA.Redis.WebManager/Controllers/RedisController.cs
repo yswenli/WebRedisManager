@@ -20,6 +20,7 @@ namespace SAEA.Redis.WebManager.Controllers
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult Connect(string name)
         {
             try
@@ -131,6 +132,7 @@ namespace SAEA.Redis.WebManager.Controllers
         /// </summary>
         /// <param name="redisData"></param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult Set(RedisData redisData)
         {
             var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
@@ -141,19 +143,19 @@ namespace SAEA.Redis.WebManager.Controllers
                     switch (redisData.Type)
                     {
                         case 1:
-                            CurrentRedisClient.StringSet(redisData.Name, redisData.DBIndex, redisData.Key, redisData.Value);
+                            CurrentRedisClient.StringSet(redisData.Name, redisData.DBIndex, redisData.ID, redisData.Value);
                             break;
                         case 2:
                             CurrentRedisClient.HashSet(redisData.Name, redisData.DBIndex, redisData.ID, redisData.Key, redisData.Value);
                             break;
                         case 3:
-                            CurrentRedisClient.SAdd(redisData.Name, redisData.DBIndex, redisData.Key, redisData.Value);
+                            CurrentRedisClient.SAdd(redisData.Name, redisData.DBIndex, redisData.ID, redisData.Value);
                             break;
                         case 4:
                             CurrentRedisClient.ZAdd(redisData.Name, redisData.DBIndex, redisData.ID, redisData.Key, redisData.Value);
                             break;
                         case 5:
-                            CurrentRedisClient.LPush(redisData.Name, redisData.DBIndex, redisData.Key, redisData.Value);
+                            CurrentRedisClient.LPush(redisData.Name, redisData.DBIndex, redisData.ID, redisData.Value);
                             break;
                         default:
 
@@ -175,6 +177,7 @@ namespace SAEA.Redis.WebManager.Controllers
         /// </summary>
         /// <param name="redisData"></param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult Del(RedisData redisData)
         {
             var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
@@ -252,6 +255,7 @@ namespace SAEA.Redis.WebManager.Controllers
         /// <param name="redisData"></param>
         /// <param name="newID"></param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult Rename(RedisData redisData,string newID)
         {
             var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
@@ -271,6 +275,56 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             return Json(result);
         }
+        /// <summary>
+        /// 修改数据项
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Edit(RedisData redisData)
+        {
+            var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                object data = string.Empty;
+                if (redisData != null)
+                {
+                    CurrentRedisClient.Edit(redisData);
+                }
+                result.Code = 1;
+                result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
 
+        /// <summary>
+        /// 移除项
+        /// </summary>
+        /// <param name="redisData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DelItem(RedisData redisData)
+        {
+            var result = new JsonResult<string>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                object data = string.Empty;
+                if (redisData != null)
+                {
+                    CurrentRedisClient.DelItem(redisData);
+                }
+                result.Code = 1;
+                result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
     }
 }

@@ -33,9 +33,16 @@ namespace SAEA.Common
     {
         public static Dictionary<T1, T2> TryAdd<T1, T2>(this Dictionary<T1, T2> dic, T1 t1, T2 t2)
         {
-            if (dic != null && !dic.ContainsKey(t1))
+            if (dic != null)
             {
-                dic.Add(t1, t2);
+                if (!dic.ContainsKey(t1))
+                {
+                    dic.Add(t1, t2);
+                }
+                else
+                {
+                    dic[t1] = t2;
+                }
             }
             return dic;
         }

@@ -29,13 +29,13 @@
                             </select>
                         </div>
                     </div>
-                    <div id="id-div" class="layui-form-item" style="display:none;">
+                    <div class="layui-form-item">
                         <label class="layui-form-label">id</label>
                         <div class="layui-input-block">
                             <input type="text" name="id" autocomplete="off" placeholder="id" class="layui-input" lay-verify="required" />
                         </div>
                     </div>
-                    <div class="layui-form-item">
+                    <div id="id-div" class="layui-form-item" style="display:none;">
                         <label id="key-lable" class="layui-form-label">key</label>
                         <div class="layui-input-block">
                             <input type="text" name="key" autocomplete="off" placeholder="key" class="layui-input" lay-verify="required" />
@@ -105,7 +105,7 @@
                 var item_data_val = $("input[name='value']").val();
 
                 var url = `/api/redis/set?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_data_id}&key=${item_data_key}&value=${item_data_val}`;
-                $.get(url, null, function (sdata) {
+                $.post(url, null, function (sdata) {
                     if (sdata.Code == 1) {
                         parent.location.reload();
                     }
