@@ -1,6 +1,6 @@
-﻿layui.use(['jquery', 'layer', 'form'], function () {
+﻿layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
-    var layer = layui.layer, form = layui.form, $ = layui.$;
+    var layer = layui.layer, form = layui.form, $ = layui.$, laypage = layui.laypage;
 
     var layerIndex = -1;
 
@@ -34,9 +34,10 @@
 
     //加载列表
 
+    var dataOffset = 0;
 
     function loadList() {
-        var rurl = `/api/redis/GetItems?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}`;
+        var rurl = `/api/redis/GetItems?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
 
             if (jdata.Code == 1) {
@@ -150,7 +151,7 @@
                             $("#redis-data-body").append(thtml);
                         }
                         break;
-                }
+                }               
 
                 //编辑
                 $(".edit-link").off();
@@ -336,6 +337,22 @@
     }
 
     loadList();
+
+    //分页
+    //paged-container
+    var p_url = `/api/redis/GetItemsCount?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&offset=${dataOffset}`;
+    $.get(p_url, "", function (pgdata) {
+        laypage.render({
+            elem: 'paged-container',
+            count: pgdata.Data,
+            jump: function (obj, first) {
+                if (!first) {
+                    dataOffset = (obj.curr - 1) * 10;
+                    loadList();
+                }
+            }
+        });
+    });
 
 
     //添加按钮

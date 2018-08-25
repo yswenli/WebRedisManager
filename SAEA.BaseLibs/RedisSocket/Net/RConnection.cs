@@ -44,12 +44,19 @@ namespace SAEA.RedisSocket.Net
 
         protected override void OnReceived(byte[] data)
         {
-            OnActived?.Invoke(DateTimeHelper.Now.AddSeconds(30));
+            OnActived?.BeginInvoke(DateTimeHelper.Now.AddSeconds(60), null, null);
             if (data != null)
             {
                 this.UserToken.Coder.Pack(data, null, (content) =>
                 {
-                    OnMessage?.Invoke(Encoding.UTF8.GetString(content.Content));
+                    //OnMessage?.Invoke(Encoding.UTF8.GetString(content.Content));
+
+                    var lines = Encoding.UTF8.GetString(content.Content).Split("\r\n", StringSplitOptions.None);
+                    foreach (var item in lines)
+                    {
+                        OnMessage?.Invoke(item + "\r\n");
+                    }
+
                 }, null);
 
             }
@@ -58,7 +65,7 @@ namespace SAEA.RedisSocket.Net
         public void Send(string cmd)
         {
             Send(Encoding.UTF8.GetBytes(cmd));
-            OnActived?.Invoke(DateTimeHelper.Now.AddSeconds(30));
+            OnActived?.BeginInvoke(DateTimeHelper.Now.AddSeconds(60), null, null);
         }
     }
 }

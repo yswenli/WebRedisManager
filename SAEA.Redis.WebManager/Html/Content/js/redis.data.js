@@ -1,6 +1,6 @@
-﻿layui.use(['jquery', 'layer', 'form'], function () {
+﻿layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
-    var layer = layui.layer, form = layui.form, $ = layui.$;
+    var layer = layui.layer, form = layui.form, $ = layui.$, laypage = layui.laypage;
 
     var layerIndex = -1;
 
@@ -10,7 +10,10 @@
     });
 
     var redis_name = GetRequest().name;
+
     var db_index = GetRequest().dbindex;
+
+    var searchKey = $("#search-key").val();
 
     $(".keys-header").html(`keys列表 redis_name:${redis_name} db:${db_index} <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i>`);
 
@@ -19,8 +22,11 @@
 
     //加载列表
 
+    var dataOffset = 0;
+
     function loadList(searchKey) {
-        var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}`;
+
+        var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
 
             if (jdata.Code == 1) {
@@ -36,7 +42,6 @@
                                                                                             </tr>`;
                     $("#redis-data-body").append(thtml);
                 }
-
                 //查看
                 $(".view-link").on("click", function () {
                     var type = $(this).parent().attr("data-type");
@@ -55,7 +60,6 @@
                             typeid = 5;
                             break;
                     }
-
 
                     var key = $(this).parent().attr("data-key");
                     if (type == "string") {
@@ -78,7 +82,7 @@
                             resize: false,
                             move: false,
                             maxmin: true,
-                            scrollbar:true,
+                            scrollbar: true,
                             time: 0,
                             content: [`/html/ItemsView.html?name=${redis_name}&dbindex=${db_index}&id=${key}&type=${typeid}`, 'no']
                         }));
@@ -117,11 +121,26 @@
 
     loadList("*");
 
+    //分页
+    //paged-container
+    var p_url = `/api/redis/GetKeyCount?name=${redis_name}&dbindex=${db_index}&key=${searchKey}`;
+    $.get(p_url, "", function (pdata) {
+        laypage.render({
+            elem: 'paged-container',
+            count: pdata.Data,
+            jump: function (obj, first) {
+                if (!first) {
+                    dataOffset = (obj.curr - 1) * 10;
+                    loadList(searchKey);
+                }
+            }
+        });
+    });
 
     //查询
     $("#search_btn").click(function () {
 
-        var searchKey = $("#search-key").val();
+        searchKey = $("#search-key").val();
 
         if (searchKey == undefined || searchKey == "") {
             loadList("*");
