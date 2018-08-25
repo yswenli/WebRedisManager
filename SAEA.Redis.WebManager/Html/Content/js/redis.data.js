@@ -130,7 +130,9 @@
             count: pdata.Data,
             jump: function (obj, first) {
                 if (!first) {
-                    dataOffset = (obj.curr - 1) * 10;
+                    var pageNo = (obj.curr - 1);
+                    if (pageNo == 0) dataOffset = 0;
+                    else dataOffset = (obj.curr - 1) * 10 + 1;
                     loadList(searchKey);
                 }
             }
