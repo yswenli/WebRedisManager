@@ -78,7 +78,7 @@ namespace SAEA.RedisSocket.Core
         private void _cnn_OnMessage(string command)
         {
             _redisCoder.Enqueue(command);
-            if (_debugMode)
+            //if (_debugMode)
                 ConsoleHelper.WriteLine(command);
         }
 

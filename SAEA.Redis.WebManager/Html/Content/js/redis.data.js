@@ -22,9 +22,14 @@
 
     //加载列表
 
-    var dataOffset = 0;
+    var dataOffset = 0; 
 
     function loadList(searchKey) {
+
+        layerIndex = layer.msg('加载中', {
+            icon: 16
+            , shade: 0.01
+        });
 
         var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
@@ -109,35 +114,16 @@
                         }
                     );
                 });
-
-                layer.close(layerIndex);
             }
             else {
                 layer.msg("操作失败:" + sdata.Message, { time: 2000 });
             }
-
+            //
+            layer.close(layerIndex);
         });
     }
 
-    loadList("*");
-
-    //分页
-    //paged-container
-    var p_url = `/api/redis/GetKeyCount?name=${redis_name}&dbindex=${db_index}&key=${searchKey}`;
-    $.get(p_url, "", function (pdata) {
-        laypage.render({
-            elem: 'paged-container',
-            count: pdata.Data,
-            jump: function (obj, first) {
-                if (!first) {
-                    var pageNo = (obj.curr - 1);
-                    if (pageNo == 0) dataOffset = 0;
-                    else dataOffset = (obj.curr - 1) * 10 + 1;
-                    loadList(searchKey);
-                }
-            }
-        });
-    });
+    loadList("*");   
 
     //查询
     $("#search_btn").click(function () {

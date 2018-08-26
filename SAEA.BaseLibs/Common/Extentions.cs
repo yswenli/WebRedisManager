@@ -22,6 +22,7 @@
 *
 *****************************************************************************/
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,6 +46,22 @@ namespace SAEA.Common
                 }
             }
             return dic;
+        }
+
+        /// <summary>
+        /// ConcurrentQueue&lt;T&gt; 清除
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        public static void Clear<T>(this ConcurrentQueue<T> list)
+        {
+            if (list != null)
+            {
+                while (!list.IsEmpty)
+                {
+                    list.TryDequeue(out T t);
+                }
+            }
         }
     }
 }

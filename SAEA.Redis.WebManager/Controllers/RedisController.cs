@@ -118,7 +118,7 @@ namespace SAEA.Redis.WebManager.Controllers
 
                 if (data != null)
                 {
-                    return Json(new JsonResult<List<KeyType>>() { Code = 1, Data = data.ToKeyTypes().Take(12).ToList(), Message = "OK" });
+                    return Json(new JsonResult<List<KeyType>>() { Code = 1, Data = data.ToKeyTypes().Take(50).ToList(), Message = "OK" });
                 }
                 return Json(new JsonResult<string>() { Code = 3, Message = "暂未读取数据" });
             }
@@ -127,30 +127,6 @@ namespace SAEA.Redis.WebManager.Controllers
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
-        /// <summary>
-        /// 获取keys的数量
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="dbIndex"></param>
-        /// <param name="key"></param>
-        /// <returns></returns>
-
-        public ActionResult GetKeyCount(string name, int dbIndex, string key)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(key)) key = "*";
-
-                var data = CurrentRedisClient.GetKeys(0, name, dbIndex, key).Count;
-
-                return Json(new JsonResult<int>() { Code = 1, Data = data, Message = "OK" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
-            }
-        }
-
 
         /// <summary>
         /// 提交或修改数据
@@ -263,32 +239,6 @@ namespace SAEA.Redis.WebManager.Controllers
                 if (redisData != null)
                 {
                     data = CurrentRedisClient.GetItems(offset, redisData);
-                }
-                result.Data = data;
-                result.Code = 1;
-                result.Message = "ok";
-            }
-            catch (Exception ex)
-            {
-                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
-            }
-            return Json(result);
-        }
-        /// <summary>
-        /// 获取子项数量
-        /// </summary>
-        /// <param name="redisData"></param>
-        /// <returns></returns>
-
-        public ActionResult GetItemsCount(RedisData redisData)
-        {
-            var result = new JsonResult<object>() { Code = 3, Message = "操作失败" };
-            try
-            {
-                object data = string.Empty;
-                if (redisData != null)
-                {
-                    data = CurrentRedisClient.GetItemsCount(0, redisData);
                 }
                 result.Data = data;
                 result.Code = 1;

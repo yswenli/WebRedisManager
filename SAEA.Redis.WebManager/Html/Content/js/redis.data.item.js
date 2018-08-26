@@ -4,11 +4,6 @@
 
     var layerIndex = -1;
 
-    layerIndex = layer.msg('加载中', {
-        icon: 16
-        , shade: 0.01
-    });
-
     var redis_name = GetRequest().name;
     var db_index = GetRequest().dbindex;
     var item_type = GetRequest().type;
@@ -39,6 +34,12 @@
     var dataOffset = 0;
 
     function loadList() {
+
+        layerIndex = layer.msg('加载中', {
+            icon: 16
+            , shade: 0.01
+        });
+
         var rurl = `/api/redis/GetItems?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${searchKey}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
 
@@ -328,39 +329,17 @@
                     );
                 });
 
-
                 layer.close(layerIndex);
             }
             else {
                 layer.msg("操作失败:" + sdata.Message, { time: 2000 });
             }
-
+            //
+            layer.close(layerIndex);
         });
     }
 
     loadList();
-
-    //分页
-    function pagedInit() {
-        var p_url = `/api/redis/GetItemsCount?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${searchKey}&offset=${dataOffset}`;
-        $.get(p_url, "", function (pgdata) {
-            laypage.render({
-                elem: 'paged-container',
-                count: pgdata.Data,
-                jump: function (obj, first) {
-                    if (!first) {
-                        var pageNo = (obj.curr - 1);
-                        if (pageNo == 0) dataOffset = 0;
-                        else dataOffset = (obj.curr - 1) * 10 + 1;
-                        loadList();
-                    }
-                }
-            });
-        });
-    }
-
-    pagedInit();
-
 
     //查询
     $("#search_btn").click(function () {
@@ -368,7 +347,6 @@
         if (searchKey == undefined || searchKey == "") {
             searchKey = "*";
         }
-        pagedInit();
         loadList();
     });
 
