@@ -123,7 +123,7 @@ namespace SAEA.Redis.WebManager.Libs
                     var count = 50;
                     if (!string.IsNullOrEmpty(key) && key != "*")
                     {
-                        count = 100000;
+                        count = 10000000;
                     }
                     result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
                 }
@@ -155,6 +155,27 @@ namespace SAEA.Redis.WebManager.Libs
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 获取db的元素数量
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <returns></returns>
+        public static int GetDBSize(string name, int dbIndex)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    if (redisClient.Select(dbIndex))
+                        return redisClient.DBSize();
+                }
+            }
+            return 0;
         }
 
         /// <summary>

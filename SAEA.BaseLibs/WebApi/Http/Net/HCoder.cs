@@ -34,14 +34,12 @@ namespace SAEA.WebAPI.Http.Net
     class HCoder : ICoder
     {
         List<byte> _cache = new List<byte>();
-
-        Stopwatch _stopwatch = new Stopwatch();
-
+        
         object _locker = new object();
 
         RequestDataReader _httpStringReader = new RequestDataReader();
 
-        bool isAnalysis = false;
+        bool _isAnalysis = false;
 
 
         public void Pack(byte[] data, Action<DateTime> onHeart, Action<ISocketProtocal> onUnPackage, Action<byte[]> onFile)
@@ -62,11 +60,11 @@ namespace SAEA.WebAPI.Http.Net
 
                 var buffer = _cache.ToArray();
 
-                if (!isAnalysis)
+                if (!_isAnalysis)
                 {
-                    isAnalysis = _httpStringReader.Analysis(buffer);
+                    _isAnalysis = _httpStringReader.Analysis(buffer);
                 }
-                if (isAnalysis)
+                if (_isAnalysis)
                 {
                     //post需要处理body
                     if (_httpStringReader.Method == ConstString.POSTStr)
@@ -79,7 +77,6 @@ namespace SAEA.WebAPI.Http.Net
                             _httpStringReader.AnalysisBody(buffer);
                             onUnpackage.Invoke(_httpStringReader);
                             Array.Clear(buffer, 0, buffer.Length);
-                            buffer = null;
                             _cache.Clear();
                             _cache = null;
                         }
@@ -88,7 +85,6 @@ namespace SAEA.WebAPI.Http.Net
                     {
                         onUnpackage.Invoke(_httpStringReader);
                         Array.Clear(buffer, 0, buffer.Length);
-                        buffer = null;
                         _cache.Clear();
                         _cache = null;
                     }
@@ -99,7 +95,7 @@ namespace SAEA.WebAPI.Http.Net
 
         public void Dispose()
         {
-            _stopwatch.Stop();
+            _httpStringReader.Dispose();
         }
     }
 }

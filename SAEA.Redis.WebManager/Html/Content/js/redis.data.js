@@ -15,14 +15,18 @@
 
     var searchKey = $("#search-key").val();
 
-    $(".keys-header").html(`keys列表 redis_name:${redis_name} db:${db_index} <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i>`);
+    //keys列表
+    $.get(`/api/redis/getdbsize?name=${redis_name}&dbindex=${db_index}`, null, function (gdata) {
+
+        $(".keys-header").html(`keys列表 <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${redis_name}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>`);
+    });
 
     //
 
 
     //加载列表
 
-    var dataOffset = 0; 
+    var dataOffset = 0;
 
     function loadList(searchKey) {
 
@@ -123,7 +127,7 @@
         });
     }
 
-    loadList("*");   
+    loadList("*");
 
     //查询
     $("#search_btn").click(function () {

@@ -38,7 +38,7 @@ namespace SAEA.Sockets.Model
     /// <summary>
     /// 连接信息类
     /// </summary>
-    public class UserToken : IUserToken
+    public class UserToken : IUserToken,IDisposable
     {
         AutoResetEvent _autoResetEvent = new AutoResetEvent(true);
 
@@ -80,6 +80,14 @@ namespace SAEA.Sockets.Model
         public void Set()
         {
             _autoResetEvent.Set();
+        }
+
+        public void Dispose()
+        {
+            _autoResetEvent.Close();
+            if (Buffer != null)
+                Array.Clear(Buffer, 0, Buffer.Length);
+            Socket?.Close();
         }
     }
 }

@@ -100,6 +100,27 @@ namespace SAEA.Redis.WebManager.Controllers
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
+
+        /// <summary>
+        /// 获取db中的元素数量
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <returns></returns>
+        public ActionResult GetDBSize(string name, int dbIndex)
+        {
+            try
+            {
+                var data = CurrentRedisClient.GetDBSize(name, dbIndex);
+
+                return Json(new JsonResult<int>() { Code = 1, Data = data, Message = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+        }
+
         /// <summary>
         /// 获取keys
         /// </summary>
