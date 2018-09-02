@@ -45,7 +45,6 @@ namespace SAEA.WebAPI.Http
 
         internal HttpResponse()
         {
-
         }
 
         internal void Init(HttpServer httpServer, IUserToken userToken, string protocal)
@@ -175,7 +174,6 @@ namespace SAEA.WebAPI.Http
                 reponseDataList.AddRange(bdata);
 
             var arr = reponseDataList.ToArray();
-
             this.Body = null;
             reponseDataList.Clear();
             reponseDataList = null;

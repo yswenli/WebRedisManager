@@ -25,19 +25,14 @@ using SAEA.Sockets.Interface;
 using SAEA.WebAPI.Http.Base;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 
 namespace SAEA.WebAPI.Http.Net
 {
     class HCoder : ICoder
     {
         List<byte> _cache = new List<byte>();
-        
-        object _locker = new object();
 
-        RequestDataReader _httpStringReader = new RequestDataReader();
+        object _locker = new object();
 
         bool _isAnalysis = false;
 
@@ -60,33 +55,33 @@ namespace SAEA.WebAPI.Http.Net
 
                 var buffer = _cache.ToArray();
 
+                var requestDataReader = new RequestDataReader();
+
                 if (!_isAnalysis)
                 {
-                    _isAnalysis = _httpStringReader.Analysis(buffer);
+                    _isAnalysis = requestDataReader.Analysis(buffer);
                 }
                 if (_isAnalysis)
                 {
                     //post需要处理body
-                    if (_httpStringReader.Method == ConstString.POSTStr)
+                    if (requestDataReader.Method == ConstString.POSTStr)
                     {
-                        var contentLen = _httpStringReader.ContentLength;
-                        var positon = _httpStringReader.Position;
+                        var contentLen = requestDataReader.ContentLength;
+                        var positon = requestDataReader.Position;
                         var totlalLen = contentLen + positon;
                         if (buffer.Length == totlalLen)
                         {
-                            _httpStringReader.AnalysisBody(buffer);
-                            onUnpackage.Invoke(_httpStringReader);
+                            requestDataReader.AnalysisBody(buffer);
+                            onUnpackage.Invoke(requestDataReader);
                             Array.Clear(buffer, 0, buffer.Length);
                             _cache.Clear();
-                            _cache = null;
                         }
                     }
                     else
                     {
-                        onUnpackage.Invoke(_httpStringReader);
+                        onUnpackage.Invoke(requestDataReader);
                         Array.Clear(buffer, 0, buffer.Length);
                         _cache.Clear();
-                        _cache = null;
                     }
                 }
             }
@@ -95,7 +90,7 @@ namespace SAEA.WebAPI.Http.Net
 
         public void Dispose()
         {
-            _httpStringReader.Dispose();
+            _cache.Clear();
         }
     }
 }
