@@ -38,7 +38,7 @@ namespace SAEA.Sockets.Model
     /// <summary>
     /// 连接信息类
     /// </summary>
-    public class UserToken : IUserToken,IDisposable
+    public class UserToken : IUserToken
     {
         AutoResetEvent _autoResetEvent = new AutoResetEvent(true);
 
@@ -51,7 +51,12 @@ namespace SAEA.Sockets.Model
             get; set;
         }
 
-        public byte[] Buffer
+        public SocketAsyncEventArgs ReadArgs
+        {
+            get; set;
+        }
+
+        public SocketAsyncEventArgs WriteArgs
         {
             get; set;
         }
@@ -69,7 +74,7 @@ namespace SAEA.Sockets.Model
         public ICoder Coder
         {
             get; set;
-        }       
+        }
 
         public void WaitOne()
         {
@@ -85,8 +90,8 @@ namespace SAEA.Sockets.Model
         public void Dispose()
         {
             _autoResetEvent.Close();
-            if (Buffer != null)
-                Array.Clear(Buffer, 0, Buffer.Length);
+            ReadArgs.Dispose();
+            WriteArgs.Dispose();
             Socket?.Close();
             Coder?.Dispose();
         }

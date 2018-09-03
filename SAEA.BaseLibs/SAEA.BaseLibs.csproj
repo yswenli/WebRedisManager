@@ -67,10 +67,8 @@
     <Compile Include="Common\SyncHelper.cs" />
     <Compile Include="Common\ThreadHelper.cs" />
     <Compile Include="Common\TypeHelper.cs" />
-    <Compile Include="Net\Core\ArgsPool.cs" />
     <Compile Include="Net\Core\BaseClientSocket.cs" />
     <Compile Include="Net\Core\BaseServerSocket.cs" />
-    <Compile Include="Net\Core\ContextFactory.cs" />
     <Compile Include="Net\Core\SessionManager.cs" />
     <Compile Include="Net\Handler\OnAcceptedHandler.cs" />
     <Compile Include="Net\Handler\OnClientReceiveBytesHandler.cs" />
