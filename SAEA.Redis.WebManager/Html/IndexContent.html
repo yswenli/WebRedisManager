@@ -18,16 +18,19 @@
             <div class="layui-card">
                 <div class="layui-card-header">项目说明</div>
                 <div class="layui-card-body">
+                    <p id="ie-alert" class="layui-elem-quote" style="display: none;">请使用Chrome或Firefox来获取最佳体验！</p>
                     <p class="layui-elem-quote">
-                        WebRedisManager是使用的SAEA.RedisSocket、SAEA.WebApi等实现Redis的简便管理功能的Web工具~<br />
-                        同时它也是一个开源的项目，<a href="https://github.com/yswenli/WebRedisManager" target="_blank">https://github.com/yswenli/WebRedisManager</a><br />
-                        希望有更多有兴趣的coder们加入使它更加完善！<a href="mailto:wenguoli_520@qq.com" target="_blank">Email:wenguoli_520@qq.com</a>
+                        WebRedisManager是使用的SAEA.RedisSocket、SAEA.WebApi等实现Redis的可视化、简便管理功能的工具~<br />
+                        同时它也是一个开源的项目，详情点击：<a href="https://github.com/yswenli/WebRedisManager" target="_blank">https://github.com/yswenli/WebRedisManager</a><br />
                     </p>
                 </div>
             </div>
         </div>
     </div>
-    <script src="Content/js/requestpamars.js"></script>
-    <script src="Content/js/layui.js"></script>
+    <script>
+        if (window.navigator.userAgent.indexOf("MSIE") >= 1 || window.navigator.userAgent.indexOf("Trident") >= 1) {
+            document.getElementById("ie-alert").style.display = "block";
+        }
+    </script>
 </body>
 </html>
