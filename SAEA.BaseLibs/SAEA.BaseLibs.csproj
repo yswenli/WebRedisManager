@@ -69,7 +69,9 @@
     <Compile Include="Common\TypeHelper.cs" />
     <Compile Include="Net\Core\BaseClientSocket.cs" />
     <Compile Include="Net\Core\BaseServerSocket.cs" />
+    <Compile Include="Net\Core\BufferManager.cs" />
     <Compile Include="Net\Core\SessionManager.cs" />
+    <Compile Include="Net\Core\SocketAsyncEventArgsPool.cs" />
     <Compile Include="Net\Handler\OnAcceptedHandler.cs" />
     <Compile Include="Net\Handler\OnClientReceiveBytesHandler.cs" />
     <Compile Include="Net\Handler\OnConnectedHandler.cs" />
