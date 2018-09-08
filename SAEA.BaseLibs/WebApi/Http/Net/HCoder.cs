@@ -86,8 +86,6 @@ namespace SAEA.WebAPI.Http.Net
                 }
             }
         }
-
-
         public void Dispose()
         {
             _cache.Clear();

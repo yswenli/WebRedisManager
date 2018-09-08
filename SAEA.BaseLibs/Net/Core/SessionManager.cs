@@ -84,6 +84,7 @@ namespace SAEA.Sockets.Core
 
             _argsPool = new SocketAsyncEventArgsPool(count * 2);
             _argsPool.InitPool(completed);
+
         }
 
         /// <summary>
@@ -95,7 +96,6 @@ namespace SAEA.Sockets.Core
             IUserToken userToken = (IUserToken)Activator.CreateInstance(_userTokenType);
             ICoder coder = (ICoder)Activator.CreateInstance(_coderType);
             userToken.Coder = coder;
-
             userToken.ReadArgs = _argsPool.Pop();
             _bufferManager.SetBuffer(userToken.ReadArgs);
             userToken.WriteArgs = _argsPool.Pop();
@@ -151,7 +151,7 @@ namespace SAEA.Sockets.Core
                 catch { }
                 _bufferManager.FreeBuffer(userToken.ReadArgs);
                 _argsPool.Push(userToken.ReadArgs);
-                _argsPool.Push(userToken.WriteArgs);                                
+                _argsPool.Push(userToken.WriteArgs);
                 userToken.Dispose();
                 return true;
             }

@@ -15,7 +15,7 @@ namespace SAEA.Redis.WebManager
         {
             ConsoleHelper.Title = "WebRedisManagerService";
 
-            MvcApplication mvcApplication = new MvcApplication(false, false, 10240, 1);
+            SAEAMvcApplication mvcApplication = new SAEAMvcApplication(false, false, 10240, 1);
 
             mvcApplication.Start();
 

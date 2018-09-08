@@ -72,6 +72,7 @@
     <Compile Include="Net\Core\BufferManager.cs" />
     <Compile Include="Net\Core\SessionManager.cs" />
     <Compile Include="Net\Core\SocketAsyncEventArgsPool.cs" />
+    <Compile Include="Net\Core\StressTestingClient.cs" />
     <Compile Include="Net\Handler\OnAcceptedHandler.cs" />
     <Compile Include="Net\Handler\OnClientReceiveBytesHandler.cs" />
     <Compile Include="Net\Handler\OnConnectedHandler.cs" />
@@ -138,7 +139,7 @@
     <Compile Include="WebApi\Http\Net\HContext.cs" />
     <Compile Include="WebApi\Http\Net\ServerSocket.cs" />
     <Compile Include="WebApi\Http\Net\SocketData.cs" />
-    <Compile Include="WebApi\MvcApplication.cs" />
+    <Compile Include="WebApi\SAEAMvcApplication.cs" />
     <Compile Include="WebApi\Mvc\ActionFilterAttribute.cs" />
     <Compile Include="WebApi\Mvc\ActionResult.cs" />
     <Compile Include="WebApi\Mvc\APIController.cs" />
