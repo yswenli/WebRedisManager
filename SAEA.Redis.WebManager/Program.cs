@@ -21,9 +21,11 @@ namespace SAEA.Redis.WebManager
 
             ConsoleHelper.WriteLine("WebRedisManager服务已启动");
 
-            ConsoleHelper.WriteLine("http://localhost:39654/html/index.html，按回车结束......");
+            ConsoleHelper.WriteLine("服务地址：http://localhost:39654/html/index.html");
 
             Process.Start("http://localhost:39654/html/index.html");
+
+            ConsoleHelper.WriteLine("回车退出服务...");
 
             ConsoleHelper.ReadLine();
         }
