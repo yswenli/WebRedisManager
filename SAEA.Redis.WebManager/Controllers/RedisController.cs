@@ -1,7 +1,7 @@
-﻿using SAEA.Redis.WebManager.Libs;
+﻿using SAEA.MVC.Mvc;
+using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
 using SAEA.RedisSocket.Model;
-using SAEA.WebAPI.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace SAEA.Redis.WebManager.Controllers
     /// <summary>
     /// redis相关api
     /// </summary>
-    public class RedisController : APIController
+    public class RedisController : Controller
     {
         /// <summary>
         /// 连接到redis

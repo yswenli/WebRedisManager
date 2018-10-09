@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAEA.WebRedisManager", "SAEA.Redis.WebManager\SAEA.WebRedisManager.csproj", "{D4FE005F-BA19-41A9-9BB4-C27872503FC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAEA.BaseLibs", "SAEA.BaseLibs\SAEA.BaseLibs.csproj", "{56DEE46D-9398-4C4D-829D-6E171300C7CC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{D4FE005F-BA19-41A9-9BB4-C27872503FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4FE005F-BA19-41A9-9BB4-C27872503FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4FE005F-BA19-41A9-9BB4-C27872503FC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56DEE46D-9398-4C4D-829D-6E171300C7CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56DEE46D-9398-4C4D-829D-6E171300C7CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56DEE46D-9398-4C4D-829D-6E171300C7CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56DEE46D-9398-4C4D-829D-6E171300C7CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

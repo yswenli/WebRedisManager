@@ -45,9 +45,13 @@
 
             if (jdata.Code == 1) {
 
+                var table_content = "";
+
+                var thtml = "";
+
                 switch (item_type * 1) {
                     case 2:
-                        var table_content = `<table class="layui-table">
+                        table_content = `<table class="layui-table">
                             <colgroup>
                                 <col width="150">
                                 <col width="200">
@@ -64,7 +68,7 @@
                         </table>`;
                         $("#table-container").html(table_content);
                         for (var datakey in jdata.Data) {
-                            var thtml = `<tr>
+                            thtml = `<tr>
                                                                 <td>${datakey}</td>
                                                                 <td>${jdata.Data[datakey]}</td>
                                                                 <td data-name="${redis_name}" data-dbindex="${db_index}" data-id="${item_id}" data-key="${datakey}" data-val="${jdata.Data[datakey]}">
@@ -74,7 +78,7 @@
                         }
                         break;
                     case 3:
-                        var table_content = `<table class="layui-table">
+                        table_content = `<table class="layui-table">
                             <colgroup>
                                 <col width="150">
                                 <col width="200">
@@ -91,7 +95,7 @@
                         </table>`;
                         $("#table-container").html(table_content);
                         for (var i = 0; i < jdata.Data.length; i++) {
-                            var thtml = `<tr>
+                            thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
                                                                 <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i]}">
@@ -101,7 +105,7 @@
                         }
                         break;
                     case 4:
-                        var table_content = `<table class="layui-table">
+                        table_content = `<table class="layui-table">
                             <colgroup>
                                 <col width="150">
                                 <col width="200">
@@ -118,7 +122,7 @@
                         </table>`;
                         $("#table-container").html(table_content);
                         for (var i = 0; i < jdata.Data.length; i++) {
-                            var thtml = `<tr>
+                            thtml = `<tr>
                                                                 <td>${jdata.Data[i].Value}</td>
                                                                 <td>${jdata.Data[i].Score}</td>
                                                                 <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${jdata.Data[i].Value}">
@@ -128,7 +132,7 @@
                         }
                         break;
                     default:
-                        var table_content = `<table class="layui-table">
+                        table_content = `<table class="layui-table">
                             <colgroup>
                                 <col width="150">
                                 <col width="200">
@@ -145,7 +149,7 @@
                         </table>`;
                         $("#table-container").html(table_content);
                         for (var i = 0; i < jdata.Data.length; i++) {
-                            var thtml = `<tr>
+                            thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
                                                                 <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${i}" data-val="${jdata.Data[i]}">
@@ -159,13 +163,12 @@
                 //编辑
                 $(".edit-link").off();
                 $(".edit-link").on("click", function () {
-                    var type = $(this).parent().attr("data-type");
+                    debugger;
                     var key = $(this).parent().attr("data-key");
-
+                    var val = $(this).parent().attr("data-val");
                     var edit_form_html = "";
                     switch (item_type * 1) {
                         case 2:
-                            var val = $(this).parent().attr("data-val");
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
                                                 <input type="hidden" name="name" value="${redis_name}" />
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
@@ -202,8 +205,7 @@
                                             </form>`;
                             $("#edit-form-container").html(edit_form_html);
                             break;
-                        case 4:
-                            var val = $(this).parent().attr("data-val");
+                        case 4:                            
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
                                                 <input type="hidden" name="name" value="${redis_name}" />
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
@@ -230,7 +232,6 @@
                             break;
 
                         case 5:
-                            var val = $(this).parent().attr("data-val");
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
                                                 <input type="hidden" name="name" value="${redis_name}" />
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
@@ -260,7 +261,8 @@
                         content: $("#edit-form-container").html(),
                         btn: ['确定', '关闭'],
                         yes: function (index, layero) {
-                            var pdata = $("#edit_form").serialize()
+                            debugger;
+                            var pdata = $($("#edit_form")[1]).serialize();
                             $.post("/api/redis/edit", pdata, function (edata) {
                                 layer.close(index);
                                 location.reload();

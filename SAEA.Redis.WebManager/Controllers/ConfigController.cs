@@ -1,6 +1,6 @@
-﻿using SAEA.Redis.WebManager.Libs;
+﻿using SAEA.MVC.Mvc;
+using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
-using SAEA.WebAPI.Mvc;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +9,7 @@ namespace SAEA.Redis.WebManager.Controllers
     /// <summary>
     /// 配置处理api
     /// </summary>
-    public class ConfigController : APIController
+    public class ConfigController : Controller
     {
         /// <summary>
         /// 设置配置

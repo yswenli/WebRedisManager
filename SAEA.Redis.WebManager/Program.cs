@@ -1,13 +1,8 @@
 ﻿using SAEA.Common;
-using SAEA.WebAPI;
-using System;
-using System.Collections.Generic;
+using SAEA.MVC;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SAEA.Redis.WebManager
+namespace SAEA.WebRedisManager
 {
     class Program
     {
@@ -23,7 +18,11 @@ namespace SAEA.Redis.WebManager
 
             ConsoleHelper.WriteLine("服务地址：http://localhost:39654/html/index.html");
 
-            Process.Start("http://localhost:39654/html/index.html");
+            try
+            {
+                Process.Start("http://localhost:39654/html/index.html");
+            }
+            catch { }            
 
             ConsoleHelper.WriteLine("回车退出服务...");
 

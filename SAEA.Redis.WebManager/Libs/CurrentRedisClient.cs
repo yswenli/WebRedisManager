@@ -255,7 +255,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                 if (redisClient.IsConnected)
                 {
-                    redisClient.GetDataBase(dbIndex).ZAdd(hid, double.Parse(key), value);
+                    redisClient.GetDataBase(dbIndex).ZAdd(hid, value, double.Parse(key));
                 }
             }
 
@@ -450,7 +450,7 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).SAdd(redisData.ID, redisData.Value);
                             break;
                         case 4:
-                            redisClient.GetDataBase(redisData.DBIndex).ZAdd(redisData.ID, double.Parse(redisData.Key), redisData.Value);
+                            redisClient.GetDataBase(redisData.DBIndex).ZAdd(redisData.ID, redisData.Value,double.Parse(redisData.Key));
                             break;
                         case 5:
                             redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.ID, int.Parse(redisData.Key), redisData.Value);
@@ -480,7 +480,7 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).SRemove(redisData.ID, redisData.Key);
                             break;
                         case 4:
-                            redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID, redisData.Value);
+                            redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID,new string[] { redisData.Value });
                             break;
                         case 5:
                             redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.ID, int.Parse(redisData.Key), "---VALUE REMOVED BY WEBREDISMANAGER---");
