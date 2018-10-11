@@ -36,7 +36,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="2.1.5.1" />
+    <PackageReference Include="SAEA.MVC" Version="2.1.5.3" />
     <PackageReference Include="SAEA.RedisSocket" Version="2.1.5.1" />
   </ItemGroup>
   <ItemGroup>
