@@ -269,6 +269,11 @@
                             });
                         },
                         btn2: function (index, layero) {
+                            var pdata = $($("#edit_form")[1]).serialize();
+                            $.post("/api/redis/edit", pdata, function (edata) {
+                                layer.close(index);
+                                location.reload();
+                            });
                             layer.close(index);
                         }
                     })
@@ -363,7 +368,7 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/html/additem.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}`, 'no']
+            content: [`/additem.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}`, 'no']
         });
     });
     //修改按钮
@@ -377,7 +382,7 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/html/rename.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}`, 'no']
+            content: [`/rename.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}`, 'no']
         });
     });
 });

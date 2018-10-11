@@ -1,11 +1,8 @@
 ﻿using SAEA.Common;
 using SAEA.Redis.WebManager.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SAEA.Redis.WebManager.Libs
 {
@@ -15,6 +12,15 @@ namespace SAEA.Redis.WebManager.Libs
     static class ConfigHelper
     {
         static List<Config> _list = new List<Config>();
+
+
+        public static string GetCurrentPath(string children)
+        {
+            var path = Path.Combine(Path.GetDirectoryName(AssemblyHelper.Current.Location), children);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            return path;
+        }
 
         /// <summary>
         /// 添加或更新配置
@@ -43,7 +49,7 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static List<Config> ReadList()
         {
-            var filePath = Path.Combine(PathHelper.GetCurrentPath("Config"), "config.json");
+            var filePath = Path.Combine(GetCurrentPath("Config"), "config.json");
 
             if (File.Exists(filePath))
             {
@@ -67,7 +73,7 @@ namespace SAEA.Redis.WebManager.Libs
         {
             var json = SerializeHelper.Serialize(_list);
 
-            var filePath = Path.Combine(PathHelper.GetCurrentPath("Config"), "config.json");
+            var filePath = Path.Combine(GetCurrentPath("Config"), "config.json");
 
             if (File.Exists(filePath))
             {
@@ -97,7 +103,7 @@ namespace SAEA.Redis.WebManager.Libs
         {
             if (_list == null || _list.Count < 1) ReadList();
 
-            var config= _list.Where(b => b.Name == name).FirstOrDefault();
+            var config = _list.Where(b => b.Name == name).FirstOrDefault();
 
             if (config != null)
             {

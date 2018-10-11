@@ -93,7 +93,7 @@
                             maxmin: true,
                             scrollbar: true,
                             time: 0,
-                            content: [`/html/ItemsView.html?name=${redis_name}&dbindex=${db_index}&id=${key}&type=${typeid}`, 'no']
+                            content: [`/ItemsView.html?name=${redis_name}&dbindex=${db_index}&id=${key}&type=${typeid}`, 'no']
                         }));
                     }
                 });
@@ -154,7 +154,7 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/html/additem.html?name=${redis_name}&dbindex=${db_index}&type=1&id=`, 'no']
+            content: [`/additem.html?name=${redis_name}&dbindex=${db_index}&type=1&id=`, 'no']
         });
     });
 });
