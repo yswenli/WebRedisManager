@@ -5,3 +5,4 @@ SAEA.BaseLibs/obj/
 SAEA.Redis.WebManager/bin/
 SAEA.Redis.WebManager/obj/
 *.user
+SAEA.Redis.WebManager/Properties/PublishProfiles/FolderProfile.pubxml
