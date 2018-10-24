@@ -265,10 +265,9 @@
 
     $("#redis_name").on("click", function () {
         var redis_info_url = "/api/redis/GetInfoString?name=" + name;
-        debugger;
         $.get(redis_info_url, null, function (rdata) {
             debugger;
-            if (rdata.Code == 1) {
+            if (rdata.Code === 1) {
                 layer.alert("#当前配置信息：<br/>" + JSON.stringify(rdata.Data.Config) + "<br/>" + rdata.Data.Info, { title: 'Redis服务器信息', maxWidth: '500px' });
             }
             else {
@@ -276,4 +275,23 @@
             }
         });
     });
+
+    //redis cluster
+    function getClusterNodes() {
+        var redis_nodes_url = "/api/RedisCluster/GetClusterNodes?name=" + name;
+        $.get(redis_nodes_url, null, function (rdata) {
+            if (rdata.Code === 1) {
+                var tbody = "";
+                for (let item of rdata.Data) {
+                    tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>DeleteNode<br/>、Replicate<br/>、MigratingSlots<br/>、ImportingSlots</td></tr>`;
+                }
+                $("#redis-data-body").html(tbody);
+            }
+            else {
+                layer.msg("操作失败:" + rdata.Message, { time: 2000 });
+            }
+        });
+    }
+    getClusterNodes();
+
 });

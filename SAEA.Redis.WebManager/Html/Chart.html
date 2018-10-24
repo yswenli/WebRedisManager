@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="layui-fluid">
-        <div class="layui-row layui-col-space15">
+        <div class="layui-row layui-col-space15" style="margin-top:15px;">
             <div class="layui-card">
                 <div class="layui-card-header" style="font-size:18px;">
                     redis实例【<a href="javascript:;" id="redis_name" style="color:#0094ff;"></a>】资源使用情况
@@ -35,6 +35,39 @@
                             <div class="layui-card-body layuiadmin-card-list">
                                 <div id='redis-mem-div' style='height:320px;'></div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space15" style="margin-top:15px;">
+            <div class="layui-card">
+                <div class="layui-card-header" style="font-size:18px;">
+                    redis cluster nodes <button class="layui-btn">add node</button>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list" style="height:650px; overflow:auto">
+                    <div class="layui-col-sm12 layui-col-md12">
+                        <div class="layui-card">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>NodeID</th>
+                                        <th>IPPort</th>
+                                        <th>Status</th>
+                                        <th>IsMaster</th>
+                                        <th>MinSlots</th>
+                                        <th>MaxSlots</th>
+                                        <th>MasterNodeID</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="redis-data-body"></tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

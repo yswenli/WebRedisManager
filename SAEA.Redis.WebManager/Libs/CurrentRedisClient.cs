@@ -492,5 +492,35 @@ namespace SAEA.Redis.WebManager.Libs
         }
 
 
+
+        #region cluster
+        public static List<ClusterNode> GetClusterNodes(string name)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    var list= redisClient.ClusterNodes;
+
+                    foreach (var item in list)
+                    {
+                        if (!item.IsMaster)
+                        {
+                            var masterNode = list.Where(b => b.NodeID == item.MasterNodeID).FirstOrDefault();
+                            if (masterNode != null)
+                            {
+                                item.MinSlots = masterNode.MinSlots;
+                                item.MaxSlots = masterNode.MaxSlots;
+                            }
+                        }                        
+                    }
+                    return list;
+                }
+            }
+            return null;
+        }
+        #endregion
     }
 }

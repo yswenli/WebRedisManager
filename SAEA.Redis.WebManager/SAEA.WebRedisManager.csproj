@@ -10,13 +10,16 @@
     <ApplicationIcon>Html\favicon.ico</ApplicationIcon>
     <Authors>yswenli</Authors>
     <Version>2.0.0</Version>
-    <Description>
-      This is a web version of Redis management tool.
-      这是一个web版的Redis管理工具
-    </Description>
+    <Description>This is a web version of Redis management tool.
+这是一个web版的Redis管理工具
+</Description>
     <Copyright>yswenli</Copyright>
     <PackageProjectUrl>https://www.cnblogs.com/yswenli/p/9460527.html</PackageProjectUrl>
     <RepositoryUrl>https://github.com/yswenli/WebRedisManager</RepositoryUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+    <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -28,11 +31,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="2.2.0" />
-    <PackageReference Include="SAEA.RedisSocket" Version="2.2.0" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <PackageReference Include="SAEA.MVC" Version="2.2.2" />
+    <PackageReference Include="SAEA.RedisSocket" Version="2.2.2" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Html\AddItem.html">

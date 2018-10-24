@@ -8,15 +8,15 @@ namespace SAEA.WebRedisManager
     {
         static void Main(string[] args)
         {
-            ConsoleHelper.Title = "WebRedisManagerService";
+            ConsoleHelper.Title = "WebRedisManager";
 
             SAEAMvcApplication mvcApplication = new SAEAMvcApplication();
 
             mvcApplication.Start();
 
-            ConsoleHelper.WriteLine("WebRedisManager服务已启动");
+            ConsoleHelper.WriteLine("WebRedisManager已启动");
 
-            ConsoleHelper.WriteLine("服务地址：http://localhost:39654/");      
+            ConsoleHelper.WriteLine("请在浏览器上打开：http://localhost:39654/");      
 
             ConsoleHelper.WriteLine("回车退出服务...");
 
