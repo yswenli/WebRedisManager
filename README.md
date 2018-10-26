@@ -6,4 +6,6 @@ WebRedisManager是使用的SAEA.RedisSocket、SAEA.MVC等实现Redis的简便管
 ## 引用相关dll
 https://www.nuget.org/packages?q=saea
 
-<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager.png?raw=true" alt="WebRedisManager"/>
+<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager.png?raw=true" alt="WebRedisManager"/><br/>
+<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager1.png?raw=true" alt="WebRedisManager"/><br/>
+<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager2.png?raw=true" alt="WebRedisManager"/><br/>
