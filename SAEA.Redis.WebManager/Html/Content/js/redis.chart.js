@@ -257,7 +257,7 @@
 
     //加载图表
     LineChart1("redis-cpu-div", "cpu使用情况", "/api/redis/getinfo", name);
-    LineChart2("redis-mem-div", "memoery使用情况", "/api/redis/getinfo", name);
+    LineChart2("redis-mem-div", "memory使用情况", "/api/redis/getinfo", name);
 
     $("#redis_name").html(name);
 
