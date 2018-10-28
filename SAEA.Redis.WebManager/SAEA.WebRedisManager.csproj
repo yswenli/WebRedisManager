@@ -34,8 +34,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="2.2.2.1" />
-    <PackageReference Include="SAEA.RedisSocket" Version="2.2.2.1" />
+    <PackageReference Include="SAEA.MVC" Version="3.0.0.2" />
+    <PackageReference Include="SAEA.RedisSocket" Version="3.0.0.1" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Html\AddItem.html">

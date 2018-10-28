@@ -1,4 +1,5 @@
-﻿using SAEA.MVC.Mvc;
+﻿using SAEA.Http.Model;
+using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
 using System;
