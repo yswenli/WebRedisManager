@@ -25,21 +25,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\SAEA\Src\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Common">
-      <HintPath>..\..\SAEA\Src\SAEA.MVC\bin\Debug\netstandard2.0\SAEA.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="SAEA.Http">
-      <HintPath>..\..\SAEA\Src\SAEA.MVC\bin\Debug\netstandard2.0\SAEA.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="SAEA.MVC">
-      <HintPath>..\..\SAEA\Src\SAEA.MVC\bin\Debug\netstandard2.0\SAEA.MVC.dll</HintPath>
-    </Reference>
-    <Reference Include="SAEA.RedisSocket">
-      <HintPath>..\..\SAEA\Src\SAEA.RedisSocket\bin\Debug\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
-    </Reference>
-    <Reference Include="SAEA.Sockets">
-      <HintPath>..\..\SAEA\Src\SAEA.MVC\bin\Debug\netstandard2.0\SAEA.Sockets.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,6 +35,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SAEA.MVC" Version="3.2.1.1" />
+    <PackageReference Include="SAEA.RedisSocket" Version="3.2.1.1" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Html\AddItem.html">
