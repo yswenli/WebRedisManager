@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SAEA.WebRedisManager", "SAEA.Redis.WebManager\SAEA.WebRedisManager.csproj", "{C2B76F87-65FF-4A0E-AA3A-D44305C62577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SAEA.WebRedisManager", "SAEA.WebRedisManager\SAEA.WebRedisManager.csproj", "{C2B76F87-65FF-4A0E-AA3A-D44305C62577}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAEA.WebRedisManagerForNet", "SAEA.WebRedisManagerForNet\SAEA.WebRedisManagerForNet.csproj", "{598C65E6-356A-47FF-922B-16349D83C9A1}"
 EndProject

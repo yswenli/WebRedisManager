@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="background-color: #f2f2f2;">
+<head>
+    <meta charset="utf-8" />
+    <title>rename</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link href="/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-col-md12" style="margin-top:15px;">
+            <div class="layui-card">
+                <form id="ren_form" class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">old name</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="id" autocomplete="off" placeholder="old ID" class="layui-input" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">new name</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="newid" autocomplete="off" placeholder="new ID" class="layui-input" lay-verify="required" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" id="ren_btn" class="layui-btn">立即提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="Content/js/requestpamars.js"></script>
+    <script src="Content/js/layui.js"></script>
+    <script>
+        layui.use(['jquery', 'layer', 'form'], function () {
+
+            var layer = layui.layer, form = layui.form, $ = layui.$;
+
+            var redis_name = GetRequest().name;
+
+            var db_index = GetRequest().dbindex;
+
+            var item_type = GetRequest().type;
+
+            var item_id = GetRequest().id;
+
+            $("input[name='id']").val(item_id);
+
+            //提交表单
+            $("#ren_btn").on("click", function () {
+                layer.confirm("确认要修改此项么?", {
+                    btn: ['确定', '取消']
+                },
+                    function (index) {
+                        layer.close(index);
+
+                        var newid = $("input[name='newid']").val();
+                        var url = `/api/redis/rename?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&newid=${newid}`;
+                        $.get(url, null, function (rdata) {
+                            if (rdata.Code == 1) {
+                                parent.location.href = `/ItemsView.html?name=${redis_name}&dbindex=${db_index}&id=${newid}&type=${item_type}`;
+                            }
+                            else {
+                                layer.msg("操作失败:" + rdata.Message, { time: 2000 });
+                            }
+                        });
+                    }
+                );
+            });
+
+        });
+    </script>
+
+</body>
+</html>

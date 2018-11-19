@@ -1,0 +1,178 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.0",
+    "signature": "fb7f1894f32e1519eef9e71bb3ccab2360b7d1a7"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.0": {
+      "SAEA.WebRedisManager/2.0.0": {
+        "dependencies": {
+          "SAEA.MVC": "3.2.1.1",
+          "SAEA.RedisSocket": "3.2.1.1"
+        },
+        "runtime": {
+          "SAEA.WebRedisManager.dll": {}
+        }
+      },
+      "Microsoft.Tpl.Dataflow/4.5.24": {},
+      "Newtonsoft.Json/11.0.2": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.0.2.21924"
+          }
+        }
+      },
+      "SAEA.Common/3.2.1.1": {
+        "dependencies": {
+          "Newtonsoft.Json": "11.0.2",
+          "System.Memory": "4.5.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SAEA.Common.dll": {
+            "assemblyVersion": "3.2.1.1",
+            "fileVersion": "3.2.1.1"
+          }
+        }
+      },
+      "SAEA.Http/3.2.1.1": {
+        "dependencies": {
+          "SAEA.Common": "3.2.1.1",
+          "SAEA.Sockets": "3.2.1.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SAEA.Http.dll": {
+            "assemblyVersion": "3.2.1.1",
+            "fileVersion": "3.2.1.1"
+          }
+        }
+      },
+      "SAEA.MVC/3.2.1.1": {
+        "dependencies": {
+          "SAEA.Common": "3.2.1.1",
+          "SAEA.Http": "3.2.1.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SAEA.MVC.dll": {
+            "assemblyVersion": "3.2.1.1",
+            "fileVersion": "3.2.1.1"
+          }
+        }
+      },
+      "SAEA.RedisSocket/3.2.1.1": {
+        "dependencies": {
+          "SAEA.Common": "3.2.1.1",
+          "SAEA.Sockets": "3.2.1.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SAEA.RedisSocket.dll": {
+            "assemblyVersion": "3.2.1.1",
+            "fileVersion": "3.2.1.1"
+          }
+        }
+      },
+      "SAEA.Sockets/3.2.1.1": {
+        "dependencies": {
+          "Microsoft.Tpl.Dataflow": "4.5.24",
+          "SAEA.Common": "3.2.1.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/SAEA.Sockets.dll": {
+            "assemblyVersion": "3.2.1.1",
+            "fileVersion": "3.2.1.1"
+          }
+        }
+      },
+      "System.Memory/4.5.1": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Memory.dll": {
+            "assemblyVersion": "4.0.1.0",
+            "fileVersion": "4.6.26606.5"
+          }
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.5.0": {
+        "runtime": {
+          "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll": {
+            "assemblyVersion": "4.0.4.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SAEA.WebRedisManager/2.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.Tpl.Dataflow/4.5.24": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6BE4Vu74+dkv5AkJd+UxW1sFMepMZOVlUoMZDUKqhc4Bf7pe7yySzCj6QrowUZbCqcDPwOiQsAgz3nXiLQSyMw==",
+      "path": "microsoft.tpl.dataflow/4.5.24",
+      "hashPath": "microsoft.tpl.dataflow.4.5.24.nupkg.sha512"
+    },
+    "Newtonsoft.Json/11.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
+      "path": "newtonsoft.json/11.0.2",
+      "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
+    },
+    "SAEA.Common/3.2.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SXo8hgRk/otPnIcxzR5m3wCqDV6s1PQGEGdfYl0DjWTIPGWy+Ord0fhqCGErjC9Iy7PWcmLJdHsTj9GUsug6mQ==",
+      "path": "saea.common/3.2.1.1",
+      "hashPath": "saea.common.3.2.1.1.nupkg.sha512"
+    },
+    "SAEA.Http/3.2.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-X/z+1DD8ZZEp54eBKl7Oi3RXeJdAOfTd/pS0ouK9ISxEK7Umvco35svC9etm+rWaJ1FvYDCKY/0PcHWGIRYNYA==",
+      "path": "saea.http/3.2.1.1",
+      "hashPath": "saea.http.3.2.1.1.nupkg.sha512"
+    },
+    "SAEA.MVC/3.2.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ADTaBXoKWft97HFTNE+IXTW1iP2sUBXzqEqF/2iznuDcnqq/XSj35gupKesLoMNpNwnP86vy/uBVle7+IV5Mjw==",
+      "path": "saea.mvc/3.2.1.1",
+      "hashPath": "saea.mvc.3.2.1.1.nupkg.sha512"
+    },
+    "SAEA.RedisSocket/3.2.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-voSP75kig9eJYEYu0CN6cxCBTntRJYMRy6sPMtr/3kUqGfly3qNBTViWD1TG+7ghCgNwc3pw4hQcobrTtnARXg==",
+      "path": "saea.redissocket/3.2.1.1",
+      "hashPath": "saea.redissocket.3.2.1.1.nupkg.sha512"
+    },
+    "SAEA.Sockets/3.2.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8qcqY10H+1MvxmZctzAiWKfKQz8KZPkL36YyNJu3Uzc6EjzYLybsiVOfyW2FjEqdJg6Kndw19b93xupz7QG9HA==",
+      "path": "saea.sockets/3.2.1.1",
+      "hashPath": "saea.sockets.3.2.1.1.nupkg.sha512"
+    },
+    "System.Memory/4.5.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vcG3/MbfpxznMkkkaAblJi7RHOmuP7kawQMhDgLSuA1tRpRQYsFSCTxRSINDUgn2QNn2jWeLxv8er5BXbyACkw==",
+      "path": "system.memory/4.5.1",
+      "hashPath": "system.memory.4.5.1.nupkg.sha512"
+    },
+    "System.Runtime.CompilerServices.Unsafe/4.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-6zBxkHYemB0kQiHP3vGXGRXejZVoNVuMn2paUuqKKi5Wyjkxfkp+D0rd0c3VrGwotidRINt6KpOi2smL4VkJKw==",
+      "path": "system.runtime.compilerservices.unsafe/4.5.0",
+      "hashPath": "system.runtime.compilerservices.unsafe.4.5.0.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>WebRedisManager</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel=icon sizes=any mask href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link href="/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header header header-demo" summer>
+            <div class="layui-main">
+                <a style="font-size: 35px;color: #c5c5c5;display: inline-block;margin-top: 8px;">
+                    WebRedisManager
+                </a>
+                <ul class="layui-nav">
+                    <li class="layui-nav-item ">
+                        <a id="add_link" href="javascript:;">
+                            <i class="layui-icon layui-icon-add-1"></i>
+                            <cite>添加redis服务器</cite>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item ">
+                        <a id="rem_link" href="javascript:;">
+                            <i class="layui-icon layui-icon-fonts-del"></i>
+                            <cite>删除redis服务器</cite>
+                        </a>
+                    </li>
+                    <span class="layui-nav-bar" style="left: 44px; top: 55px; width: 0px; opacity: 0;"></span>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree site-demo-nav">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="javascript:;" href="javascript:;">
+                            <i class="layui-icon layui-icon-component"></i>
+                            <cite>redis服务器列表</cite>
+                        </a>
+                        <dl class="layui-nav-child redis-dbs"></dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="site-tree-mobile layui-hide">
+            <i class="layui-icon">&#xe602;</i>
+        </div>
+        <div class="site-mobile-shade"></div>
+
+        <div class="layui-tab layui-tab-brief" lay-filter="demoTitle">
+            <ul class="layui-tab-title site-demo-title">
+                <li class="layui-this">RedisDB</li>
+            </ul>
+            <div class="layui-body layui-tab-content site-demo site-demo-body">
+                <iframe src="/IndexContent.html" frameborder="0" class="layadmin-iframe"></iframe>
+            </div>
+        </div>
+
+        <div class="layui-footer footer footer-demo"></div>
+        <script src="Content/js/layui.js"></script>
+        <script>
+            window.global = {
+                pageType: 'demo'
+                , preview: function () {
+                    var preview = document.getElementById('LAY_preview');
+                    return preview ? preview.innerHTML : '';
+                }()
+            };
+            layui.config({
+                base: '/content/lay/modules/layui/'
+                , version: '1531663423583'
+            }).use('global');
+        </script>
+        <script src="/Content/js/redis.js"></script>
+    </div>
+</body>
+</html>

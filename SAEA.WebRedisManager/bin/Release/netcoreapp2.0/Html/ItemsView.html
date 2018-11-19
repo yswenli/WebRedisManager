@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>ItemsView</title>
+    <link href="/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header keys-header" style="font-size:18px;"> </div>
+                    <div class="layui-card-body" style="height: 28px;">
+                        <div>
+                            <div class="layui-col-md9">
+                                <div>
+                                    <label class="layui-form-label">Key查询</label>
+                                    <div class="layui-input-block">
+                                        <input id="search-key" type="text" name="search_key" lay-verify="title" autocomplete="off" placeholder="请输入key" class="layui-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-col-md3">
+                                <button id="search_btn" type="button" class="layui-btn">SCAN</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header" style="font-size:18px;"> </div>
+                    <div class="layui-card-body">
+                        <button id="add_link" class="layui-btn" data-type="parseTable">
+                            <i class="layui-icon layui-icon-add-1"></i>
+                            <span>SET</span>
+                        </button>
+                        <button id="ren_link" class="layui-btn" data-type="parseTable">
+                            <i class="layui-icon layui-icon-edit"></i>
+                            <span>修改id</span>
+                        </button>
+                        <div id="table-container">
+
+                        </div>
+                        <div id="paged-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-form-container" style="display:none"></div>
+    <script src="Content/js/echarts.common.min.js"></script>
+    <script src="Content/js/requestpamars.js"></script>
+    <script src="Content/js/layui.js"></script>
+    <script src="Content/js/redis.data.item.js"></script>
+</body>
+</html>
+

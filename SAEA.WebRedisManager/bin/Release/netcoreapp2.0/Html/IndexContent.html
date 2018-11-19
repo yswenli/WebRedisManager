@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="background-color: #f2f2f2;">
+<head>
+    <meta charset="utf-8" />
+    <title>IndexItem</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link href="/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-col-md12" style="margin-top:15px;">
+            <div class="layui-card">
+                <div class="layui-card-header">项目说明</div>
+                <div class="layui-card-body">
+                    <p id="ie-alert" class="layui-elem-quote" style="display: none;">请使用Chrome或Firefox来获取最佳体验！</p>
+                    <p class="layui-elem-quote">
+                        WebRedisManager是使用的SAEA.RedisSocket、SAEA.MVC等实现Redis的可视化、简便管理功能的工具~<br />
+                        同时它也是一个开源的项目，详情点击：<a href="https://www.cnblogs.com/yswenli/p/9460527.html" target="_blank">https://www.cnblogs.com/yswenli/p/9460527.html</a>，项目源码地址：
+                        <a href="https://github.com/yswenli/WebRedisManager" target="_blank">https://github.com/yswenli/WebRedisManager</a><br />
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        if (window.navigator.userAgent.indexOf("MSIE") >= 1 || window.navigator.userAgent.indexOf("Trident") >= 1) {
+            document.getElementById("ie-alert").style.display = "block";
+        }
+    </script>
+</body>
+</html>

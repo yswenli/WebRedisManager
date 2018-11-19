@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="background-color: #f2f2f2;">
+<head>
+    <meta charset="utf-8" />
+    <title>添加数据</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link href="/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-col-md12" style="margin-top:15px;">
+            <div class="layui-card">
+                <form id="add_form" class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">type</label>
+                        <div class="layui-input-block">
+                            <select id="type-select" name="type" lay-verify="required" lay-search="" lay-filter="type-select">
+                                <option value="1">string</option>
+                                <option value="2">hashset</option>
+                                <option value="3">set</option>
+                                <option value="4">zset</option>
+                                <option value="5">list</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">id</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="id" autocomplete="off" placeholder="id" class="layui-input" lay-verify="required" />
+                        </div>
+                    </div>
+                    <div id="id-div" class="layui-form-item" style="display:none;">
+                        <label id="key-lable" class="layui-form-label">key</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="key" autocomplete="off" placeholder="key" class="layui-input" lay-verify="required" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">value</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" lay-verify="required" />
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button type="button" id="add_btn" class="layui-btn">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="Content/js/requestpamars.js"></script>
+    <script src="Content/js/layui.js"></script>
+    <script>
+        layui.use(['jquery', 'layer', 'form'], function () {
+
+            var layer = layui.layer, form = layui.form, $ = layui.$;
+
+            var redis_name = GetRequest().name;
+
+            var db_index = GetRequest().dbindex;
+
+            var item_type = GetRequest().type;
+
+            var item_id = GetRequest().id;
+
+            //增加下拉列表改变事件
+            form.on('select(type-select)', function (data) {
+
+                item_type = data.value;
+
+                $("#key-lable").html("key");
+
+                if (data.value == 2) {
+                    $("#id-div").show();
+                }
+                else if (data.value == 4) {
+                    $("#id-div").show();
+                    $("#key-lable").html("score");
+                }
+                else {
+                    $("#id-div").hide();
+                }
+            });
+            //选中默认类型
+            var select = 'dd[lay-value=' + item_type + ']';
+            $('#type-select').siblings("div.layui-form-select").find('dl').find(select).click();
+
+            $("input[name='id']").val(item_id);
+
+
+            //提交数据
+            $("#add_btn").click(function () {
+
+                var item_data_id = $("input[name='id']").val();
+                var item_data_key = $("input[name='key']").val();
+                var item_data_val = $("input[name='value']").val();
+
+                var url = `/api/redis/set?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_data_id}&key=${item_data_key}&value=${item_data_val}`;
+                $.post(url, null, function (sdata) {
+                    if (sdata.Code == 1) {
+                        parent.location.reload();
+                    }
+                    else {
+                        layer.msg("操作失败:" + sdata.Message, { time: 2000 });
+                    }
+                });
+            });
+
+        });
+    </script>
+
+</body>
+</html>

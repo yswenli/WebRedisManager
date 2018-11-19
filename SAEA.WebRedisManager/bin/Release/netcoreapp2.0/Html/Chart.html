@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>报表</title>
+    <link href="/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style="margin-top:15px;">
+            <div class="layui-card">
+                <div class="layui-card-header" style="font-size:18px;">
+                    redis实例【<a href="javascript:;" id="redis_name" style="color:#0094ff;"></a>】资源使用情况
+                </div>
+                <div class="layui-card-body layuiadmin-card-list" style="height:400px;">
+                    <div class="layui-col-sm6 layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                CPU
+                                <span class="layui-badge layui-bg-blue layuiadmin-badge">秒</span>
+                            </div>
+                            <div class="layui-card-body layuiadmin-card-list">
+                                <div id='redis-cpu-div' style='height:320px;'></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-sm6 layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                内存
+                                <span class="layui-badge layui-bg-blue layuiadmin-badge">秒</span>
+                            </div>
+                            <div class="layui-card-body layuiadmin-card-list">
+                                <div id='redis-mem-div' style='height:320px;'></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-row layui-col-space15" style="margin-top:15px;">
+            <div class="layui-card">
+                <div class="layui-card-header" style="font-size:18px;">
+                    redis cluster nodes <button class="layui-btn">add node</button>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list" style="height:650px; overflow:auto">
+                    <div class="layui-col-sm12 layui-col-md12">
+                        <div class="layui-card">
+                            <table class="layui-table">
+                                <colgroup>
+                                    <col>
+                                    <col>
+                                    <col>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>NodeID</th>
+                                        <th>IPPort</th>
+                                        <th>Status</th>
+                                        <th>IsMaster</th>
+                                        <th>MinSlots</th>
+                                        <th>MaxSlots</th>
+                                        <th>MasterNodeID</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="redis-data-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="Content/js/layui.js"></script>
+    <script src="Content/js/echarts.common.min.js"></script>
+    <script src="Content/js/requestpamars.js"></script>
+    <script src="Content/js/redis.chart.js"></script>
+</body>
+</html>
