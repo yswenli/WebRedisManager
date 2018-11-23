@@ -22,9 +22,6 @@
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\SAEA\Src\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -37,8 +34,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="3.3.1.2" />
-    <PackageReference Include="SAEA.RedisSocket" Version="3.3.1.2" />
+    <PackageReference Include="SAEA.MVC" Version="3.3.3.3" />
+    <PackageReference Include="SAEA.RedisSocket" Version="3.3.3.3" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Html\AddItem.html">

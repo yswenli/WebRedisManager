@@ -206,7 +206,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "SAEA.Common/3.3.1.2": {
+      "SAEA.Common/3.3.3.3": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "11.0.2",
@@ -219,11 +219,11 @@
           "lib/netstandard2.0/SAEA.Common.dll": {}
         }
       },
-      "SAEA.Http/3.3.1.2": {
+      "SAEA.Http/3.3.3.3": {
         "type": "package",
         "dependencies": {
-          "SAEA.Common": "3.3.1.2",
-          "SAEA.Sockets": "3.3.1.2"
+          "SAEA.Common": "3.3.3.3",
+          "SAEA.Sockets": "3.3.3.3"
         },
         "compile": {
           "lib/netstandard2.0/SAEA.Http.dll": {}
@@ -232,11 +232,11 @@
           "lib/netstandard2.0/SAEA.Http.dll": {}
         }
       },
-      "SAEA.MVC/3.3.1.2": {
+      "SAEA.MVC/3.3.3.3": {
         "type": "package",
         "dependencies": {
-          "SAEA.Common": "3.3.1.2",
-          "SAEA.Http": "3.3.1.2"
+          "SAEA.Common": "3.3.3.3",
+          "SAEA.Http": "3.3.3.3"
         },
         "compile": {
           "lib/netstandard2.0/SAEA.MVC.dll": {}
@@ -245,11 +245,11 @@
           "lib/netstandard2.0/SAEA.MVC.dll": {}
         }
       },
-      "SAEA.RedisSocket/3.3.1.2": {
+      "SAEA.RedisSocket/3.3.3.3": {
         "type": "package",
         "dependencies": {
-          "SAEA.Common": "3.3.1.2",
-          "SAEA.Sockets": "3.3.1.2"
+          "SAEA.Common": "3.3.3.3",
+          "SAEA.Sockets": "3.3.3.3"
         },
         "compile": {
           "lib/netstandard2.0/SAEA.RedisSocket.dll": {}
@@ -258,10 +258,10 @@
           "lib/netstandard2.0/SAEA.RedisSocket.dll": {}
         }
       },
-      "SAEA.Sockets/3.3.1.2": {
+      "SAEA.Sockets/3.3.3.3": {
         "type": "package",
         "dependencies": {
-          "SAEA.Common": "3.3.1.2"
+          "SAEA.Common": "3.3.3.3"
         },
         "compile": {
           "lib/netstandard2.0/SAEA.Sockets.dll": {}
@@ -780,58 +780,58 @@
         "newtonsoft.json.nuspec"
       ]
     },
-    "SAEA.Common/3.3.1.2": {
-      "sha512": "BMCvYqTgB/JzHcvUzC8ERUS7Ly6+s4XoMBOAqb26fGm0gIZcpUj81sA6L/ZxmyUxGk497vaqMLU5ocArrhhjPw==",
+    "SAEA.Common/3.3.3.3": {
+      "sha512": "gjvJvUNE6wXnzgzaBlqpkekrFvxcX93JnnRv7XQIzbFW2Pyn4RofCPyvgjYK3KKJFH1QvXfHVOV67C8ZINsl4w==",
       "type": "package",
-      "path": "saea.common/3.3.1.2",
+      "path": "saea.common/3.3.3.3",
       "files": [
         ".signature.p7s",
         "lib/netstandard2.0/SAEA.Common.dll",
-        "saea.common.3.3.1.2.nupkg.sha512",
+        "saea.common.3.3.3.3.nupkg.sha512",
         "saea.common.nuspec"
       ]
     },
-    "SAEA.Http/3.3.1.2": {
-      "sha512": "yIaRDBNz7mt5rgvzFPPj5457nnGWlErTtC6eCK2XFIh+KIAT7w45djqPn2JHGTGEXkk3HJ+RhqoVcpOAlHdK5A==",
+    "SAEA.Http/3.3.3.3": {
+      "sha512": "U7aLRqikPTUwqSnzPiWFklQ1q6joJVqadc7C0QLlp25OuPivoygkHoJ3XHtS8A5l7OiBPzHEDGmbY2nnSTYgog==",
       "type": "package",
-      "path": "saea.http/3.3.1.2",
+      "path": "saea.http/3.3.3.3",
       "files": [
         ".signature.p7s",
         "lib/netstandard2.0/SAEA.Http.dll",
-        "saea.http.3.3.1.2.nupkg.sha512",
+        "saea.http.3.3.3.3.nupkg.sha512",
         "saea.http.nuspec"
       ]
     },
-    "SAEA.MVC/3.3.1.2": {
-      "sha512": "xkA3d6CdHSVCPQSqJd75iXryMEzts8yRwMC7b5GuAdyGQI/uMHPg0klj3VzwPa74qC5X7zqw/kP6NbozHCdceQ==",
+    "SAEA.MVC/3.3.3.3": {
+      "sha512": "Z+D9Xt05EMIgsc8yT1020nGfClioS6LUKK+FF9LAqmsu9BEbfPYj/6u2P1w9dicsmEZ1Q4e+OaXRTptVgPwG+g==",
       "type": "package",
-      "path": "saea.mvc/3.3.1.2",
+      "path": "saea.mvc/3.3.3.3",
       "files": [
         ".signature.p7s",
         "lib/netstandard2.0/SAEA.MVC.dll",
-        "saea.mvc.3.3.1.2.nupkg.sha512",
+        "saea.mvc.3.3.3.3.nupkg.sha512",
         "saea.mvc.nuspec"
       ]
     },
-    "SAEA.RedisSocket/3.3.1.2": {
-      "sha512": "/INGGrp6g1H9BhREjUxe426Y9BoZXpTTQY+3bpyMN0VV7zh/UK6RBeKRdIXDf61nMIGFPjE6vvNMDMbgne+r2A==",
+    "SAEA.RedisSocket/3.3.3.3": {
+      "sha512": "8uGVgb/njLAOo7opk4lyKzjTa0dZmw9nbGIp5RIwUMBkz1+fCUU6Nl1/mQcsylyboAbef4nVS3NIg+ZEg8rVKg==",
       "type": "package",
-      "path": "saea.redissocket/3.3.1.2",
+      "path": "saea.redissocket/3.3.3.3",
       "files": [
         ".signature.p7s",
         "lib/netstandard2.0/SAEA.RedisSocket.dll",
-        "saea.redissocket.3.3.1.2.nupkg.sha512",
+        "saea.redissocket.3.3.3.3.nupkg.sha512",
         "saea.redissocket.nuspec"
       ]
     },
-    "SAEA.Sockets/3.3.1.2": {
-      "sha512": "EgG6MUz8yYBiwQPHMGMVqlNRRA/F0AAhHhy2RH39/YdSg3I13L/Ayz2A6TKAuI9yhkaNPDOYX51asBXcLR/oZw==",
+    "SAEA.Sockets/3.3.3.3": {
+      "sha512": "trTLzTyxlxHBLA0Z6O+p/M3JC6LrI0ahwdDzfXUu7V/K9ttDGEX7Blour/qmxGc7P0FJxDioSWzv7tt4kuld4Q==",
       "type": "package",
-      "path": "saea.sockets/3.3.1.2",
+      "path": "saea.sockets/3.3.3.3",
       "files": [
         ".signature.p7s",
         "lib/netstandard2.0/SAEA.Sockets.dll",
-        "saea.sockets.3.3.1.2.nupkg.sha512",
+        "saea.sockets.3.3.3.3.nupkg.sha512",
         "saea.sockets.nuspec"
       ]
     },
@@ -889,8 +889,8 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Microsoft.NETCore.App >= 2.0.0",
-      "SAEA.MVC >= 3.3.1.2",
-      "SAEA.RedisSocket >= 3.3.1.2"
+      "SAEA.MVC >= 3.3.3.3",
+      "SAEA.RedisSocket >= 3.3.3.3"
     ]
   },
   "packageFolders": {
@@ -942,11 +942,11 @@
           },
           "SAEA.MVC": {
             "target": "Package",
-            "version": "[3.3.1.2, )"
+            "version": "[3.3.3.3, )"
           },
           "SAEA.RedisSocket": {
             "target": "Package",
-            "version": "[3.3.1.2, )"
+            "version": "[3.3.3.3, )"
           }
         },
         "imports": [
