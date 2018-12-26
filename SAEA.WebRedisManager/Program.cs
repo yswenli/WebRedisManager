@@ -15,7 +15,6 @@ namespace SAEA.WebRedisManager
 
             mvcApplication.Start();
 
-
             ConsoleHelper.WriteLine("WebRedisManager已启动");
 
             ConsoleHelper.WriteLine("请在浏览器上打开：http://localhost:39654/");

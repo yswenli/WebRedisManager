@@ -117,6 +117,8 @@
     //提交添加redis表单
     $("#add_btn").on("click", function () {
         var json = $("#add_form").serialize();
+        console.log(json);
+        debugger;
         $.post("/api/config/set", json, function (data) {
             if (data.Code == 1) {
                 parent.location.reload();
