@@ -22,6 +22,9 @@
     <DocumentationFile></DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SAEA.RedisSocket">
+      <HintPath>..\..\SAEA\Src\SAEA.RedisSocket\bin\Debug\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -35,7 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SAEA.MVC" Version="3.6.0.1" />
-    <PackageReference Include="SAEA.RedisSocket" Version="3.6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Html\AddItem.html">

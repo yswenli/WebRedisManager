@@ -368,7 +368,7 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/additem.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}`, 'no']
+            content: [`/additem.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${escape(item_id)}`, 'no']
         });
     });
     //修改按钮
@@ -382,7 +382,7 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/rename.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}`, 'no']
+            content: [`/rename.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${escape(item_id)}`, 'no']
         });
     });
 });

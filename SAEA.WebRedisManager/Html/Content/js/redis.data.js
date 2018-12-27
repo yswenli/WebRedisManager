@@ -70,7 +70,7 @@
                             break;
                     }
 
-                    var key = $(this).parent().attr("data-key");
+                    var key = escape($(this).parent().attr("data-key"));
                     if (type == "string") {
                         var info_url = `/api/redis/get?name=${redis_name}&dbindex=${db_index}&key=${key}`;
                         $.get(info_url, null, function (vdata) {
