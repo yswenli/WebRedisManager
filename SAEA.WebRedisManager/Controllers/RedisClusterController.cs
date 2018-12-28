@@ -22,9 +22,14 @@ namespace SAEA.WebRedisManager.Controllers
         {
             try
             {
-                var cnnResult = CurrentRedisClient.GetClusterNodes(name);
+                List<ClusterNode> result = new List<ClusterNode>();
 
-                return Json(new JsonResult<List<ClusterNode>>() { Code = 1, Data = cnnResult, Message = "OK" });
+                if (CurrentRedisClient.IsCluster(name))
+                {
+                    result = CurrentRedisClient.GetClusterNodes(name);
+                }               
+
+                return Json(new JsonResult<List<ClusterNode>>() { Code = 1, Data = result, Message = "OK" });
             }
             catch (Exception ex)
             {

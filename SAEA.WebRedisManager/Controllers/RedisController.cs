@@ -33,7 +33,18 @@ namespace SAEA.Redis.WebManager.Controllers
                     throw new Exception(cnnResult);
                 }
 
-                var data = CurrentRedisClient.GetDBs(name);
+                var isCluster = CurrentRedisClient.IsCluster(config.Name);
+
+                var data = new List<int>();
+
+                if (!isCluster)
+                {
+                    data = CurrentRedisClient.GetDBs(name);
+                }
+                else
+                {
+                    data.Add(0);
+                }
 
                 return Json(new JsonResult<List<int>>() { Code = 1, Data = data, Message = "OK" });
             }

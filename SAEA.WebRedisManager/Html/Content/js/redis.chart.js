@@ -282,6 +282,9 @@
         $.get(redis_nodes_url, null, function (rdata) {
             if (rdata.Code === 1) {
                 var tbody = "";
+                if (rdata.Data.length === 0) {
+                    $(".cluster-content").hide();
+                }
                 for (let item of rdata.Data) {
                     tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>DeleteNode<br/>、Replicate<br/>、MigratingSlots<br/>、ImportingSlots</td></tr>`;
                 }

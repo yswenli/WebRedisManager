@@ -81,6 +81,21 @@ namespace SAEA.Redis.WebManager.Libs
         }
 
 
+        public static bool IsCluster(string name)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.IsCluster;
+                }
+            }
+            return false;
+        }
+
+
         public static List<int> GetDBs(string name)
         {
             List<int> result = new List<int>();
