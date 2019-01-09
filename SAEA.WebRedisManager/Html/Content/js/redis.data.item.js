@@ -25,7 +25,11 @@
             break;
     }
 
-    $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id}`);
+    $.get(`/api/redis/getcount?name=${redis_name}&dbindex=${db_index}&type=${item_type}&ID=${item_id}`, null, function (gdata) {
+
+        $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data}`);
+
+    });
 
     var searchKey = "*";
 

@@ -232,8 +232,23 @@ namespace SAEA.Redis.WebManager.Libs
                     redisClient.GetDataBase(dbIndex).HSet(hid, key, value);
                 }
             }
-
         }
+
+
+        public static int HashSetCount(string name, int dbIndex, string hid)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.GetDataBase(dbIndex).HLen(hid);
+                }
+            }
+            return 0;
+        }
+
         /// <summary>
         /// SAdd
         /// </summary>
@@ -252,6 +267,20 @@ namespace SAEA.Redis.WebManager.Libs
                     redisClient.GetDataBase(dbIndex).SAdd(key, value);
                 }
             }
+        }
+
+        public static int SAddCount(string name, int dbIndex, string key)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.GetDataBase(dbIndex).SLen(key);
+                }
+            }
+            return 0;
         }
 
         /// <summary>
@@ -273,7 +302,20 @@ namespace SAEA.Redis.WebManager.Libs
                     redisClient.GetDataBase(dbIndex).ZAdd(hid, value, double.Parse(key));
                 }
             }
+        }
 
+        public static int ZAddCount(string name, int dbIndex, string zid)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.GetDataBase(dbIndex).ZCount(zid, int.MinValue, int.MaxValue);
+                }
+            }
+            return 0;
         }
 
         /// <summary>
@@ -294,6 +336,20 @@ namespace SAEA.Redis.WebManager.Libs
                     redisClient.GetDataBase(dbIndex).LPush(key, value);
                 }
             }
+        }
+
+        public static int LLen(string name, int dbIndex, string key)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.GetDataBase(dbIndex).LLen(key);
+                }
+            }
+            return 0;
         }
 
         /// <summary>
@@ -465,7 +521,7 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).SAdd(redisData.ID, redisData.Value);
                             break;
                         case 4:
-                            redisClient.GetDataBase(redisData.DBIndex).ZAdd(redisData.ID, redisData.Value,double.Parse(redisData.Key));
+                            redisClient.GetDataBase(redisData.DBIndex).ZAdd(redisData.ID, redisData.Value, double.Parse(redisData.Key));
                             break;
                         case 5:
                             redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.ID, int.Parse(redisData.Key), redisData.Value);
@@ -495,7 +551,7 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).SRemove(redisData.ID, redisData.Key);
                             break;
                         case 4:
-                            redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID,new string[] { redisData.Value });
+                            redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID, new string[] { redisData.Value });
                             break;
                         case 5:
                             redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.ID, int.Parse(redisData.Key), "---VALUE REMOVED BY WEBREDISMANAGER---");
@@ -517,7 +573,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                 if (redisClient.IsConnected)
                 {
-                    var list= redisClient.ClusterNodes;
+                    var list = redisClient.ClusterNodes;
 
                     foreach (var item in list)
                     {
@@ -529,7 +585,7 @@ namespace SAEA.Redis.WebManager.Libs
                                 item.MinSlots = masterNode.MinSlots;
                                 item.MaxSlots = masterNode.MaxSlots;
                             }
-                        }                        
+                        }
                     }
                     return list;
                 }

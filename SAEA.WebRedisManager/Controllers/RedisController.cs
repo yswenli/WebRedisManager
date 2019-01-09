@@ -204,6 +204,45 @@ namespace SAEA.Redis.WebManager.Controllers
             return Json(result);
         }
 
+        public ActionResult GetCount(RedisData redisData)
+        {
+            var result = new JsonResult<int>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                if (redisData != null)
+                {
+                    switch (redisData.Type)
+                    {
+                        case 1:
+
+                            break;
+                        case 2:
+                            result.Data = CurrentRedisClient.HashSetCount(redisData.Name, redisData.DBIndex, redisData.ID);
+                            break;
+                        case 3:
+                            result.Data = CurrentRedisClient.SAddCount(redisData.Name, redisData.DBIndex, redisData.ID);
+                            break;
+                        case 4:
+                            result.Data = CurrentRedisClient.ZAddCount(redisData.Name, redisData.DBIndex, redisData.ID);
+                            break;
+                        case 5:
+                            result.Data = CurrentRedisClient.LLen(redisData.Name, redisData.DBIndex, redisData.ID);
+                            break;
+                        default:
+
+                            break;
+                    }
+                }
+                result.Code = 1;
+                result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
+
         /// <summary>
         /// 删除项
         /// </summary>
