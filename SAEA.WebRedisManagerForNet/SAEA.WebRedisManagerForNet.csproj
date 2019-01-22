@@ -357,5 +357,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SAEA.WebRedisManagerLibs\SAEA.WebRedisManagerLibs.csproj">
+      <Project>{10f1329c-6c2e-4a88-981f-a7716070f953}</Project>
+      <Name>SAEA.WebRedisManagerLibs</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

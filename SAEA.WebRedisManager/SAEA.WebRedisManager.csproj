@@ -38,6 +38,9 @@
     <PackageReference Include="SAEA.RedisSocket" Version="3.6.2.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SAEA.WebRedisManagerLibs\SAEA.WebRedisManagerLibs.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="Html\AddItem.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
