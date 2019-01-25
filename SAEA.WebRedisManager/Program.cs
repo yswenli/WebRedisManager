@@ -9,9 +9,9 @@ namespace SAEA.WebRedisManager
     {
         static void Main(string[] args)
         {
-            ConsoleHelper.Title = "WebRedisManager";
+            ConsoleHelper.Title = "WebRedisManager";            
 
-            SAEAMvcApplication mvcApplication = new SAEAMvcApplication(root: SAEA.WebRedisManagerLibs.ConfigHelper.Get().root);
+            SAEAMvcApplication mvcApplication = new SAEAMvcApplication(root: SAEAMvcApplicationConfigBuilder.Read().Root);
 
             mvcApplication.Start();
 
