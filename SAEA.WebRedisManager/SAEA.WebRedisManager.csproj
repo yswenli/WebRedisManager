@@ -34,8 +34,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="3.6.2.2" />
-    <PackageReference Include="SAEA.RedisSocket" Version="3.6.2.2" />
+    <PackageReference Include="SAEA.MVC" Version="4.0.0.1" />
+    <PackageReference Include="SAEA.RedisSocket" Version="4.0.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SAEA.WebRedisManagerLibs\SAEA.WebRedisManagerLibs.csproj" />
