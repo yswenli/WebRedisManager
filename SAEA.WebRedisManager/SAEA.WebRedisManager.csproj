@@ -7,7 +7,7 @@
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Html\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
     <Authors>yswenli</Authors>
     <Version>2.0.0</Version>
     <Description>This is a web version of Redis management tool.
