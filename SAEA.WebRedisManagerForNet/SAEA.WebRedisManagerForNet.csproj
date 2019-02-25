@@ -83,8 +83,8 @@
     <Reference Include="SAEA.Http, Version=4.1.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
       <HintPath>..\packages\SAEA.Http.4.1.2.5\lib\netstandard2.0\SAEA.Http.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.MVC, Version=4.1.2.3, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.MVC.4.1.2.3\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
+    <Reference Include="SAEA.MVC, Version=4.1.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.MVC.4.1.2.5\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
     </Reference>
     <Reference Include="SAEA.RedisSocket, Version=4.1.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
       <HintPath>..\packages\SAEA.RedisSocket.4.1.2.5\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>

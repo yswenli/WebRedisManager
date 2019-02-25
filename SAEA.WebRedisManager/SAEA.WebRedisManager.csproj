@@ -230,7 +230,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="4.1.2.3" />
+    <PackageReference Include="SAEA.MVC" Version="4.1.2.5" />
     <PackageReference Include="SAEA.RedisSocket" Version="4.1.2.5" />
   </ItemGroup>
 </Project>
