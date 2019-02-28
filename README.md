@@ -6,6 +6,8 @@ WebRedisManager是使用的SAEA.RedisSocket、SAEA.MVC等实现Redis的简便管
 # 下载地址
 <a href="https://github.com/yswenli/WebRedisManager/releases" target="_blank">https://github.com/yswenli/WebRedisManager/releases</a>
 
+[![GitHub release](https://img.shields.io/github/release/yswenli/webredismanager.svg)](https://github.com/yswenli/webredismanager/releases)
+
 ## 引用相关dll
 项目中相关引用可以访问： https://www.nuget.org/packages?q=saea
 
