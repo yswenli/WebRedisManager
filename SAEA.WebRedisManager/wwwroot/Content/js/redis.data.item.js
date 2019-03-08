@@ -1,4 +1,9 @@
-﻿layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
+﻿String.prototype.replaceAll = function (s1, s2) {
+    return this.replace(new RegExp(s1, "gm"), s2);
+}
+
+
+layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var layer = layui.layer, form = layui.form, $ = layui.$, laypage = layui.laypage;
 
@@ -75,7 +80,7 @@
                             thtml = `<tr>
                                                                 <td>${datakey}</td>
                                                                 <td>${jdata.Data[datakey]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-id="${item_id}" data-key="${datakey}" data-val="${jdata.Data[datakey]}">
+                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-id="${item_id}" data-key="${datakey}" data-val="${jdata.Data[datakey].replaceAll("\"", "\'")}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -102,7 +107,7 @@
                             thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i]}">
+                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].replaceAll("\"", "\'")}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -129,7 +134,7 @@
                             thtml = `<tr>
                                                                 <td>${jdata.Data[i].Value}</td>
                                                                 <td>${jdata.Data[i].Score}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${jdata.Data[i].Value}">
+                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${jdata.Data[i].Value.replaceAll("\"", "\'")}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -156,7 +161,7 @@
                             thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${i}" data-val="${jdata.Data[i]}">
+                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${i}" data-val="${jdata.Data[i].replaceAll("\"", "\'")}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -187,7 +192,7 @@
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val}" />
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replace("'", "\"")}" />
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -199,17 +204,17 @@
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
                                                 <input type="hidden" name="type" value="${item_type}" />
                                                 <input type="hidden" name="id" value="${item_id}" />
-                                                <input type="hidden" name="key" value="${key}" />
+                                                <input type="hidden" name="key" value="${key.replace("'", "\"")}" />
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${key}" />
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${key.replace("'", "\"")}" />
                                                     </div>
                                                 </div>
                                             </form>`;
                             $("#edit-form-container").html(edit_form_html);
                             break;
-                        case 4:                            
+                        case 4:
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
                                                 <input type="hidden" name="name" value="${redis_name}" />
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
@@ -224,7 +229,7 @@
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val}" />
+                                                        <textarea type="text" name="value" autocomplete="off" placeholder="value" rows="6" style="width:99%;resize:none">${val.replace("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -245,7 +250,7 @@
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val}" />
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replace("'", "\"")}" />
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -256,7 +261,7 @@
                     layer.open({
                         title: '编辑',
                         type: 1,
-                        area: ['580px', '210px'],
+                        area: ['580px', '280px'],
                         fixed: true,
                         resize: false,
                         move: false,
@@ -280,13 +285,15 @@
                             });
                             layer.close(index);
                         }
-                    })
+                    });
                 });
                 //移除
                 $(".del-link").off();
                 $(".del-link").on("click", function () {
 
-                    var key = $(this).parent().attr("data-key");
+                    var delLink = $(this).parent();
+
+                    var key = delLink.attr("data-key");
 
                     layer.confirm("确认要删除此项数据么?", {
                         btn: ['确定', '取消']
@@ -295,7 +302,7 @@
                             switch (item_type * 1) {
                                 case 2:
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
-                                        if (data.Code == 1) {
+                                        if (data.Code === 1) {
                                             location.reload();
                                         }
                                         else {
@@ -305,7 +312,7 @@
                                     break;
                                 case 3:
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
-                                        if (data.Code == 1) {
+                                        if (data.Code === 1) {
                                             location.reload();
                                         }
                                         else {
@@ -314,9 +321,12 @@
                                     });
                                     break;
                                 case 4:
-                                    var val = $(this).parent().attr("data-val");
+                                    var val = delLink.attr("data-val");
+                                    if (val !== undefined) {
+                                        val = val.replaceAll("'", "\"");
+                                    }
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&value=${val}`, null, function (data) {
-                                        if (data.Code == 1) {
+                                        if (data.Code === 1) {
                                             location.reload();
                                         }
                                         else {
@@ -326,7 +336,7 @@
                                     break;
                                 case 5:
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
-                                        if (data.Code == 1) {
+                                        if (data.Code === 1) {
                                             location.reload();
                                         }
                                         else {
@@ -355,7 +365,7 @@
     //查询
     $("#search_btn").click(function () {
         searchKey = $("#search-key").val();
-        if (searchKey == undefined || searchKey == "") {
+        if (searchKey === undefined || searchKey === "") {
             searchKey = "*";
         }
         loadList();
