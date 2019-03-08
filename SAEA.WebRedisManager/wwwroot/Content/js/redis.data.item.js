@@ -192,7 +192,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replace("'", "\"")}" />
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replaceAll("'", "\"")}" />
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -204,11 +204,11 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
                                                 <input type="hidden" name="type" value="${item_type}" />
                                                 <input type="hidden" name="id" value="${item_id}" />
-                                                <input type="hidden" name="key" value="${key.replace("'", "\"")}" />
+                                                <input type="hidden" name="key" value="${key.replaceAll("'", "\"")}" />
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${key.replace("'", "\"")}" />
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${key.replaceAll("'", "\"")}" />
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -229,7 +229,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea type="text" name="value" autocomplete="off" placeholder="value" rows="6" style="width:99%;resize:none">${val.replace("'", "\"")}</textarea>
+                                                        <textarea type="text" name="value" autocomplete="off" placeholder="value" rows="6" style="width:99%;resize:none">${val.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -250,7 +250,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replace("'", "\"")}" />
+                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replaceAll("'", "\"")}" />
                                                     </div>
                                                 </div>
                                             </form>`;
