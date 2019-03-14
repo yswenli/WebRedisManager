@@ -230,8 +230,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="4.1.2.5" />
-    <PackageReference Include="SAEA.RedisSocket" Version="4.1.2.5" />
+    <PackageReference Include="SAEA.MVC" Version="4.2.4.5" />
+    <PackageReference Include="SAEA.RedisSocket" Version="4.2.4.5" />
   </ItemGroup>
   <ItemGroup>
     <None Update="wwwroot\Content\img\6139455.png">
