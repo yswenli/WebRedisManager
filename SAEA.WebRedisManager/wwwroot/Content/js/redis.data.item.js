@@ -14,7 +14,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
     var item_type = GetRequest().type;
     var item_id = GetRequest().id;
 
-    var item_typeStr = "hash"
+    var item_typeStr = "hash";
+
     switch (item_type * 1) {
         case 2:
             item_typeStr = "hash";

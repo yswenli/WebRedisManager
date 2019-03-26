@@ -77,21 +77,22 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Common, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Common.4.2.5.6\lib\netstandard2.0\SAEA.Common.dll</HintPath>
+    <Reference Include="SAEA.Common, Version=4.3.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Common.4.3.2.5\lib\netstandard2.0\SAEA.Common.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Http, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Http.4.2.5.6\lib\netstandard2.0\SAEA.Http.dll</HintPath>
+    <Reference Include="SAEA.Http, Version=4.3.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Http.4.3.2.5\lib\netstandard2.0\SAEA.Http.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.MVC, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.MVC.4.2.5.6\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
+    <Reference Include="SAEA.MVC, Version=4.3.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.MVC.4.3.2.5\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.RedisSocket, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.RedisSocket.4.2.5.6\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
+    <Reference Include="SAEA.RedisSocket, Version=4.3.2.12, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.RedisSocket.4.3.2.12\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Sockets, Version=4.2.5.6, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Sockets.4.2.5.6\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
+    <Reference Include="SAEA.Sockets, Version=4.3.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Sockets.4.3.2.5\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
@@ -115,6 +116,9 @@
   <ItemGroup>
     <Compile Include="..\SAEA.WebRedisManager\Controllers\ConfigController.cs">
       <Link>Controllers\ConfigController.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Controllers\ConsoleController.cs">
+      <Link>Controllers\ConsoleController.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Controllers\RedisClusterController.cs">
       <Link>Controllers\RedisClusterController.cs</Link>
@@ -178,6 +182,10 @@
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Chart.html">
       <Link>wwwroot\Chart.html</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SAEA.WebRedisManager\wwwroot\Console.html">
+      <Link>wwwroot\Console.html</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\css\bootstrap-theme.css">
       <Link>wwwroot\Content\css\bootstrap-theme.css</Link>
@@ -291,6 +299,10 @@
       <Link>wwwroot\Content\js\redis.chart.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\js\redis.console.js">
+      <Link>wwwroot\Content\js\redis.console.js</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\js\redis.data.item.js">
       <Link>wwwroot\Content\js\redis.data.item.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -360,6 +372,10 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\cs\Microsoft.DependencyValidation.Analyzers.resources.dll" />
+    <Analyzer Include="..\packages\Microsoft.DependencyValidation.Analyzers.0.10.0\analyzers\dotnet\Microsoft.DependencyValidation.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

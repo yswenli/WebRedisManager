@@ -99,7 +99,17 @@ namespace SAEA.Redis.WebManager.Controllers
                     if (isCpu)
                         result = data.used_cpu_user.ToString();
                     else
-                        result = (int.Parse(data.used_memory) / 1024 / 1024).ToString();
+                    {
+                        if (int.TryParse(data.used_memory, out int used_memory))
+                        {
+                            result = (used_memory / 1024 / 1024).ToString();
+                        }
+                        else
+                        {
+                            result = "0";
+                        }
+                    }
+
 
                     return Json(new JsonResult<string>() { Code = 1, Data = result, Message = "OK" });
                 }

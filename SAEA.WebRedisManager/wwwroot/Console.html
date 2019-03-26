@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>命令行</title>
+    <link href="/Content/css/layui.css" rel="stylesheet" />
+    <link href="/Content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15" style="margin-top:15px;">
+            <div class="layui-card">
+                <div class="layui-card-header" style="font-size:18px;">
+                    redis 命令行模式    <a href="http://doc.redisfans.com/" target="_blank" style="color:#0094ff;">更多redis命令</a>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list" style="height:36px;">
+                    <div class="layui-col-sm12 layui-col-md12">
+                        <input type="text" id="cmdTxt" placeholder="请输入redis命令" class="layui-input" style="display:inline-block;width:800px;border-radius: 10px 0 0 10px;" />
+                        <button id="runBtn" class="layui-btn layui-btn-normal" style="margin-left: -4px;margin-top: -1px;border-radius: 0 10px 10px 0px;">Run</button>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card">
+                <div class="layui-card-header" style="font-size:18px;">
+                    <button id="clearBtn" class="layui-btn layui-btn-xs layui-btn-normal">清空</button>
+                </div>
+                <div class="layui-card-body layuiadmin-card-list" style="height:400px;">
+                    <div class="layui-col-sm12 layui-col-md12">
+                        <textarea id="resultTxt" class="layui-textarea" style="height:533px;width:100%;resize:none;overflow:auto;background-color:#000;color:lawngreen;border-radius: 10px;" readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="Content/js/layui.js"></script>
+    <script src="Content/js/requestpamars.js"></script>
+    <script src="Content/js/redis.console.js"></script>
+</body>
+</html>

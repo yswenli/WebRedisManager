@@ -1,11 +1,8 @@
 ﻿using SAEA.Redis.WebManager.Models;
 using SAEA.RedisSocket;
 using SAEA.RedisSocket.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SAEA.Redis.WebManager.Libs
 {
@@ -16,6 +13,9 @@ namespace SAEA.Redis.WebManager.Libs
     {
 
         static Dictionary<string, RedisClient> _redisClients = new Dictionary<string, RedisClient>();
+
+
+        static object _locker = new object();
 
         /// <summary>
         /// 连接到redis
@@ -65,19 +65,23 @@ namespace SAEA.Redis.WebManager.Libs
         }
 
 
+
+
         public static ServerInfo GetServerInfo(string name)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    return redisClient.ServerInfo;
-                }
-            }
-            return null;
+                    var redisClient = _redisClients[name];
 
+                    if (redisClient.IsConnected)
+                    {
+                        return redisClient.ServerInfo;
+                    }
+                }
+                return null;
+            }
         }
 
 
@@ -592,6 +596,33 @@ namespace SAEA.Redis.WebManager.Libs
             }
             return null;
         }
+        #endregion
+
+        #region Console
+
+        public static string Send(string name, string cmd)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    var @params = cmd.Split(new string[] { " " }, System.StringSplitOptions.RemoveEmptyEntries);
+
+                    if (@params.Length > 0)
+                    {
+                        var cmdType = @params[0].ToUpper();
+
+                        cmd = cmdType + cmd.Substring(cmdType.Length);
+
+                        return redisClient.Console(cmd);
+                    }
+                }
+            }
+            return $"操作失败，cmd:{cmd}";
+        }
+
         #endregion
     }
 }

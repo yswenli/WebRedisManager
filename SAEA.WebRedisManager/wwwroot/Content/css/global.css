@@ -1789,3 +1789,19 @@ body .site-demo-nav .layui-nav-item {
     animation-name: site-anim-closeup;
     overflow: hidden;
 }
+body::-webkit-scrollbar, textarea::-webkit-scrollbar {
+    width: 10px;
+    height: 1px;
+}
+
+body::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background-image: radial-gradient(#fff,rgba(0,0,0,0.2));
+}
+
+body::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: #EDEDED;
+}

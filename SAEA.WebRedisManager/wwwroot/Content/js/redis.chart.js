@@ -13,7 +13,7 @@
     function LineChart1(eId, chart_title, redis_info_url, redis_name) {
 
         var dom1 = document.getElementById(eId);
-        if (dom1 == undefined) return;
+        if (dom1 === undefined) return;
         var myChart1 = echarts.init(dom1);
         var app1 = {};
         var option1 = null;
@@ -106,7 +106,7 @@
             $.get(redis_info_url, "name=" + redis_name + "&isCpu=1", function (redis_info_data) {
                 //debugger;
                 var data0 = option1.series[0].data;
-                if (redis_info_data.Code == 2) {
+                if (redis_info_data.Code === 2) {
                     data0.shift();
                     data0.push(-1);
                 }
@@ -134,7 +134,7 @@
 
     function LineChart2(eId, chart_title, redis_info_url, redis_name) {
         var dom2 = document.getElementById(eId);
-        if (dom2 == undefined) return;
+        if (dom2 === undefined) return;
         var myChart2 = echarts.init(dom2);
         var app2 = {};
         var option2 = null;
@@ -227,7 +227,7 @@
             $.get(redis_info_url, "name=" + redis_name + "&isCpu=0", function (redis_info_data) {
                 //debugger;
                 var data0 = option2.series[0].data;
-                if (redis_info_data.Code == 2) {
+                if (redis_info_data.Code === 2) {
                     data0.shift();
                     data0.push(-1);
                 }
@@ -274,6 +274,21 @@
                 layer.msg("操作失败:" + rdata.Message, { time: 2000 });
             }
         });
+    });
+
+    $("#redis_console").click(() => {
+        layer.full(layer.open({
+            title: '命令行模式',
+            type: 2,
+            area: ['580px', '318px'],
+            fixed: true,
+            resize: false,
+            move: false,
+            maxmin: true,
+            scrollbar: true,
+            time: 0,
+            content: [`/console.html?name=${name}`, 'no']
+        }));
     });
 
     //redis cluster
