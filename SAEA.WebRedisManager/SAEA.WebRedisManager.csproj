@@ -231,7 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SAEA.MVC" Version="4.3.2.5" />
-    <PackageReference Include="SAEA.RedisSocket" Version="4.3.2.12" />
+    <PackageReference Include="SAEA.RedisSocket" Version="4.3.2.15" />
   </ItemGroup>
   <ItemGroup>
     <None Update="wwwroot\Console.html">

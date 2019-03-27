@@ -86,8 +86,8 @@
     <Reference Include="SAEA.MVC, Version=4.3.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
       <HintPath>..\packages\SAEA.MVC.4.3.2.5\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.RedisSocket, Version=4.3.2.12, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.RedisSocket.4.3.2.12\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
+    <Reference Include="SAEA.RedisSocket, Version=4.3.2.15, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.RedisSocket.4.3.2.15\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
     </Reference>
     <Reference Include="SAEA.Sockets, Version=4.3.2.5, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
       <HintPath>..\packages\SAEA.Sockets.4.3.2.5\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
