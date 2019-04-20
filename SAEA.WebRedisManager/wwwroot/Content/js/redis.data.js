@@ -38,7 +38,7 @@
         var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
 
-            if (jdata.Code == 1) {
+            if (jdata.Code === 1) {
 
                 $("#redis-data-body").html("");
 
@@ -71,10 +71,10 @@
                     }
 
                     var key = escape($(this).parent().attr("data-key"));
-                    if (type == "string") {
+                    if (type === "string") {
                         var info_url = `/api/redis/get?name=${redis_name}&dbindex=${db_index}&key=${key}`;
                         $.get(info_url, null, function (vdata) {
-                            if (vdata.Code == 1) {
+                            if (vdata.Code === 1) {
                                 layer.alert(vdata.Data);
                             }
                             else {
@@ -108,7 +108,7 @@
                         function (index) {
                             layer.close(index);
                             $.post(`/api/redis/del?name=${redis_name}&dbindex=${db_index}&key=${key}`, null, function (data) {
-                                if (data.Code == 1) {
+                                if (data.Code === 1) {
                                     location.reload();
                                 }
                                 else {
@@ -134,7 +134,7 @@
 
         searchKey = $("#search-key").val();
 
-        if (searchKey == undefined || searchKey == "") {
+        if (searchKey === undefined || searchKey === "") {
             loadList("*");
         }
         else {
@@ -148,7 +148,7 @@
         layer.open({
             title: '添加redis数据',
             type: 2,
-            area: ['580px', '318px'],
+            area: ['580px', '376px'],
             fixed: true,
             resize: false,
             move: false,

@@ -13,8 +13,8 @@
         //默认加载redis烈表
         $.get("/api/config/getlist", null, function (data) {
             layer.close(layerIndex);
-            if (data.Code == 1) {
-                if (data.Data != undefined && data.Data.length > 0) {
+            if (data.Code === 1) {
+                if (data.Data !== undefined && data.Data.length > 0) {
                     for (var i = 0; i < data.Data.length; i++) {
                         var html = `<dd class="layui-nav-itemed">
                                 <a class='redis_link' href="javascript:;" data-name='${data.Data[i].Name}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-template-1"></i> ${data.Data[i].Name}</a>                                
@@ -29,7 +29,7 @@
 
                         var isLoaded = _parent.attr("data-loaded");
 
-                        if (isLoaded != undefined) {
+                        if (isLoaded !== undefined) {
                             _parent.removeAttr("data-loaded");
                             _parent.find("dl").remove();
                             return;
@@ -42,8 +42,8 @@
                         });
                         $.post("/api/redis/connect", "name=" + name, function (dbData) {
                             layer.close(layerIndex);
-                            if (dbData.Code == 1) {
-                                if (dbData.Data != undefined && dbData.Data.length > 0) {
+                            if (dbData.Code === 1) {
+                                if (dbData.Data !== undefined && dbData.Data.length > 0) {
                                     _parent.find("dl").remove();
                                     _parent.append('<dl class="layui-nav-child redis-db"></dl>');
                                     var db_dl = _parent.find("dl");
@@ -86,7 +86,7 @@
         layer.open({
             title: '添加redis服务器',
             type: 2,
-            area: ['580px', '318px'],
+            area: ['580px', '320px'],
             fixed: true,
             resize: false,
             move: false,
@@ -120,7 +120,7 @@
         console.log(json);
         debugger;
         $.post("/api/config/set", json, function (data) {
-            if (data.Code == 1) {
+            if (data.Code === 1) {
                 parent.location.reload();
             }
             else {
@@ -137,7 +137,7 @@
                 layer.close(index);
                 var json = $("#add_form").serialize();
                 $.post("/api/config/rem", json, function (data) {
-                    if (data.Code == 1) {
+                    if (data.Code === 1) {
                         parent.location.reload();
                     }
                     else {
