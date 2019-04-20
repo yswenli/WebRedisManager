@@ -100,7 +100,7 @@ namespace SAEA.Redis.WebManager.Controllers
                         result = data.used_cpu_user.ToString();
                     else
                     {
-                        if (int.TryParse(data.used_memory, out int used_memory))
+                        if (long.TryParse(data.used_memory, out long used_memory))
                         {
                             result = (used_memory / 1024 / 1024).ToString();
                         }
