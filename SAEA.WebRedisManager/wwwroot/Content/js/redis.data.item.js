@@ -50,10 +50,10 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             , shade: 0.01
         });
 
-        var rurl = `/api/redis/GetItems?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${searchKey}&offset=${dataOffset}`;
+        var rurl = `/api/redis/getitems?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${searchKey}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
 
-            if (jdata.Code == 1) {
+            if (jdata.Code === 1) {
 
                 var table_content = "";
 

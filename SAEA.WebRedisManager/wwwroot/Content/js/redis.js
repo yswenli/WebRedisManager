@@ -92,7 +92,7 @@
             move: false,
             maxmin: false,
             time: 0,
-            content: ['/RedisAdd.html', 'no'],
+            content: ['/redisadd.html', 'no'],
             end: function () {
                 location.reload();
             }

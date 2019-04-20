@@ -93,7 +93,7 @@
                             maxmin: true,
                             scrollbar: true,
                             time: 0,
-                            content: [`/ItemsView.html?name=${redis_name}&dbindex=${db_index}&id=${key}&type=${typeid}`, 'no']
+                            content: [`/itemsview.html?name=${redis_name}&dbindex=${db_index}&id=${key}&type=${typeid}`, 'no']
                         }));
                     }
                 });

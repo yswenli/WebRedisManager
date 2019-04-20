@@ -264,7 +264,7 @@
     layer.close(layerIndex);
 
     $("#redis_name").on("click", function () {
-        var redis_info_url = "/api/redis/GetInfoString?name=" + name;
+        var redis_info_url = "/api/redis/getinfostring?name=" + name;
         $.get(redis_info_url, null, function (rdata) {
             debugger;
             if (rdata.Code === 1) {
@@ -293,7 +293,7 @@
 
     //redis cluster
     function getClusterNodes() {
-        var redis_nodes_url = "/api/RedisCluster/GetClusterNodes?name=" + name;
+        var redis_nodes_url = "/api/rediscluster/getclusternodes?name=" + name;
         $.get(redis_nodes_url, null, function (rdata) {
             if (rdata.Code === 1) {
                 var tbody = "";
