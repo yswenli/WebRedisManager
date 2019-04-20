@@ -44,7 +44,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">value</label>
                         <div class="layui-input-block">
-                            <textarea type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3"></textarea>
+                            <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3"></textarea>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -102,7 +102,7 @@
 
                 var item_data_id = $("input[name='id']").val();
                 var item_data_key = $("input[name='key']").val();
-                var item_data_val = $("input[name='value']").val();
+                var item_data_val = $("#redis_value").val();
 
                 var url = `/api/redis/set?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_data_id}&key=${item_data_key}&value=${item_data_val}`;
                 $.post(url, null, function (sdata) {

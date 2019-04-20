@@ -193,7 +193,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replaceAll("'", "\"")}" />
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${val.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -209,7 +209,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${key.replaceAll("'", "\"")}" />
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${key.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -230,7 +230,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea type="text" name="value" autocomplete="off" placeholder="value" rows="6" style="width:99%;resize:none">${val.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${val.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -251,7 +251,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="value" autocomplete="off" placeholder="value" class="layui-input" value="${val.replaceAll("'", "\"")}" />
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${val.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -377,7 +377,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
         layer.open({
             title: '添加redis数据',
             type: 2,
-            area: ['580px', '318px'],
+            area: ['580px', '376px'],
             fixed: true,
             resize: false,
             move: false,
@@ -391,7 +391,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
         layer.open({
             title: '修改id',
             type: 2,
-            area: ['580px', '240px'],
+            area: ['580px', '376px'],
             fixed: true,
             resize: false,
             move: false,
