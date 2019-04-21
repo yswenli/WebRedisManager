@@ -1,6 +1,7 @@
 ﻿using SAEA.Redis.WebManager.Models;
 using SAEA.RedisSocket;
 using SAEA.RedisSocket.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,28 +25,35 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static string Connect(Config config)
         {
-            if (_redisClients.ContainsKey(config.Name))
+            try
             {
-                var redisClient = _redisClients[config.Name];
-
-                if (!redisClient.IsConnected)
+                if (_redisClients.ContainsKey(config.Name))
                 {
-                    return redisClient.Connect();
+                    var redisClient = _redisClients[config.Name];
+
+                    if (!redisClient.IsConnected)
+                    {
+                        return redisClient.Connect();
+                    }
+                    return "ok";
                 }
-                return "ok";
+                else
+                {
+                    var redisClient = new RedisClient(config.IP + ":" + config.Port, config.Password);
+
+                    var result = redisClient.Connect();
+
+                    if (result == "OK")
+                    {
+                        _redisClients.Add(config.Name, redisClient);
+                    }
+                    return result;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var redisClient = new RedisClient(config.IP + ":" + config.Port, config.Password);
-
-                var result = redisClient.Connect();
-
-                if (result == "OK")
-                {
-                    _redisClients.Add(config.Name, redisClient);
-                }
-                return result;
-            }
+                return ex.Message;
+            }            
         }
 
 
@@ -182,7 +190,7 @@ namespace SAEA.Redis.WebManager.Libs
         /// <param name="name"></param>
         /// <param name="dbIndex"></param>
         /// <returns></returns>
-        public static int GetDBSize(string name, int dbIndex)
+        public static long GetDBSize(string name, int dbIndex)
         {
             if (_redisClients.ContainsKey(name))
             {

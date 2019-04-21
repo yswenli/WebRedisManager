@@ -133,7 +133,7 @@ namespace SAEA.Redis.WebManager.Controllers
             {
                 var data = CurrentRedisClient.GetDBSize(name, dbIndex);
 
-                return Json(new JsonResult<int>() { Code = 1, Data = data, Message = "OK" });
+                return Json(new JsonResult<long>() { Code = 1, Data = data, Message = "OK" });
             }
             catch (Exception ex)
             {

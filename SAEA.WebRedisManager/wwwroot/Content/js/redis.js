@@ -68,7 +68,7 @@
                                 }
                             }
                             else {
-                                layer.msg("操作失败:" + data.Message, { time: 2000 });
+                                layer.msg("操作失败:" + dbData.Message, { time: 2000 });
                             }
                         })
                     });
