@@ -25,7 +25,7 @@
                     //点击redis实例
                     $("a.redis_link").on("click", function () {
                         var _parent = $(this).parent();
-                        var name = $(this).attr("data-name");
+                        var name = encodeURI($(this).attr("data-name"));
 
                         var isLoaded = _parent.attr("data-loaded");
 
@@ -62,7 +62,7 @@
                                         var sname = $(this).attr("data-name");
                                         var dbindex = $(this).attr("data-db");
 
-                                        $(".layadmin-iframe").attr("src", "/keys.html?name=" + sname + "&dbindex=" + dbindex);
+                                        $(".layadmin-iframe").attr("src", "/keys.html?name=" + encodeURI(sname) + "&dbindex=" + dbindex);
 
                                     });
                                 }

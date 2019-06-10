@@ -253,7 +253,9 @@
         }
     }
 
-    var name = GetRequest().name;
+    var name = decodeURI(GetRequest().name);
+
+    debugger;
 
     //加载图表
     LineChart1("redis-cpu-div", "cpu使用情况", "/api/redis/getinfo", name);
