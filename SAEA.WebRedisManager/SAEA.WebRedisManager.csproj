@@ -230,8 +230,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="4.5.1.2" />
-    <PackageReference Include="SAEA.RedisSocket" Version="4.5.1.2" />
+    <PackageReference Include="SAEA.MVC" Version="4.5.6.7" />
+    <PackageReference Include="SAEA.RedisSocket" Version="4.5.6.7" />
   </ItemGroup>
   <ItemGroup>
     <None Update="wwwroot\console.html">
