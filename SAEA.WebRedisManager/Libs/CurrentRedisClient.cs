@@ -53,7 +53,7 @@ namespace SAEA.Redis.WebManager.Libs
             catch (Exception ex)
             {
                 return ex.Message;
-            }            
+            }
         }
 
 
@@ -173,16 +173,36 @@ namespace SAEA.Redis.WebManager.Libs
 
             if (keys.Count > 0)
             {
+                var redisClient = _redisClients[name];
+
                 foreach (var k in keys)
                 {
-                    var redisClient = _redisClients[name];
                     var type = redisClient.Type(k);
+
                     result.Add(k, type);
                 }
             }
 
             return result;
         }
+
+        public static long BatchRemove(string name, int dbIndex, string key)
+        {
+            var keys = GetKeys(0, name, dbIndex, key).Distinct().ToArray();
+
+            if (keys.Length > 0)
+            {
+                var redisClient = _redisClients[name];
+
+                foreach (var item in keys)
+                {
+                    redisClient.GetDataBase(dbIndex).Del(item);
+                }
+            }
+
+            return keys.Length;
+        }
+
 
         /// <summary>
         /// 获取db的元素数量

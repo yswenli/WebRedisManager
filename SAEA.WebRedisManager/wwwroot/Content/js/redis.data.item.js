@@ -33,7 +33,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     $.get(`/api/redis/getcount?name=${redis_name}&dbindex=${db_index}&type=${item_type}&ID=${item_id}`, null, function (gdata) {
 
-        $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data}`);
+        $(".keys-header").html(`redis_name:${decodeURIComponent(redis_name)} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data}`);
 
     });
 
@@ -370,6 +370,12 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             searchKey = "*";
         }
         loadList();
+    });
+
+    $("#search-key").keypress(function (e) {
+        if (e.which === 13) {
+            $("#search_btn").click();
+        }
     });
 
     //添加按钮

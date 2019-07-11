@@ -4,11 +4,6 @@
 
     var layerIndex = -1;
 
-    layerIndex = layer.msg('加载中', {
-        icon: 16
-        , shade: 0.01
-    });
-
     var redis_name = GetRequest().name;
 
     var db_index = GetRequest().dbindex;
@@ -18,7 +13,7 @@
     //keys列表
     $.get(`/api/redis/getdbsize?name=${redis_name}&dbindex=${db_index}`, null, function (gdata) {
 
-        $(".keys-header").html(`keys列表 <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${redis_name}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>`);
+        $(".keys-header").html(`keys列表 <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURIComponent(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>`);
     });
 
     //
@@ -32,7 +27,7 @@
 
         layerIndex = layer.msg('加载中', {
             icon: 16
-            , shade: 0.01
+            , shade: 0.3, time: 50000
         });
 
         var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
@@ -140,6 +135,51 @@
         else {
             loadList(searchKey);
         }
+    });
+
+    $("#search-key").keypress(function (e) {
+        if (e.which === 13) {
+            $("#search_btn").click();
+        }
+    });
+
+    $("#batch_remove_btn").click(() => {
+
+        layer.confirm("此操作为按通配符进行批量删除，确定执行此操作么？", {
+            btn: ['确定', '取消'], icon: 3
+        },
+            function (index) {
+
+                searchKey = $("#search-key").val();
+
+                if (searchKey === undefined || searchKey === "") {
+                    layer.msg('输入框内容不能为空！', {
+                        icon: 2, time: 2000
+                    }, function () {
+                        layer.closeAll();
+                    });
+                }
+                else {
+                    layerIndex = layer.msg('正在批量删除中', {
+                        icon: 16
+                        , shade: 0.3
+                        , time: 50000
+                    });
+
+                    var brurl = `/api/redis/batchremove?name=${redis_name}&dbindex=${db_index}&key=${searchKey}`;
+
+                    $.get(brurl, null, function (olen) {
+
+                        layer.msg(`批量删除已完成，已成功删除${olen.Data}条`, {
+                            icon: 1, time: 2000
+                        }, function () {
+                            location.reload();
+                        });
+
+                    });
+                }
+            }
+        );
     });
 
 

@@ -170,6 +170,31 @@ namespace SAEA.Redis.WebManager.Controllers
         }
 
         /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public ActionResult BatchRemove(string name, int dbIndex, string key)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(key))
+                {
+                    var data = CurrentRedisClient.BatchRemove(name, dbIndex, key);
+
+                    return Json(new JsonResult<long>() { Code = 1, Data = data, Message = "OK" });
+                }
+                return Json(new JsonResult<string>() { Code = 3, Message = "未删除任何数据" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
         /// 提交或修改数据
         /// </summary>
         /// <param name="redisData"></param>
