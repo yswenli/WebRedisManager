@@ -104,7 +104,7 @@
                             layer.close(index);
                             $.post(`/api/redis/del?name=${redis_name}&dbindex=${db_index}&key=${key}`, null, function (data) {
                                 if (data.Code === 1) {
-                                    location.reload();
+                                    $("#search_btn").click();
                                 }
                                 else {
                                     layer.msg("操作失败:" + data.Message, { time: 2000 });
@@ -173,7 +173,7 @@
                         layer.msg(`批量删除已完成，已成功删除${olen.Data}条`, {
                             icon: 1, time: 2000
                         }, function () {
-                            location.reload();
+                            $("#search_btn").click();
                         });
 
                     });

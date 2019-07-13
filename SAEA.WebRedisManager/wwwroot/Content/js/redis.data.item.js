@@ -275,14 +275,14 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             var pdata = $($("#edit_form")[1]).serialize();
                             $.post("/api/redis/edit", pdata, function (edata) {
                                 layer.close(index);
-                                location.reload();
+                                $("#search_btn").click();
                             });
                         },
                         btn2: function (index, layero) {
                             var pdata = $($("#edit_form")[1]).serialize();
                             $.post("/api/redis/edit", pdata, function (edata) {
                                 layer.close(index);
-                                location.reload();
+                                $("#search_btn").click();
                             });
                             layer.close(index);
                         }
@@ -304,7 +304,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 case 2:
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
                                         if (data.Code === 1) {
-                                            location.reload();
+                                            $("#search_btn").click();
                                         }
                                         else {
                                             layer.msg("操作失败:" + data.Message, { time: 2000 });
@@ -314,7 +314,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 case 3:
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
                                         if (data.Code === 1) {
-                                            location.reload();
+                                            $("#search_btn").click();
                                         }
                                         else {
                                             layer.msg("操作失败:" + data.Message, { time: 2000 });
@@ -328,7 +328,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     }
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&value=${val}`, null, function (data) {
                                         if (data.Code === 1) {
-                                            location.reload();
+                                            $("#search_btn").click();
                                         }
                                         else {
                                             layer.msg("操作失败:" + data.Message, { time: 2000 });
@@ -338,7 +338,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 case 5:
                                     $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
                                         if (data.Code === 1) {
-                                            location.reload();
+                                            $("#search_btn").click();
                                         }
                                         else {
                                             layer.msg("操作失败:" + data.Message, { time: 2000 });
