@@ -80,7 +80,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         for (var datakey in jdata.Data) {
                             thtml = `<tr>
                                                                 <td>${datakey}</td>
-                                                                <td>${jdata.Data[datakey]}</td>
+                                                                <td style="width:85%;">${jdata.Data[datakey]}</td>
                                                                 <td data-name="${redis_name}" data-dbindex="${db_index}" data-id="${item_id}" data-key="${datakey}" data-val="${jdata.Data[datakey].replaceAll("\"", "\'")}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
@@ -193,7 +193,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${val.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="16">${val.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -209,7 +209,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${key.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="18">${key.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -230,7 +230,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${val.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="16">${val.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -251,7 +251,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3">${val.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="18">${val.replaceAll("'", "\"")}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -262,7 +262,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     layer.open({
                         title: '编辑',
                         type: 1,
-                        area: ['580px', '280px'],
+                        area: ['590px', '520px'],
                         fixed: true,
                         resize: false,
                         move: false,

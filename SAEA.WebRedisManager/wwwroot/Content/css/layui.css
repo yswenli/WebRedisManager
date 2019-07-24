@@ -8,6 +8,7 @@
     right: 0;
     bottom: 0;
 }
+
 .layui-inline, img {
     display: inline-block;
     vertical-align: middle
@@ -2743,6 +2744,15 @@ a {
     margin: 10px 0
 }
 
+    .layui-table tbody tr td {
+        word-wrap: break-word;
+        word-break: break-all;
+        max-width: 1300px;
+        max-height: 96px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
 .layui-flow-more {
     margin: 10px 0;
     text-align: center;
@@ -4439,4 +4449,9 @@ body .layui-util-face {
 .layui-anim-fadeout {
     -webkit-animation-name: layui-fadeout;
     animation-name: layui-fadeout
+}
+
+#edit-form-container {
+    width: 590px;
+    margin-right:10px;
 }
