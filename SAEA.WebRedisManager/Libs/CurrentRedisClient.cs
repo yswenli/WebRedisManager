@@ -2,6 +2,7 @@
 using SAEA.RedisSocket;
 using SAEA.RedisSocket.Model;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -89,6 +90,68 @@ namespace SAEA.Redis.WebManager.Libs
                     }
                 }
                 return null;
+            }
+        }
+
+
+        static ConcurrentDictionary<string, double> _cpuUsed = new ConcurrentDictionary<string, double>();
+
+        public static double CpuUsed(string name)
+        {
+            var data = CurrentRedisClient.GetServerInfo(name);
+
+            var before = 0D;
+
+            var now = double.Parse(data.used_cpu_sys);
+
+            if (_cpuUsed.ContainsKey(name))
+            {
+                before = _cpuUsed[name];
+            }
+
+            _cpuUsed[name] = now;
+
+            return (now - before) * 100;
+        }
+
+
+        public static double GetMaxMem(string name)
+        {
+            lock (_locker)
+            {
+                if (_redisClients.ContainsKey(name))
+                {
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
+                    {
+                        var str = redisClient.Info("Memory");
+
+                        if (string.IsNullOrEmpty(str))
+                        {
+                            return 0D;
+                        }
+
+                        var arr = str.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (arr == null || !arr.Any())
+                        {
+                            return 0D;
+                        }
+
+                        foreach (var item in arr)
+                        {
+                            var sarr = item.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+
+                            if (sarr[0] == "maxmemory")
+                            {
+                                return double.Parse(sarr[1]);
+                            }
+                        }
+
+                    }
+                }
+                return 0D;
             }
         }
 

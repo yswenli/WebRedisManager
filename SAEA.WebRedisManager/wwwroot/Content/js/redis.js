@@ -18,7 +18,7 @@
                     for (var i = 0; i < data.Data.length; i++) {
                         var html = `<dd class="layui-nav-itemed">
                                 <a class='redis_link' href="javascript:;" data-name='${data.Data[i].Name}' title='${JSON.stringify(data.Data[i])}'>&nbsp;&nbsp;<i class="layui-icon layui-icon-template-1"></i> ${data.Data[i].Name}</a>                                
-                            </dd>`
+                            </dd>`;
                         $("dl.redis-dbs").append(html);
                     }
 
@@ -39,6 +39,7 @@
                         layerIndex = layer.msg('加载中', {
                             icon: 16
                             , shade: 0.01
+                            , time: 30000 
                         });
                         $.post("/api/redis/connect", "name=" + name, function (dbData) {
                             layer.close(layerIndex);

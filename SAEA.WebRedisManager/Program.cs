@@ -12,7 +12,7 @@ namespace SAEA.WebRedisManager
             var config = SAEAMvcApplicationConfigBuilder.Read();
 
             config.Port = 16379;
-            config.Count = 1;
+            config.Count = 100;
 
             SAEAMvcApplicationConfigBuilder.Write(config);
 

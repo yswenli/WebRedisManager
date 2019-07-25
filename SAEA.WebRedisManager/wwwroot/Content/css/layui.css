@@ -4451,7 +4451,11 @@ body .layui-util-face {
     animation-name: layui-fadeout
 }
 
-#edit-form-container {
-    width: 590px;
-    margin-right:10px;
+#add_form{
+    display:block;
+    height:312px;
+}
+
+#edit_form {
+    padding-right: 15px;
 }

@@ -13,10 +13,26 @@
     //keys列表
     $.get(`/api/redis/getdbsize?name=${redis_name}&dbindex=${db_index}`, null, function (gdata) {
 
-        $(".keys-header").html(`keys列表 <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURIComponent(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>`);
+        $(".keys-header").html(`keys列表 <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURIComponent(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#0094ff;">命令行模式</a>】`);
+
+        $("#redis_console").click(() => {
+            layer.full(layer.open({
+                title: '命令行模式',
+                type: 2,
+                area: ['580px', '318px'],
+                fixed: true,
+                resize: false,
+                move: false,
+                maxmin: true,
+                scrollbar: true,
+                time: 0,
+                content: [`/console.html?name=${name}`, 'no']
+            }));
+        });
     });
 
     //
+   
 
 
     //加载列表
@@ -65,7 +81,7 @@
                             break;
                     }
 
-                    var key = escape($(this).parent().attr("data-key"));
+                    var key = encodeURI($(this).parent().attr("data-key"));
                     if (type === "string") {
                         var info_url = `/api/redis/get?name=${redis_name}&dbindex=${db_index}&key=${key}`;
                         $.get(info_url, null, function (vdata) {

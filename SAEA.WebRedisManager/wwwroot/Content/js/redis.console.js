@@ -6,7 +6,11 @@
 
     var layerIndex = -1;
 
-
+    $("#cmdTxt").keypress(function (e) {
+        if (e.which === 13) {
+            $("#runBtn").click();
+        }
+    });
 
     $("#runBtn").click(function () {
 

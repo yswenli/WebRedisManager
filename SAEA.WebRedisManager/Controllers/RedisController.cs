@@ -96,20 +96,19 @@ namespace SAEA.Redis.WebManager.Controllers
                 if (data != null)
                 {
                     var result = "0";
+
                     if (isCpu)
-                        result = data.used_cpu_user.ToString();
+                    {
+                        result = CurrentRedisClient.CpuUsed(name).ToString();
+                    }
                     else
                     {
-                        if (long.TryParse(data.used_memory, out long used_memory))
-                        {
-                            result = (used_memory / 1024 / 1024).ToString();
-                        }
-                        else
-                        {
-                            result = "0";
-                        }
-                    }
+                        var totalmem = CurrentRedisClient.GetMaxMem(name);
 
+                        var usemem = double.Parse(data.used_memory);
+
+                        result = (usemem / totalmem * 100).ToString();
+                    }
 
                     return Json(new JsonResult<string>() { Code = 1, Data = result, Message = "OK" });
                 }
@@ -422,6 +421,16 @@ namespace SAEA.Redis.WebManager.Controllers
                 object data = string.Empty;
                 if (redisData != null)
                 {
+                    redisData.Name = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.Name);
+                    redisData.ID = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.ID);
+                    if (!string.IsNullOrEmpty(redisData.Key))
+                    {
+                        redisData.Key = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.Key);
+                    }
+                    if (!string.IsNullOrEmpty(redisData.Value))
+                    {
+                        redisData.Value = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.Value);
+                    }
                     CurrentRedisClient.DelItem(redisData);
                 }
                 result.Code = 1;

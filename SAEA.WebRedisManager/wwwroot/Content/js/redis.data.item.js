@@ -9,10 +9,10 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var layerIndex = -1;
 
-    var redis_name = GetRequest().name;
+    var redis_name = decodeURIComponent(GetRequest().name);
     var db_index = GetRequest().dbindex;
     var item_type = GetRequest().type;
-    var item_id = GetRequest().id;
+    var item_id = decodeURIComponent(GetRequest().id);
 
     var item_typeStr = "hash";
 
@@ -31,10 +31,24 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             break;
     }
 
-    $.get(`/api/redis/getcount?name=${redis_name}&dbindex=${db_index}&type=${item_type}&ID=${item_id}`, null, function (gdata) {
+    $.get(`/api/redis/getcount?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&ID=${encodeURIComponent(item_id)}`, null, function (gdata) {
 
-        $(".keys-header").html(`redis_name:${decodeURIComponent(redis_name)} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data}`);
+        $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data} 【<a href="javascript:;" id="redis_console" style="color:#0094ff;">命令行模式</a>】`);
 
+        $("#redis_console").click(() => {
+            layer.full(layer.open({
+                title: '命令行模式',
+                type: 2,
+                area: ['580px', '318px'],
+                fixed: true,
+                resize: false,
+                move: false,
+                maxmin: true,
+                scrollbar: true,
+                time: 0,
+                content: [`/console.html?name=${name}`, 'no']
+            }));
+        });
     });
 
     var searchKey = "*";
@@ -50,7 +64,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             , shade: 0.01
         });
 
-        var rurl = `/api/redis/getitems?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${searchKey}&offset=${dataOffset}`;
+        var rurl = `/api/redis/getitems?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${searchKey}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
 
             if (jdata.Code === 1) {
@@ -70,7 +84,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             <thead>
                                 <tr>
                                     <th>key</th>
-                                    <th>value</th>
+                                    <th style="width:80%;">value</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -81,7 +95,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             thtml = `<tr>
                                                                 <td>${datakey}</td>
                                                                 <td style="width:85%;">${jdata.Data[datakey]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-id="${item_id}" data-key="${datakey}" data-val="${jdata.Data[datakey].replaceAll("\"", "\'")}">
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-id="${encodeURIComponent(item_id)}" data-key="${encodeURIComponent(datakey)}" data-val="${encodeURIComponent(jdata.Data[datakey])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -97,7 +111,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             <thead>
                                 <tr>
                                     <th>key</th>
-                                    <th>value</th>
+                                    <th style="width:80%;">value</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -108,7 +122,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].replaceAll("\"", "\'")}">
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(jdata.Data[i].Value)}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -123,8 +137,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th>value</th>
                                     <th>score</th>
+                                    <th style="width:80%;">value</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -133,9 +147,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         $("#table-container").html(table_content);
                         for (var i = 0; i < jdata.Data.length; i++) {
                             thtml = `<tr>
-                                                                <td>${jdata.Data[i].Value}</td>
-                                                                <td>${jdata.Data[i].Score}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${jdata.Data[i].Value.replaceAll("\"", "\'")}">
+                                        <td>${jdata.Data[i].Score}</td>
+                                        <td>${jdata.Data[i].Value}</td>
+                                        <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${encodeURIComponent(jdata.Data[i].Value)}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -151,7 +165,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             <thead>
                                 <tr>
                                     <th>key</th>
-                                    <th>value</th>
+                                    <th style="width:80%;">value</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -162,7 +176,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
-                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${i}" data-val="${jdata.Data[i].replaceAll("\"", "\'")}">
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${i}" data-val="${encodeURIComponent(jdata.Data[i].Value)}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -173,7 +187,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 //编辑
                 $(".edit-link").off();
                 $(".edit-link").on("click", function () {
-                    debugger;
                     var key = $(this).parent().attr("data-key");
                     var val = $(this).parent().attr("data-val");
                     var edit_form_html = "";
@@ -187,13 +200,13 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">key</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="key" autocomplete="off" placeholder="key" class="layui-input" value="${key}" readonly="readonly" />
+                                                        <input type="text" name="key" autocomplete="off" placeholder="key" class="layui-input" value="${decodeURIComponent(key)}" readonly="readonly" />
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="16">${val.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="16">${decodeURIComponent(val)}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -205,11 +218,11 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
                                                 <input type="hidden" name="type" value="${item_type}" />
                                                 <input type="hidden" name="id" value="${item_id}" />
-                                                <input type="hidden" name="key" value="${key.replaceAll("'", "\"")}" />
+                                                <input type="hidden" name="key" value="${key}" />
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="18">${key.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="18">${decodeURIComponent(key)}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -224,20 +237,20 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">score</label>
                                                     <div class="layui-input-block">
-                                                        <input type="text" name="key" autocomplete="off" placeholder="score" class="layui-input" value="${key}"/>
+                                                        <input type="text" name="key" autocomplete="off" placeholder="score" class="layui-input" value="${decodeURIComponent(key)}"/>
                                                     </div>
                                                 </div>
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="16">${val.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="16">${decodeURIComponent(val)}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
                             $("#edit-form-container").html(edit_form_html);
-
+                            
                             $.ajaxSettings.async = false;
-                            $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&id=${item_id}&type=${item_type}&key=${key}&value=${val}`, null, null);
+                            $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${key}&value=${val}`, null, null);
                             $.ajaxSettings.async = true;
                             break;
 
@@ -247,11 +260,11 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
                                                 <input type="hidden" name="type" value="${item_type}" />
                                                 <input type="hidden" name="id" value="${item_id}" />
-                                                <input type="hidden" name="key" value="${key}" />
+                                                <input type="hidden" name="key" value="${decodeURIComponent(key)}" />
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
-                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="18">${val.replaceAll("'", "\"")}</textarea>
+                                                        <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="18">${decodeURIComponent(val)}</textarea>
                                                     </div>
                                                 </div>
                                             </form>`;
@@ -302,7 +315,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         function (index) {
                             switch (item_type * 1) {
                                 case 2:
-                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${key}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -312,7 +325,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     });
                                     break;
                                 case 3:
-                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${key}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -324,9 +337,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 case 4:
                                     var val = delLink.attr("data-val");
                                     if (val !== undefined) {
-                                        val = val.replaceAll("'", "\"");
+                                        val = encodeURI(val);
                                     }
-                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&value=${val}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&value=${val}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -336,7 +349,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     });
                                     break;
                                 case 5:
-                                    $.post(`/api/redis/delitem?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&key=${key}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${key}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -389,7 +402,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/additem.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${escape(item_id)}`, 'no']
+            content: [`/additem.html?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}`, 'no']
         });
     });
     //修改按钮
@@ -403,7 +416,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/rename.html?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${escape(item_id)}`, 'no']
+            content: [`/rename.html?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}`, 'no']
         });
     });
 });
