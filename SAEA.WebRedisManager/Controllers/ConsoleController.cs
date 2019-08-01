@@ -24,7 +24,7 @@ namespace SAEA.WebRedisManager.Controllers
     {
         public ActionResult SendCmd(string name, string cmd)
         {
-            if (!string.IsNullOrEmpty(cmd))
+            if (!string.IsNullOrEmpty(name) &&!string.IsNullOrEmpty(cmd))
             {
                 return Content(CurrentRedisClient.Send(name, cmd));
             }

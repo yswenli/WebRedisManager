@@ -46,7 +46,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 maxmin: true,
                 scrollbar: true,
                 time: 0,
-                content: [`/console.html?name=${name}`, 'no']
+                content: [`/console.html?name=${redis_name}`, 'no']
             }));
         });
     });
