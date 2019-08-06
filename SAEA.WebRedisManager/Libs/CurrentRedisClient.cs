@@ -687,6 +687,21 @@ namespace SAEA.Redis.WebManager.Libs
             }
             return null;
         }
+
+        public static bool AddNode(string name,string ip,int port)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.AddNode(ip, port);
+                }
+            }
+            return false;
+        }
+
         #endregion
 
         #region Console

@@ -1,4 +1,5 @@
-﻿using SAEA.Http.Model;
+﻿using SAEA.Common;
+using SAEA.Http.Model;
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
@@ -30,6 +31,33 @@ namespace SAEA.WebRedisManager.Controllers
                 }               
 
                 return Json(new JsonResult<List<ClusterNode>>() { Code = 1, Data = result, Message = "OK" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 添加节点
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="ipPort"></param>
+        /// <returns></returns>
+        public ActionResult AddNode(string name, string ipPort)
+        {
+            try
+            {
+                var result = false;
+
+                if (CurrentRedisClient.IsCluster(name))
+                {
+                    var ipp = ipPort.ToIPPort();
+
+                    result = CurrentRedisClient.AddNode(name, ipp.Item1, ipp.Item2);
+                }
+
+                return Json(new JsonResult<bool>() { Code = 1, Data = result, Message = "OK" });
             }
             catch (Exception ex)
             {

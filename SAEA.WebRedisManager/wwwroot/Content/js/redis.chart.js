@@ -255,8 +255,6 @@
 
     var name = decodeURI(GetRequest().name);
 
-    debugger;
-
     //加载图表
     LineChart1("redis-cpu-div", "cpu使用情况", "/api/redis/getinfo", name);
     LineChart2("redis-mem-div", "memory使用情况", "/api/redis/getinfo", name);
@@ -292,26 +290,4 @@
             content: [`/console.html?name=${name}`, 'no']
         }));
     });
-
-    //redis cluster
-    function getClusterNodes() {
-        var redis_nodes_url = "/api/rediscluster/getclusternodes?name=" + name;
-        $.get(redis_nodes_url, null, function (rdata) {
-            if (rdata.Code === 1) {
-                var tbody = "";
-                if (rdata.Data.length === 0) {
-                    $(".cluster-content").hide();
-                }
-                for (let item of rdata.Data) {
-                    tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>DeleteNode<br/>、Replicate<br/>、MigratingSlots<br/>、ImportingSlots</td></tr>`;
-                }
-                $("#redis-data-body").html(tbody);
-            }
-            else {
-                layer.msg("操作失败:" + rdata.Message, { time: 2000 });
-            }
-        });
-    }
-    getClusterNodes();
-
 });

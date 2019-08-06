@@ -299,6 +299,10 @@
       <Link>wwwroot\Content\js\redis.chart.js</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\js\redis.cluster.js">
+      <Link>wwwroot\Content\js\redis.cluster.js</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\js\redis.console.js">
       <Link>wwwroot\Content\js\redis.console.js</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
