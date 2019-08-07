@@ -659,7 +659,25 @@ namespace SAEA.Redis.WebManager.Libs
 
 
 
+
+
         #region cluster
+
+        public static bool SetCluster(string name, bool isCluster)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    //return redisClient.SetCluster(isCluster);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static List<ClusterNode> GetClusterNodes(string name)
         {
             if (_redisClients.ContainsKey(name))

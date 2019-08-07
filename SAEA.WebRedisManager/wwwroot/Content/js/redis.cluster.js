@@ -27,7 +27,7 @@
     }
     getClusterNodes();
 
-    $("#add_node").click(function () {
+    $("#add_master").click(function () {
         var addNodeHtml = `<form id="add_node_form"><table class="layui-table"></tr><tr><td>IpPort</td><td><input name="IpPort" type="text" autocomplete="off" placeholder="127.0.0.1:6379" class="layui-input" lay-verify="required" value="" /></td></tr></table>
           </form>`;
 
@@ -44,7 +44,7 @@
             btn: ['yes', 'no'],
             yes: function (index, layero) {
 
-                $.post("/api/rediscluster/addnode", $("#add_node_form").serialize(), function (rdata) {
+                $.post("/api/rediscluster/addmaster", $("#add_node_form").serialize(), function (rdata) {
                     if (rdata.Code === 1) {
                         if (rdata.Data === true) {
                             layer.msg("添加成功!");

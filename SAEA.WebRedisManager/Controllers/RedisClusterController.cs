@@ -44,7 +44,7 @@ namespace SAEA.WebRedisManager.Controllers
         /// <param name="name"></param>
         /// <param name="ipPort"></param>
         /// <returns></returns>
-        public ActionResult AddNode(string name, string ipPort)
+        public ActionResult AddMaster(string name, string ipPort)
         {
             try
             {
