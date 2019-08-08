@@ -720,6 +720,48 @@ namespace SAEA.Redis.WebManager.Libs
             return false;
         }
 
+        public static bool AddSlave(string name, string masterID)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.Replicate(masterID);
+                }
+            }
+            return false;
+        }
+
+        public static bool DeleteNode(string name, string nodeID)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.DeleteNode(nodeID);
+                }
+            }
+            return false;
+        }
+
+        public static bool SaveConfig(string name)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    return redisClient.SaveClusterConfig();
+                }
+            }
+            return false;
+        }
+
         #endregion
 
         #region Console

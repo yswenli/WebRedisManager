@@ -16,9 +16,48 @@
                     //$(".cluster-content").hide();
                 }
                 for (let item of rdata.Data) {
-                    tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>DeleteNode<br/>、Replicate<br/>、MigratingSlots<br/>、ImportingSlots</td></tr>`;
+                    tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>
+<a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a><br/>、<a class="save_config" href="javascript:;" data-nodeid="${item.NodeID}" >SaveConfig</a><br/>、MigratingSlots<br/>、ImportingSlots</td></tr>`;
                 }
                 $("#redis-data-body").html(tbody);
+
+
+                //delete node
+                $(".delete_node").click(function () {
+                    var nodeid = $(this).attr("data-nodeid");
+                    $.post(`/api/rediscluster/deletenode?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
+                        if (rdata.Code === 1) {
+                            if (rdata.Data === true) {
+                                layer.msg("操作成功!");
+                            }
+                            else {
+                                layer.msg("操作失败,当前服务器配置不正确!");
+                            }
+                        }
+                        else {
+                            layer.msg("操作失败：" + rdata.Message);
+                        }
+                    });
+                });
+
+                //save config
+                $(".save_config").click(function () {
+                    var nodeid = $(this).attr("data-nodeid");
+                    $.post(`/api/rediscluster/saveconfig?name=${encodeURI(name)}`, null, function (rdata) {
+                        if (rdata.Code === 1) {
+                            if (rdata.Data === true) {
+                                layer.msg("操作成功!");
+                            }
+                            else {
+                                layer.msg("操作失败,当前服务器配置不正确!");
+                            }
+                        }
+                        else {
+                            layer.msg("操作失败：" + rdata.Message);
+                        }
+                    });
+                });
+
             }
             else {
                 layer.msg("操作失败:" + rdata.Message, { time: 2000 });
@@ -47,14 +86,14 @@
                 $.post("/api/rediscluster/addmaster", $("#add_node_form").serialize(), function (rdata) {
                     if (rdata.Code === 1) {
                         if (rdata.Data === true) {
-                            layer.msg("添加成功!");
+                            layer.msg("操作成功!");
                         }
                         else {
-                            layer.msg("添加失败!");
+                            layer.msg("操作失败,当前服务器配置不正确!");
                         }
                     }
                     else {
-                        layer.msg("添加失败：" + rdata.Message);
+                        layer.msg("操作失败：" + rdata.Message);
                     }
                 });
 
@@ -65,4 +104,43 @@
         });
     });
 
+    $("#add_slave").click(function () {
+        var addNodeHtml = `<form id="add_node_form"><table class="layui-table"></tr><tr><td>MasterID</td><td><input name="MasterID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr></table>
+          </form>`;
+
+        layer.open({
+            title: 'add redis cluster slave node',
+            type: 1,
+            area: ['460px', '200px'],
+            fixed: true,
+            resize: false,
+            move: false,
+            maxmin: false,
+            time: 0,
+            content: addNodeHtml,
+            btn: ['yes', 'no'],
+            yes: function (index, layero) {
+
+                $.post(`/api/rediscluster/addslave?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
+                    if (rdata.Code === 1) {
+                        if (rdata.Data === true) {
+                            layer.msg("操作成功!");
+                        }
+                        else {
+                            layer.msg("操作失败,当前服务器配置不正确!");
+                        }
+                    }
+                    else {
+                        layer.msg("操作失败：" + rdata.Message);
+                    }
+                });
+
+            },
+            no: function (index, layero) {
+                layer.close(index);
+            }
+        });
+    });
+
+    
 });

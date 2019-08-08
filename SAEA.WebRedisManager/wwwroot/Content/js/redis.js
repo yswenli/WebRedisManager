@@ -85,7 +85,7 @@
     //添加redis按钮
     $("#add_link").on("click", function () {
         layer.open({
-            title: '添加redis服务器',
+            title: 'Set Redis Server',
             type: 2,
             area: ['580px', '320px'],
             fixed: true,
@@ -103,7 +103,7 @@
     //移除redis按钮
     $("#rem_link").on("click", function () {
         layer.open({
-            title: '删除redis服务器',
+            title: 'Remove Redis Server',
             type: 2,
             area: ['580px', '200px'],
             fixed: true,
@@ -118,8 +118,6 @@
     //提交添加redis表单
     $("#add_btn").on("click", function () {
         var json = $("#add_form").serialize();
-        console.log(json);
-        debugger;
         $.post("/api/config/set", json, function (data) {
             if (data.Code === 1) {
                 parent.location.reload();
@@ -129,9 +127,10 @@
             }
         });
     });
+
     //提交删除redis表单
     $("#rem_btn").on("click", function () {
-        layer.confirm("确认要删除此项redis配置么?", {
+        layer.confirm("确认要删除redis服务器么?", {
             btn: ['确定', '取消']
         },
             function (index) {
