@@ -706,7 +706,7 @@ namespace SAEA.Redis.WebManager.Libs
             return null;
         }
 
-        public static bool AddNode(string name,string ip,int port)
+        public static bool AddNode(string name, string ip, int port)
         {
             if (_redisClients.ContainsKey(name))
             {
@@ -720,15 +720,27 @@ namespace SAEA.Redis.WebManager.Libs
             return false;
         }
 
-        public static bool AddSlave(string name, string masterID)
+
+        public static bool AddSlave(string name, string slaveNodeID, string masterID)
         {
             if (_redisClients.ContainsKey(name))
             {
                 var redisClient = _redisClients[name];
 
-                if (redisClient.IsConnected)
+                var slaveNode = redisClient.ClusterNodes.Where(b => b.NodeID == slaveNodeID).FirstOrDefault();
+
+                if (slaveNode == null) return false;
+
+                if (!_redisClients.ContainsKey(slaveNodeID))
                 {
-                    return redisClient.Replicate(masterID);
+                    var rc = new RedisClient(slaveNode.IPPort, redisClient.RedisConfig.Passwords);
+                    rc.Connect();
+                    _redisClients[slaveNodeID] = rc;
+                }
+
+                if (_redisClients[slaveNodeID].IsConnected)
+                {
+                    return _redisClients[slaveNodeID].Replicate(masterID);
                 }
             }
             return false;

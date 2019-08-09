@@ -64,13 +64,15 @@ namespace SAEA.WebRedisManager.Controllers
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
+
         /// <summary>
         /// 添加从节点
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="slaveNodeID"></param>
         /// <param name="masterID"></param>
         /// <returns></returns>
-        public ActionResult AddSlave(string name, string masterID)
+        public ActionResult AddSlave(string name,string slaveNodeID, string masterID)
         {
             try
             {
@@ -78,7 +80,7 @@ namespace SAEA.WebRedisManager.Controllers
 
                 if (CurrentRedisClient.IsCluster(name))
                 {
-                    result = CurrentRedisClient.AddSlave(name, masterID);
+                    result = CurrentRedisClient.AddSlave(name, slaveNodeID, masterID);
                 }
 
                 return Json(new JsonResult<bool>() { Code = 1, Data = result, Message = "OK" });

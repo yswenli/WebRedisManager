@@ -29,6 +29,7 @@
                         if (rdata.Code === 1) {
                             if (rdata.Data === true) {
                                 layer.msg("操作成功!");
+                                setInterval(() => { location.reload(); }, 2000);
                             }
                             else {
                                 layer.msg("操作失败,当前服务器配置不正确!");
@@ -83,10 +84,11 @@
             btn: ['yes', 'no'],
             yes: function (index, layero) {
 
-                $.post("/api/rediscluster/addmaster", $("#add_node_form").serialize(), function (rdata) {
+                $.post(`/api/rediscluster/addmaster?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
                     if (rdata.Code === 1) {
                         if (rdata.Data === true) {
                             layer.msg("操作成功!");
+                            setInterval(() => { location.reload(); }, 2000);
                         }
                         else {
                             layer.msg("操作失败,当前服务器配置不正确!");
@@ -105,13 +107,14 @@
     });
 
     $("#add_slave").click(function () {
-        var addNodeHtml = `<form id="add_node_form"><table class="layui-table"></tr><tr><td>MasterID</td><td><input name="MasterID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr></table>
+        var addNodeHtml = `<form id="add_node_form"><table class="layui-table">
+<tr><td>SlaveNodeID</td><td><input name="SlaveNodeID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr>
+<tr><td>MasterID</td><td><input name="MasterID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr></table>
           </form>`;
-
         layer.open({
-            title: 'add redis cluster slave node',
+            title: 'Add slave node for redis cluster ',
             type: 1,
-            area: ['460px', '200px'],
+            area: ['460px', '260px'],
             fixed: true,
             resize: false,
             move: false,
@@ -125,6 +128,7 @@
                     if (rdata.Code === 1) {
                         if (rdata.Data === true) {
                             layer.msg("操作成功!");
+                            setInterval(() => { location.reload(); }, 2000);
                         }
                         else {
                             layer.msg("操作失败,当前服务器配置不正确!");
@@ -142,5 +146,5 @@
         });
     });
 
-    
+
 });
