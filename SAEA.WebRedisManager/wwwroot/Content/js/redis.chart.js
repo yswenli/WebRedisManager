@@ -261,12 +261,12 @@
 
     $("#redis_name").html(name);
 
+
     layer.close(layerIndex);
 
     $("#redis_name").on("click", function () {
         var redis_info_url = "/api/redis/getinfostring?name=" + name;
         $.get(redis_info_url, null, function (rdata) {
-            debugger;
             if (rdata.Code === 1) {
                 layer.alert("#当前配置信息：<br/>" + JSON.stringify(rdata.Data.Config) + "<br/>" + rdata.Data.Info, { title: 'Redis服务器信息', maxWidth: '500px' });
             }

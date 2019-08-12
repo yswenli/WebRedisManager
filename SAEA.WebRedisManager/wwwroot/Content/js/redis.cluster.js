@@ -11,32 +11,130 @@
         var redis_nodes_url = "/api/rediscluster/getclusternodes?name=" + name;
         $.get(redis_nodes_url, null, function (rdata) {
             if (rdata.Code === 1) {
+
                 var tbody = "";
+
                 if (rdata.Data.length === 0) {
                     //$(".cluster-content").hide();
+                    //return;
                 }
-                for (let item of rdata.Data) {
-                    tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>
-<a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a><br/>、<a class="save_config" href="javascript:;" data-nodeid="${item.NodeID}" >SaveConfig</a><br/>、MigratingSlots<br/>、ImportingSlots</td></tr>`;
-                }
-                $("#redis-data-body").html(tbody);
 
+                for (let item of rdata.Data) {
+                    if (item.MasterNodeID === null) {
+                        tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>
+<a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a><br/><a class="add_slots" href="javascript:;" data-nodeid="${item.NodeID}">AddSlots</a><br/><a class="delete_slots" href="javascript:;" data-nodeid="${item.NodeID}">DeleteSlots</a><br/><a class="save_config" href="javascript:;" data-nodeid="${item.NodeID}" >SaveConfig</a></td></tr>`;
+                    }
+                    else {
+                        tbody += `<tr style="background-color:#F5F5F5;"><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>
+<a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a><br/></td></tr>`;
+                    }
+                   
+                }
+
+                $("#redis-data-body").html(tbody);
 
                 //delete node
                 $(".delete_node").click(function () {
+
                     var nodeid = $(this).attr("data-nodeid");
-                    $.post(`/api/rediscluster/deletenode?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
-                        if (rdata.Code === 1) {
-                            if (rdata.Data === true) {
-                                layer.msg("操作成功!");
-                                setInterval(() => { location.reload(); }, 2000);
+
+                    layer.confirm('Are you sure you want to do this?', { icon: 3, title: 'WebRedisManager' }, function (index) {                        
+                        $.post(`/api/rediscluster/deletenode?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
+                            if (rdata.Code === 1) {
+                                if (rdata.Data === true) {
+                                    layer.msg("操作成功!");
+                                    setInterval(() => { location.reload(); }, 2000);
+                                }
+                                else {
+                                    layer.msg("操作失败,当前服务器配置不正确!");
+                                }
                             }
                             else {
-                                layer.msg("操作失败,当前服务器配置不正确!");
+                                layer.msg("操作失败：" + rdata.Message);
                             }
+                        });
+                        layer.close(index);
+                    });
+                });
+
+                //add_slots
+                $(".add_slots").click(function () {
+
+                    var html = `<form id="add_slots" onSubmit="return false;"><table class="layui-table"></tr><tr><td>Slots</td><td><input name="SlotStr" type="text" autocomplete="off" placeholder="0-16383" class="layui-input" lay-verify="required" value="" /></td></tr></table></form>`;
+
+                    var nodeid = $(this).attr("data-nodeid");
+
+                    layer.open({
+                        title: 'migrating slots',
+                        type: 1,
+                        area: ['460px', '200px'],
+                        fixed: true,
+                        resize: false,
+                        move: false,
+                        maxmin: false,
+                        time: 0,
+                        content: html,
+                        btn: ['yes', 'no'],
+                        yes: function (index, layero) {
+                            $.post(`/api/rediscluster/addslots?nodeid=${nodeid}&name=${encodeURI(name)}`, $("#add_slots").serialize(), function (rdata) {
+                                if (rdata.Code === 1) {
+                                    if (rdata.Data === true) {
+                                        layer.msg("操作成功!");
+                                        setInterval(() => { location.reload(); }, 2000);
+                                    }
+                                    else {
+                                        layer.msg("操作失败,当前服务器配置不正确!");
+                                    }
+                                }
+                                else {
+                                    layer.msg("操作失败：" + rdata.Message);
+                                }
+                            });
+
+                        },
+                        no: function (index, layero) {
+                            layer.close(index);
                         }
-                        else {
-                            layer.msg("操作失败：" + rdata.Message);
+                    });
+                });
+
+                //delete_slots
+                $(".delete_slots").click(function(){
+                    var html = `<form id="delete_slots" onSubmit="return false;"><table class="layui-table"></tr><tr><td>Slots</td><td><input name="SlotStr" type="text" autocomplete="off" placeholder="0-16383" class="layui-input" lay-verify="required" value="" /></td></tr></table></form>`;
+
+                    var nodeid = $(this).attr("data-nodeid");
+
+                    layer.open({
+                        title: 'delete slots',
+                        type: 1,
+                        area: ['460px', '200px'],
+                        fixed: true,
+                        resize: false,
+                        move: false,
+                        maxmin: false,
+                        time: 0,
+                        content: html,
+                        btn: ['yes', 'no'],
+                        yes: function (index, layero) {
+                            
+                            $.post(`/api/rediscluster/delslots?nodeid=${nodeid}&name=${encodeURI(name)}`, $("#delete_slots").serialize(), function (rdata) {
+                                if (rdata.Code === 1) {
+                                    if (rdata.Data === true) {
+                                        layer.msg("操作成功!");
+                                        setInterval(() => { location.reload(); }, 2000);
+                                    }
+                                    else {
+                                        layer.msg("操作失败,当前服务器配置不正确!");
+                                    }
+                                }
+                                else {
+                                    layer.msg("操作失败：" + rdata.Message);
+                                }
+                            });
+
+                        },
+                        no: function (index, layero) {
+                            layer.close(index);
                         }
                     });
                 });
@@ -44,10 +142,11 @@
                 //save config
                 $(".save_config").click(function () {
                     var nodeid = $(this).attr("data-nodeid");
-                    $.post(`/api/rediscluster/saveconfig?name=${encodeURI(name)}`, null, function (rdata) {
+                    $.post(`/api/rediscluster/saveconfig?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
                         if (rdata.Code === 1) {
                             if (rdata.Data === true) {
                                 layer.msg("操作成功!");
+                                setInterval(() => { location.reload(); }, 2000);
                             }
                             else {
                                 layer.msg("操作失败,当前服务器配置不正确!");
@@ -68,7 +167,7 @@
     getClusterNodes();
 
     $("#add_master").click(function () {
-        var addNodeHtml = `<form id="add_node_form"><table class="layui-table"></tr><tr><td>IpPort</td><td><input name="IpPort" type="text" autocomplete="off" placeholder="127.0.0.1:6379" class="layui-input" lay-verify="required" value="" /></td></tr></table>
+        var addNodeHtml = `<form id="add_node_form" onSubmit="return false;"><table class="layui-table"></tr><tr><td>IpPort</td><td><input name="IpPort" type="text" autocomplete="off" placeholder="127.0.0.1:6379" class="layui-input" lay-verify="required" value="" /></td></tr></table>
           </form>`;
 
         layer.open({
@@ -107,7 +206,7 @@
     });
 
     $("#add_slave").click(function () {
-        var addNodeHtml = `<form id="add_node_form"><table class="layui-table">
+        var addNodeHtml = `<form id="add_node_form" onSubmit="return false;"><table class="layui-table">
 <tr><td>SlaveNodeID</td><td><input name="SlaveNodeID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr>
 <tr><td>MasterID</td><td><input name="MasterID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr></table>
           </form>`;

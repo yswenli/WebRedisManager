@@ -657,25 +657,28 @@ namespace SAEA.Redis.WebManager.Libs
             }
         }
 
-
-
-
-
         #region cluster
 
-        public static bool SetCluster(string name, bool isCluster)
+        static RedisClient GetRedisClientByNodeID(string name, string nodeID)
         {
-            if (_redisClients.ContainsKey(name))
-            {
-                var redisClient = _redisClients[name];
+            var redisClient = _redisClients[name];
 
-                if (redisClient.IsConnected)
-                {
-                    //return redisClient.SetCluster(isCluster);
-                    return true;
-                }
+            var slaveNode = redisClient.ClusterNodes.Where(b => b.NodeID == nodeID).FirstOrDefault();
+
+            if (slaveNode == null) return null;
+
+            if (!_redisClients.ContainsKey(nodeID))
+            {
+                var rc = new RedisClient(slaveNode.IPPort, redisClient.RedisConfig.Passwords);
+                rc.Connect();
+                _redisClients[nodeID] = rc;
             }
-            return false;
+
+            if (_redisClients[nodeID].IsConnected)
+            {
+                return _redisClients[nodeID];
+            }
+            return null;
         }
 
         public static List<ClusterNode> GetClusterNodes(string name)
@@ -760,7 +763,7 @@ namespace SAEA.Redis.WebManager.Libs
             return false;
         }
 
-        public static bool SaveConfig(string name)
+        public static bool MigratingSlots(string name, int[] slots, string nodeID)
         {
             if (_redisClients.ContainsKey(name))
             {
@@ -768,8 +771,60 @@ namespace SAEA.Redis.WebManager.Libs
 
                 if (redisClient.IsConnected)
                 {
-                    return redisClient.SaveClusterConfig();
+                    redisClient.Migratings(slots, nodeID);
+                    return true;
                 }
+            }
+            return false;
+        }
+
+        public static bool ImportingSlots(string name, int[] slots, string nodeID)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    redisClient.Importings(slots, nodeID);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+
+        public static bool AddSlots(string name, string nodeID, int[] slots)
+        {
+            var rc = GetRedisClientByNodeID(name, nodeID);
+
+            if (rc != null)
+            {
+                return rc.AddSlots(slots);
+            }
+
+            return false;
+        }
+
+        public static bool DelSlots(string name, string nodeID, int[] slots)
+        {
+            var rc = GetRedisClientByNodeID(name, nodeID);
+
+            if (rc != null)
+            {
+                return rc.DelSlots(slots);
+            }
+
+            return false;
+        }
+
+        public static bool SaveConfig(string name, string nodeID)
+        {
+            var rc = GetRedisClientByNodeID(name, nodeID);
+
+            if (rc != null)
+            {
+                return rc.SaveClusterConfig();
             }
             return false;
         }
