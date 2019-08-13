@@ -1,10 +1,12 @@
-﻿using SAEA.Redis.WebManager.Models;
+﻿using SAEA.Common;
+using SAEA.Redis.WebManager.Models;
 using SAEA.RedisSocket;
 using SAEA.RedisSocket.Model;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace SAEA.Redis.WebManager.Libs
 {
@@ -67,6 +69,40 @@ namespace SAEA.Redis.WebManager.Libs
                 if (redisClient.IsConnected)
                 {
                     return redisClient.Info();
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static string Clients(string name)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    var list = redisClient.ClientList();
+
+                    if (list != null && list.Any())
+                    {
+                        StringBuilder sb = new StringBuilder();
+
+                        foreach (var item in list)
+                        {
+                            var arr = item.Split("id=", StringSplitOptions.RemoveEmptyEntries);
+
+                            if (arr != null && arr.Any())
+                            {
+                                foreach (var sitem in arr)
+                                {
+                                    sb.Append($"<p class='redisclient_p'>id={sitem}<p>");
+                                }
+                            }
+                        }
+                        return sb.ToString();
+                    }
                 }
             }
 
@@ -656,27 +692,53 @@ namespace SAEA.Redis.WebManager.Libs
                 }
             }
         }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="pwd1"></param>
+        /// <param name="pwd2"></param>
+        /// <returns></returns>
+        public static bool AlterPWD(string name, string pwd)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+                var result = redisClient.SetConfig("requirepass", pwd);
+                if (result)
+                {
+                    var config = ConfigHelper.Get(name);
+                    config.Password = pwd;
+                    ConfigHelper.Set(config);
+                }
+                return result;
+            }
+            return false;
+        }
 
         #region cluster
 
         static RedisClient GetRedisClientByNodeID(string name, string nodeID)
         {
-            var redisClient = _redisClients[name];
-
-            var slaveNode = redisClient.ClusterNodes.Where(b => b.NodeID == nodeID).FirstOrDefault();
-
-            if (slaveNode == null) return null;
-
-            if (!_redisClients.ContainsKey(nodeID))
+            if (_redisClients.ContainsKey(name))
             {
-                var rc = new RedisClient(slaveNode.IPPort, redisClient.RedisConfig.Passwords);
-                rc.Connect();
-                _redisClients[nodeID] = rc;
-            }
+                var redisClient = _redisClients[name];
 
-            if (_redisClients[nodeID].IsConnected)
-            {
-                return _redisClients[nodeID];
+                var slaveNode = redisClient.ClusterNodes.Where(b => b.NodeID == nodeID).FirstOrDefault();
+
+                if (slaveNode == null) return null;
+
+                if (!_redisClients.ContainsKey(nodeID))
+                {
+                    var rc = new RedisClient(slaveNode.IPPort, redisClient.RedisConfig.Passwords);
+                    rc.Connect();
+                    _redisClients[nodeID] = rc;
+                }
+
+                if (_redisClients[nodeID].IsConnected)
+                {
+                    return _redisClients[nodeID];
+                }
             }
             return null;
         }

@@ -264,11 +264,11 @@
 
     layer.close(layerIndex);
 
-    $("#redis_name").on("click", function () {
+    $("#redis_info").on("click", function () {
         var redis_info_url = "/api/redis/getinfostring?name=" + name;
         $.get(redis_info_url, null, function (rdata) {
             if (rdata.Code === 1) {
-                layer.alert("#当前配置信息：<br/>" + JSON.stringify(rdata.Data.Config) + "<br/>" + rdata.Data.Info, { title: 'Redis服务器信息', maxWidth: '500px' });
+                layer.alert("#当前配置信息：<br/>" + JSON.stringify(rdata.Data.Config) + "<br/>" + rdata.Data.Info, { icon: 1, title: 'Redis服务器信息', area: 'auto', maxWidth: '500px', resize: false, scrollbar: true });
             }
             else {
                 layer.msg("操作失败:" + rdata.Message, { time: 2000 });
@@ -289,5 +289,62 @@
             time: 0,
             content: [`/console.html?name=${name}`, 'no']
         }));
+    });
+
+
+    $("#redis_clients").on("click", function () {
+        var redis_info_url = "/api/redis/getclients?name=" + name;
+        $.get(redis_info_url, null, function (rdata) {
+            if (rdata.Code === 1) {
+                layer.alert(rdata.Data, { icon: 1, title: 'Redis当前客户端连接信息', area: '500px', resize: false, scrollbar: true });
+            }
+            else {
+                layer.msg("操作失败:" + rdata.Message, { time: 2000 });
+            }
+        });
+    });
+
+
+    $("#alter_passwords").click(function () {
+
+        var nodeid = $(this).attr("data-nodeid");
+
+        var addNodeHtml = `<form id="add_node_form" onSubmit="return false;"><table class="layui-table">
+<tr><td>Passwords</td><td><input name="pwd1" type="password" autocomplete="off" placeholder="Passwords0!" class="layui-input" lay-verify="required" value="" /></td></tr>
+<tr><td>Passwords Confirm</td><td><input name="pwd2" type="password" autocomplete="off" placeholder="Passwords0!" class="layui-input" lay-verify="required" value="" /></td></tr></table>
+          </form>`;
+        layer.open({
+            title: 'Add slave node for redis cluster ',
+            type: 1,
+            area: ['460px', '260px'],
+            fixed: true,
+            resize: false,
+            move: false,
+            maxmin: false,
+            time: 0,
+            content: addNodeHtml,
+            btn: ['yes', 'no'],
+            yes: function (index, layero) {
+
+                $.post(`/api/redis/alterpwd?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
+                    if (rdata.Code === 1) {
+                        if (rdata.Data === true) {
+                            layer.msg("操作成功!");
+                            setInterval(() => { location.reload(); }, 2000);
+                        }
+                        else {
+                            layer.msg("操作失败,当前服务器配置不正确!");
+                        }
+                    }
+                    else {
+                        layer.msg("操作失败：" + rdata.Message);
+                    }
+                });
+
+            },
+            no: function (index, layero) {
+                layer.close(index);
+            }
+        });
     });
 });

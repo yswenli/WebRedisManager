@@ -22,23 +22,69 @@
                 for (let item of rdata.Data) {
                     if (item.MasterNodeID === null) {
                         tbody += `<tr><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>
-<a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a><br/><a class="add_slots" href="javascript:;" data-nodeid="${item.NodeID}">AddSlots</a><br/><a class="delete_slots" href="javascript:;" data-nodeid="${item.NodeID}">DeleteSlots</a><br/><a class="save_config" href="javascript:;" data-nodeid="${item.NodeID}" >SaveConfig</a></td></tr>`;
+<a class="add_slave" href="javascript:;" data-nodeid="${item.NodeID}" >BeSlaved</a><br/><a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a><br/><a class="add_slots" href="javascript:;" data-nodeid="${item.NodeID}">AddSlots</a><br/><a class="delete_slots" href="javascript:;" data-nodeid="${item.NodeID}">DeleteSlots</a><br/><a class="save_config" href="javascript:;" data-nodeid="${item.NodeID}" >SaveConfig</a></td></tr>`;
                     }
                     else {
                         tbody += `<tr style="background-color:#F5F5F5;"><td>${item.NodeID}</td><td>${item.IPPort}</td><td>${item.Status}</td><td>${item.IsMaster}</td><td>${item.MinSlots}</td><td>${item.MaxSlots}</td><td>${item.MasterNodeID}</td><td>
-<a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a><br/></td></tr>`;
+<a class="add_slave" href="javascript:;" data-nodeid="${item.NodeID}" >BeSlaved</a><br/>
+<a class="delete_node" href="javascript:;" data-nodeid="${item.NodeID}" >DeleteNode</a></td></tr>`;
                     }
-                   
+
                 }
 
                 $("#redis-data-body").html(tbody);
+
+
+                //add slave
+
+                $(".add_slave").click(function () {
+
+                    var nodeid = $(this).attr("data-nodeid");
+
+                    var addNodeHtml = `<form id="add_node_form" onSubmit="return false;"><table class="layui-table">
+<tr><td>MasterID</td><td><input name="MasterID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr></table>
+          </form>`;
+                    layer.open({
+                        title: 'Add slave node for redis cluster ',
+                        type: 1,
+                        area: ['460px', '200px'],
+                        fixed: true,
+                        resize: false,
+                        move: false,
+                        maxmin: false,
+                        time: 0,
+                        content: addNodeHtml,
+                        btn: ['yes', 'no'],
+                        yes: function (index, layero) {
+
+                            $.post(`/api/rediscluster/addslave?name=${encodeURI(name)}&slavenodeid=${nodeid}`, $("#add_node_form").serialize(), function (rdata) {
+                                if (rdata.Code === 1) {
+                                    if (rdata.Data === true) {
+                                        layer.msg("操作成功!");
+                                        setInterval(() => { location.reload(); }, 2000);
+                                    }
+                                    else {
+                                        layer.msg("操作失败,当前服务器配置不正确!");
+                                    }
+                                }
+                                else {
+                                    layer.msg("操作失败：" + rdata.Message);
+                                }
+                            });
+
+                        },
+                        no: function (index, layero) {
+                            layer.close(index);
+                        }
+                    });
+                });
 
                 //delete node
                 $(".delete_node").click(function () {
 
                     var nodeid = $(this).attr("data-nodeid");
 
-                    layer.confirm('Are you sure you want to do this?', { icon: 3, title: 'WebRedisManager' }, function (index) {                        
+                    layer.confirm('Are you sure you want to do this?', { icon: 3, title: 'WebRedisManager' }, function (index) {
                         $.post(`/api/rediscluster/deletenode?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
                             if (rdata.Code === 1) {
                                 if (rdata.Data === true) {
@@ -65,7 +111,7 @@
                     var nodeid = $(this).attr("data-nodeid");
 
                     layer.open({
-                        title: 'migrating slots',
+                        title: 'add slots',
                         type: 1,
                         area: ['460px', '200px'],
                         fixed: true,
@@ -99,7 +145,7 @@
                 });
 
                 //delete_slots
-                $(".delete_slots").click(function(){
+                $(".delete_slots").click(function () {
                     var html = `<form id="delete_slots" onSubmit="return false;"><table class="layui-table"></tr><tr><td>Slots</td><td><input name="SlotStr" type="text" autocomplete="off" placeholder="0-16383" class="layui-input" lay-verify="required" value="" /></td></tr></table></form>`;
 
                     var nodeid = $(this).attr("data-nodeid");
@@ -116,7 +162,7 @@
                         content: html,
                         btn: ['yes', 'no'],
                         yes: function (index, layero) {
-                            
+
                             $.post(`/api/rediscluster/delslots?nodeid=${nodeid}&name=${encodeURI(name)}`, $("#delete_slots").serialize(), function (rdata) {
                                 if (rdata.Code === 1) {
                                     if (rdata.Data === true) {
@@ -166,6 +212,7 @@
     }
     getClusterNodes();
 
+    //add node
     $("#add_master").click(function () {
         var addNodeHtml = `<form id="add_node_form" onSubmit="return false;"><table class="layui-table"></tr><tr><td>IpPort</td><td><input name="IpPort" type="text" autocomplete="off" placeholder="127.0.0.1:6379" class="layui-input" lay-verify="required" value="" /></td></tr></table>
           </form>`;
@@ -204,46 +251,5 @@
             }
         });
     });
-
-    $("#add_slave").click(function () {
-        var addNodeHtml = `<form id="add_node_form" onSubmit="return false;"><table class="layui-table">
-<tr><td>SlaveNodeID</td><td><input name="SlaveNodeID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr>
-<tr><td>MasterID</td><td><input name="MasterID" type="text" autocomplete="off" placeholder="" class="layui-input" lay-verify="required" value="" /></td></tr></table>
-          </form>`;
-        layer.open({
-            title: 'Add slave node for redis cluster ',
-            type: 1,
-            area: ['460px', '260px'],
-            fixed: true,
-            resize: false,
-            move: false,
-            maxmin: false,
-            time: 0,
-            content: addNodeHtml,
-            btn: ['yes', 'no'],
-            yes: function (index, layero) {
-
-                $.post(`/api/rediscluster/addslave?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
-                    if (rdata.Code === 1) {
-                        if (rdata.Data === true) {
-                            layer.msg("操作成功!");
-                            setInterval(() => { location.reload(); }, 2000);
-                        }
-                        else {
-                            layer.msg("操作失败,当前服务器配置不正确!");
-                        }
-                    }
-                    else {
-                        layer.msg("操作失败：" + rdata.Message);
-                    }
-                });
-
-            },
-            no: function (index, layero) {
-                layer.close(index);
-            }
-        });
-    });
-
 
 });

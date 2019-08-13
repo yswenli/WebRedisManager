@@ -6,13 +6,18 @@
     <title>报表</title>
     <link href="/content/css/layui.css" rel="stylesheet" />
     <link href="/content/css/global.css" rel="stylesheet" />
+    <style type="text/css">
+        a {
+            color: #009688;
+        }
+    </style>
 </head>
 <body>
     <div class="layui-fluid">
         <div class="layui-row layui-col-space15" style="margin-top:15px;">
             <div class="layui-card">
                 <div class="layui-card-header" style="font-size:18px;">
-                    redis实例【<a href="javascript:;" id="redis_name" style="color:#0094ff;"></a>】资源使用情况    点击【<a href="javascript:;" id="redis_console" style="color:#0094ff;">这里</a>】进入命令行模式
+                    <span id="redis_name"></span>【<a href="javascript:;" id="redis_info">Redis Info</a>】 【<a href="javascript:;" id="redis_console">Redis Console</a>】【<a href="javascript:;" id="redis_clients">Redis Clients</a>】【<a href="javascript:;" id="alter_passwords">Alter Passwords</a>】
                 </div>
                 <div class="layui-card-body layuiadmin-card-list" style="height:400px;">
                     <div class="layui-col-sm6 layui-col-md6">
@@ -44,7 +49,6 @@
             <div class="layui-card">
                 <div class="layui-card-header" style="font-size:18px;">
                     redis cluster nodes <button class="layui-btn" id="add_master">add cluster node</button>
-                    <button class="layui-btn" id="add_slave">add cluster slave node</button>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list" style="height:650px; overflow:auto">
                     <div class="layui-col-sm12 layui-col-md12">

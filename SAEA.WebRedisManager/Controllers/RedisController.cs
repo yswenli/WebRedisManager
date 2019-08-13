@@ -81,6 +81,25 @@ namespace SAEA.Redis.WebManager.Controllers
             }
         }
 
+
+        public ActionResult GetClients(string name)
+        {
+            try
+            {
+                var data = CurrentRedisClient.Clients(name);
+
+                if (!string.IsNullOrEmpty(data))
+                {
+                    return Json(new JsonResult<object>() { Code = 1, Data = data, Message = "OK" });
+                }
+                return Json(new JsonResult<string>() { Code = 2, Message = "暂未读取数据" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+        }
+
         /// <summary>
         /// 获取信息
         /// </summary>
@@ -435,6 +454,35 @@ namespace SAEA.Redis.WebManager.Controllers
                 }
                 result.Code = 1;
                 result.Message = "ok";
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+            return Json(result);
+        }
+
+        [HttpPost]
+        public ActionResult AlterPWD(string name, string pwd1, string pwd2)
+        {
+            var result = new JsonResult<bool>() { Code = 3, Message = "操作失败" };
+            try
+            {
+                object data = string.Empty;
+                if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(pwd1) && !string.IsNullOrEmpty(pwd2) && pwd1 == pwd2)
+                {
+                    if (CurrentRedisClient.AlterPWD(name, pwd2))
+                    {
+                        result.Code = 1;
+                        result.Data = true;
+                        result.Message = "ok";
+                    }
+                }
+                else
+                {
+                    result.Code = 2;
+                    result.Message = "密码不一致！";
+                }
             }
             catch (Exception ex)
             {

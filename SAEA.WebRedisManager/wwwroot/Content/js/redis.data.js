@@ -13,7 +13,7 @@
     //keys列表
     $.get(`/api/redis/getdbsize?name=${redis_name}&dbindex=${db_index}`, null, function (gdata) {
 
-        $(".keys-header").html(`【<a style="color:#0094ff;" href="/chart.html?name=${redis_name}">返回</a>】 keys列表 <i class="layui-icon layui-icon-refresh" style="color:#0094ff;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURIComponent(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#0094ff;">命令行模式</a>】`);
+        $(".keys-header").html(`【<a style="color:#009688;" href="/chart.html?name=${redis_name}">返回</a>】 keys列表 <i class="layui-icon layui-icon-refresh" style="color:#009688;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURIComponent(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
 
         $("#redis_console").click(() => {
             layer.full(layer.open({

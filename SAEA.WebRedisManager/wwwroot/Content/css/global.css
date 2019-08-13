@@ -1,15 +1,8 @@
-﻿/**
-
- layui瀹樼綉
- By 璐ゅ績
-
-*/
-
+﻿
 h1, h2, h3 {
     font-size: 14px;
 }
 
-/* 甯冨眬 */
 .site-inline {
     font-size: 0;
 }
@@ -34,7 +27,6 @@ h1, h2, h3 {
     padding: 20px 0 10px 20px;
 }
 
-/* 澶撮儴 */
 .header {
     height: 59px;
     border-bottom: 1px solid #404553;
@@ -613,7 +605,6 @@ body .layui-layout-admin .footer-demo {
             text-align: center;
         }
 
-/* 璧炲姪鍟� */
 .site-sponsor-home {
     margin-top: 40px;
     text-align: center;
@@ -1756,7 +1747,7 @@ body .site-demo-nav .layui-nav-item {
 
 
 
-@-webkit-keyframes site-anim-closeup { /* 鐗瑰啓 */
+@-webkit-keyframes site-anim-closeup {
     from {
         -webkit-transform: translate3d(0, 0, 0) scale(1);
         opacity: 1;
@@ -1789,19 +1780,120 @@ body .site-demo-nav .layui-nav-item {
     animation-name: site-anim-closeup;
     overflow: hidden;
 }
-body::-webkit-scrollbar, textarea::-webkit-scrollbar {
+
+body::-webkit-scrollbar, textarea::-webkit-scrollbar, div::-webkit-scrollbar {
     width: 10px;
     height: 1px;
 }
 
-body::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb {
+body::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-    background-image: radial-gradient(#fff,rgba(0,0,0,0.2));
+    box-shadow: inset 0 0 5px rgba(0,77,70,0.2);
+    background-image: radial-gradient(#00FFE8,rgba(0,77,70,0.2));
 }
 
-body::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track{
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+body::-webkit-scrollbar-track, textarea::-webkit-scrollbar-track, div::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgba(0,77,70,0.2);
     border-radius: 10px;
-    background: #EDEDED;
+    background: #393D49;
+}
+
+
+#markImg {
+    display: inline-block;
+    width: 30px;
+    border-radius: 15px;
+    border: solid 1px;
+    position: relative;
+    top: -2px;
+}
+
+    #markImg img {
+        width: 38px;
+        border: solid 2px #4bacff;
+        border-radius: 19px;
+        position: relative;
+        top: -4px;
+    }
+
+@-webkit-keyframes rotation {
+
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+#markImg:hover {
+    -webkit-transform: rotate(360deg);
+    animation: rotation 1s linear infinite;
+    -moz-animation: rotation 1s linear infinite;
+    -webkit-animation: rotation 1s linear infinite;
+    -o-animation: rotation 1s linear infinite;
+}
+
+.redisclient_p {
+    margin-bottom: 20px;
+}
+
+    .redisclient_p:hover {
+        background-color: #c8c8c8;
+        animation: bg-color 0.5s 1;
+        -webkit-animation: bg-color 0.5s 1;
+    }
+@-webkit-keyframes bg-color {
+
+    0% {
+        background-color: #fff;
+    }
+
+    20% {
+        background-color: #f7f6f6;
+    }
+
+    40% {
+        background-color: #ebeaea;
+    }
+
+    60% {
+        background-color: #e1e0e0;
+    }
+
+    80% {
+        background-color: #d3d2d2;
+    }
+
+    100% {
+        background-color: #c8c8c8;
+    }
+}
+
+@keyframes bg-color {
+
+    0% {
+        background-color: #fff;
+    }
+
+    20% {
+        background-color: #f7f6f6;
+    }
+
+    40% {
+        background-color: #ebeaea;
+    }
+
+    60% {
+        background-color: #e1e0e0;
+    }
+
+    80% {
+        background-color: #d3d2d2;
+    }
+
+    100% {
+        background-color: #c8c8c8;
+    }
 }

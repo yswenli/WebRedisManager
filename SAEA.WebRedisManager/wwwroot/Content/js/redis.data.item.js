@@ -33,7 +33,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     $.get(`/api/redis/getcount?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&ID=${encodeURIComponent(item_id)}`, null, function (gdata) {
 
-        $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data} 【<a href="javascript:;" id="redis_console" style="color:#0094ff;">命令行模式</a>】`);
+        $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data} 【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
 
         $("#redis_console").click(() => {
             layer.full(layer.open({
