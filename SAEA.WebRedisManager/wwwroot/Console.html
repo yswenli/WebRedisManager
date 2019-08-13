@@ -9,25 +9,22 @@
 </head>
 <body>
     <div class="layui-fluid">
-        <div class="layui-row layui-col-space15" style="margin-top:15px;">
-            <div class="layui-card">
+        <div class="layui-row layui-col-space15" style="margin-top:-8px;">
+            <div class="layui-card" style="padding-bottom: 0px;margin-bottom:0px;">
                 <div class="layui-card-header" style="font-size:18px;">
-                    redis 命令行模式    <a href="http://doc.redisfans.com/" target="_blank" style="color:#0094ff;">更多redis命令</a>
+                    Redis 命令行模式    <a href="http://doc.redisfans.com/" target="_blank" style="color:#009688;">更多redis命令</a>
                 </div>
                 <div class="layui-card-body layuiadmin-card-list" style="height:36px;">
                     <div class="layui-col-sm12 layui-col-md12">
-                        <input type="text" id="cmdTxt" placeholder="请输入redis命令" class="layui-input" style="display:inline-block;width:800px;border-radius: 10px 0 0 10px;" />
-                        <button id="runBtn" class="layui-btn layui-btn-normal" style="margin-left: -4px;margin-top: -1px;border-radius: 0 10px 10px 0px;">Run</button>
+                        <input type="text" id="cmdTxt" placeholder="请输入redis命令" class="layui-input" style="display:inline-block;width:800px;border-radius: 10px 0 0 10px;font-family:'Microsoft YaHei'" />
+                        <button id="runBtn" class="layui-btn" style="margin-left: -4px;margin-top: -2px;border-radius: 0 10px 10px 0px;">Run</button><button id="clearBtn" class="layui-btn">清空</button>
                     </div>
                 </div>
-            </div>
-            <div class="layui-card">
-                <div class="layui-card-header" style="font-size:18px;">
-                    <button id="clearBtn" class="layui-btn layui-btn-xs layui-btn-normal">清空</button>
-                </div>
-                <div class="layui-card-body layuiadmin-card-list" style="height:400px;">
+                </div>            
+            <div class="layui-card" style="padding-top:0px;">
+                <div class="layui-card-body layuiadmin-card-list">
                     <div class="layui-col-sm12 layui-col-md12">
-                        <textarea id="resultTxt" class="layui-textarea" style="height:533px;width:100%;resize:none;overflow:auto;background-color:#000;color:lawngreen;border-radius: 10px;" readonly="readonly"></textarea>
+                        <textarea id="resultTxt" class="layui-textarea" style="height:620px;width:100%;resize:none;overflow:auto;background-color:#000;color:#03B9A7;border-radius: 10px;font-family:'Microsoft YaHei'" readonly="readonly"></textarea>
                     </div>
                 </div>
             </div>
