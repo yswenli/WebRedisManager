@@ -440,8 +440,8 @@ namespace SAEA.Redis.WebManager.Controllers
                 object data = string.Empty;
                 if (redisData != null)
                 {
-                    redisData.Name = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.Name);
                     redisData.ID = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.ID);
+
                     if (!string.IsNullOrEmpty(redisData.Key))
                     {
                         redisData.Key = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.Key);

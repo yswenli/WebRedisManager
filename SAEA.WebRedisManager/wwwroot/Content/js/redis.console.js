@@ -2,7 +2,7 @@
 
     var layer = layui.layer, form = layui.form, $ = layui.$;
 
-    var redis_name = encodeURIComponent(GetRequest().name);
+    var redis_name = encodeURI(GetRequest().name);
 
     var layerIndex = -1;
 
@@ -18,7 +18,7 @@
 
         if (cmd !== undefined && cmd !== "") {
 
-            cmd = encodeURIComponent(cmd);
+            cmd = encodeURI(cmd);
 
             layerIndex = layer.msg('加载中', {
                 icon: 16
@@ -26,7 +26,7 @@
             });            
 
             $.post("/console/sendcmd", `name=${redis_name}&cmd=${cmd}`, (result) => {
-                var v = `输入：\r\n ${decodeURIComponent(cmd)
+                var v = `输入：\r\n ${decodeURI(cmd)
                     }\r\n\r\n输出：\r\n${result}\r\n\r\n${$("#resultTxt").val()}`;
                 $("#resultTxt").val(v);
                 $("#resultTxt")[0].scrollTop = 0;

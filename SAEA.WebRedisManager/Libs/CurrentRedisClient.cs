@@ -648,7 +648,6 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).HSet(redisData.ID, redisData.Key, redisData.Value);
                             break;
                         case 3:
-                            redisClient.GetDataBase(redisData.DBIndex).SRemove(redisData.ID, redisData.Key);
                             redisClient.GetDataBase(redisData.DBIndex).SAdd(redisData.ID, redisData.Value);
                             break;
                         case 4:
@@ -679,7 +678,7 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).HDel(redisData.ID, redisData.Key);
                             break;
                         case 3:
-                            redisClient.GetDataBase(redisData.DBIndex).SRemove(redisData.ID, redisData.Key);
+                            redisClient.GetDataBase(redisData.DBIndex).SRemove(redisData.Key, redisData.Value);
                             break;
                         case 4:
                             redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID, new string[] { redisData.Value });
@@ -911,7 +910,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                         cmd = cmdType + cmd.Substring(cmdType.Length);
 
-                        return redisClient.Console(cmd);
+                        return redisClient.Console(cmd).Data;
                     }
                 }
             }
