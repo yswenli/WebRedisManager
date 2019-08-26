@@ -16,6 +16,9 @@ QQ群：788260487
 
 ## 运行截图
 
-<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager.png?raw=true" alt="WebRedisManager"/><br/>
 <img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager1.png?raw=true" alt="WebRedisManager"/><br/>
 <img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager2.png?raw=true" alt="WebRedisManager"/><br/>
+<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager3.png?raw=true" alt="WebRedisManager"/><br/>
+<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager4.png?raw=true" alt="WebRedisManager"/><br/>
+<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager5.png?raw=true" alt="WebRedisManager"/><br/>
+<img src="https://github.com/yswenli/WebRedisManager/blob/master/WebRedisManager6.png?raw=true" alt="WebRedisManager"/><br/>
