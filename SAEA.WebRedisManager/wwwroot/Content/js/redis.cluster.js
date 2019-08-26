@@ -15,8 +15,8 @@
                 var tbody = "";
 
                 if (rdata.Data.length === 0) {
-                    //$(".cluster-content").hide();
-                    //return;
+                    $(".cluster-content").hide();
+                    return;
                 }
 
                 for (let item of rdata.Data) {
