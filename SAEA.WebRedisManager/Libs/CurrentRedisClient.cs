@@ -443,7 +443,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                 if (redisClient.IsConnected)
                 {
-                    return redisClient.GetDataBase(dbIndex).ZCount(zid, int.MinValue, int.MaxValue);
+                    return redisClient.GetDataBase(dbIndex).ZLen(zid);
                 }
             }
             return 0;
