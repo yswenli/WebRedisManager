@@ -24,29 +24,35 @@ namespace SAEA.Redis.WebManager.Controllers
         {
             try
             {
-                var config = ConfigHelper.Get(name);
-
-                var cnnResult = CurrentRedisClient.Connect(config);
-
-                if (string.Compare(cnnResult, "OK", true) != 0)
+                if (!string.IsNullOrEmpty(name))
                 {
-                    throw new Exception(cnnResult);
+                    name = SAEA.Http.HttpUtility.UrlDecode(name);
+
+                    var config = ConfigHelper.Get(name);
+
+                    var cnnResult = CurrentRedisClient.Connect(config);
+
+                    if (string.Compare(cnnResult, "OK", true) != 0)
+                    {
+                        throw new Exception(cnnResult);
+                    }
+
+                    var isCluster = CurrentRedisClient.IsCluster(config.Name);
+
+                    var data = new List<int>();
+
+                    if (!isCluster)
+                    {
+                        data = CurrentRedisClient.GetDBs(name);
+                    }
+                    else
+                    {
+                        data.Add(0);
+                    }
+                    return Json(new JsonResult<List<int>>() { Code = 1, Data = data, Message = "OK" });
                 }
 
-                var isCluster = CurrentRedisClient.IsCluster(config.Name);
-
-                var data = new List<int>();
-
-                if (!isCluster)
-                {
-                    data = CurrentRedisClient.GetDBs(name);
-                }
-                else
-                {
-                    data.Add(0);
-                }
-
-                return Json(new JsonResult<List<int>>() { Code = 1, Data = data, Message = "OK" });
+                return Json(new JsonResult<List<int>>() { Code = 3, Data = null, Message = "找不到配置~" });
             }
             catch (Exception ex)
             {
@@ -440,15 +446,15 @@ namespace SAEA.Redis.WebManager.Controllers
                 object data = string.Empty;
                 if (redisData != null)
                 {
-                    redisData.ID = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.ID);
+                    redisData.ID = SAEA.Http.HttpUtility.UrlDecode(redisData.ID);
 
                     if (!string.IsNullOrEmpty(redisData.Key))
                     {
-                        redisData.Key = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.Key);
+                        redisData.Key = SAEA.Http.HttpUtility.UrlDecode(redisData.Key);
                     }
                     if (!string.IsNullOrEmpty(redisData.Value))
                     {
-                        redisData.Value = SAEA.Http.Base.HttpUtility.UrlDecode(redisData.Value);
+                        redisData.Value = SAEA.Http.HttpUtility.UrlDecode(redisData.Value);
                     }
                     CurrentRedisClient.DelItem(redisData);
                 }

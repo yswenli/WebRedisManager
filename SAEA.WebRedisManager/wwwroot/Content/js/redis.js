@@ -39,9 +39,9 @@
                         layerIndex = layer.msg('加载中', {
                             icon: 16
                             , shade: 0.01
-                            , time: 30000 
+                            , time: 30000
                         });
-                        $.post("/api/redis/connect", "name=" + name, function (dbData) {
+                        $.post("/api/redis/connect?name=" + encodeURI(name), null, function (dbData) {
                             layer.close(layerIndex);
                             if (dbData.Code === 1) {
                                 if (dbData.Data !== undefined && dbData.Data.length > 0) {
