@@ -4451,11 +4451,23 @@ body .layui-util-face {
     animation-name: layui-fadeout
 }
 
-#add_form{
-    display:block;
-    height:312px;
+#add_form {
+    display: block;
+    height: 312px;
 }
 
 #edit_form {
     padding-right: 15px;
+}
+
+
+.search-list {
+    margin-top: 3px;
+}
+
+.search-list-input {
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+    height: 30px;
+    font-size: 14px;
 }

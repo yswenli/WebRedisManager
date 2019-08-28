@@ -21,6 +21,27 @@
                             </dd>`;
                         $("dl.redis-dbs").append(html);
                     }
+                    //搜索
+
+                    $("#search_list").keyup(function () {
+
+                        var searchText = $(this).val();
+
+                        if (searchText === "") {
+                            $(".redis_link").each(function (index) {
+                                $(this).parent().show();
+                            });
+                        }
+
+                        $(".redis_link").each(function (index) {
+                            if ($(this).text().indexOf(searchText) === -1) {
+                                $(this).parent().hide();
+                            }
+                            else {
+                                $(this).parent().show();
+                            }
+                        });
+                    });
 
                     //点击redis实例
                     $("a.redis_link").on("click", function () {
