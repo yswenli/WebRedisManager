@@ -1,4 +1,5 @@
-﻿using SAEA.Http.Model;
+﻿using SAEA.Common;
+using SAEA.Http.Model;
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
@@ -56,6 +57,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.Connect name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
@@ -83,6 +85,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.GetInfoString name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
@@ -102,6 +105,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.GetClients name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
@@ -141,6 +145,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.GetInfo name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
@@ -161,6 +166,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.GetDBSize name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
@@ -189,6 +195,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.GetKeyTypes name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
@@ -214,6 +221,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.BatchRemove name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
         }
@@ -258,6 +266,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.Set redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -297,6 +306,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.GetCount redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -322,6 +332,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.Del redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -348,6 +359,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.Get redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -375,6 +387,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.GetItems redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -402,6 +415,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.Rename redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -427,6 +441,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.Edit redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -463,6 +478,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.DelItem redisData:{SerializeHelper.Serialize(redisData)}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
@@ -492,6 +508,7 @@ namespace SAEA.Redis.WebManager.Controllers
             }
             catch (Exception ex)
             {
+                LogHelper.Error($"RedisController.AlterPWD name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
             }
             return Json(result);
