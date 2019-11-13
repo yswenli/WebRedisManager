@@ -138,8 +138,13 @@
 
     //提交添加redis表单
     $("#add_btn").on("click", function () {
-        var json = $("#add_form").serialize();
-        $.post("/api/config/set", json, function (data) {
+        //var str = $("#add_form").serialize(); //layui jquery bug
+        var name = encodeURIComponent($("input[name='name']").val());
+        var ip = encodeURIComponent($("input[name='ip']").val());
+        var port = encodeURIComponent($("input[name='port']").val());
+        var password = encodeURIComponent($("input[name='password']").val());
+        var str = `name=${name}&ip=${ip}&port=${port}&password=${password}`;
+        $.post("/api/config/set", str, function (data) {
             if (data.Code === 1) {
                 parent.location.reload();
             }
