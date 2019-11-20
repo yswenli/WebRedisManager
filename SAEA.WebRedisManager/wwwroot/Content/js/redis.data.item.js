@@ -271,8 +271,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             break;
                     }
 
-
-
                     layer.open({
                         title: '编辑',
                         type: 1,
@@ -291,20 +289,25 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             $.ajaxSettings.async = true;
 
                             var fid = $("input[name='id']").val();
-                            var fkey = $("input[name='key']").val();
-                            var fval = $("textarea[name='value']").val();
-
                             if (fid !== undefined && fid !== "") {
                                 fid = encodeURIComponent(fid);
                             }
+
+                            var fkey = $("input[name='key']").val();
                             if (fkey !== undefined && fkey !== "") {
                                 fkey = encodeURIComponent(fkey);
                             }
+
+                            var fval = $("textarea[name='value']").val();
                             if (fval !== undefined && fval !== "") {
                                 fval = encodeURIComponent(fval);
                             }
 
-                            var pdata = `name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(fid)}&key=${fkey}&value=${fval}`;
+                            var pdata = `name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${fid}&key=${fkey}&value=${fval}`;
+
+
+                            console.log(fval);
+                            debugger;
 
                             $.post("/api/redis/edit", pdata, function (edata) {
                                 layer.close(index);
