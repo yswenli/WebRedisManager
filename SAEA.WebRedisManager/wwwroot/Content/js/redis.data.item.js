@@ -9,10 +9,10 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var layerIndex = -1;
 
-    var redis_name = decodeURI(GetRequest().name);
+    var redis_name = decodeURIComponent(GetRequest().name);
     var db_index = GetRequest().dbindex;
     var item_type = GetRequest().type;
-    var item_id = decodeURI(GetRequest().id);
+    var item_id = decodeURIComponent(GetRequest().id);
 
     var item_typeStr = "hash";
 
@@ -65,6 +65,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
         });
 
         var rurl = `/api/redis/getitems?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${searchKey}&offset=${dataOffset}`;
+
         $.get(rurl, null, function (jdata) {
 
             if (jdata.Code === 1) {
@@ -93,9 +94,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         $("#table-container").html(table_content);
                         for (var datakey in jdata.Data) {
                             thtml = `<tr>
-                                                                <td>${jdata.Data[datakey]}</td>
-                                                                <td style="width:85%;">${datakey}</td>
-                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-id="${encodeURIComponent(item_id)}" data-key="${encodeURIComponent(jdata.Data[datakey])}" data-val="${encodeURIComponent(datakey)}">
+                                                                <td>${datakey}</td>
+                                                                <td style="width:85%;">${jdata.Data[datakey]}</td>
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-id="${encodeURIComponent(item_id)}" data-key="${encodeURIComponent(datakey)}" data-val="${encodeURIComponent(jdata.Data[datakey])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -190,8 +191,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 //编辑
                 $(".edit-link").off();
                 $(".edit-link").on("click", function () {
-                    var key = decodeURI($(this).parent().attr("data-key"));
-                    var val = decodeURI($(this).parent().attr("data-val"));
+                    var key = decodeURIComponent($(this).parent().attr("data-key"));
+                    var val = decodeURIComponent($(this).parent().attr("data-val"));
                     var edit_form_html = "";
                     switch (item_type * 1) {
                         case 2:
@@ -230,10 +231,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 </div>
                                             </form>`;
                             $("#edit-form-container").html(edit_form_html);
-
-                            $.ajaxSettings.async = false;
-                            $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${key}&value=${val}`, null, null);
-                            $.ajaxSettings.async = true;
                             break;
                         case 4:
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
@@ -255,12 +252,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                 </div>
                                             </form>`;
                             $("#edit-form-container").html(edit_form_html);
-
-                            $.ajaxSettings.async = false;
-                            $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${key}&value=${val}`, null, null);
-                            $.ajaxSettings.async = true;
                             break;
-
                         case 5:
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
                                                 <input type="hidden" name="name" value="${redis_name}" />
@@ -279,6 +271,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             break;
                     }
 
+
+
                     layer.open({
                         title: '编辑',
                         type: 1,
@@ -291,20 +285,33 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         content: $("#edit-form-container").html(),
                         btn: ['确定', '关闭'],
                         yes: function (index, layero) {
-                            var pdata = $($("#edit_form")[1]).serialize();
-                            pdata = pdata.replaceAll("\\+", "%20");
+
+                            $.ajaxSettings.async = false;
+                            $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${encodeURIComponent(key)}&value=${encodeURIComponent(val)}`, null, null);
+                            $.ajaxSettings.async = true;
+
+                            var fid = $("input[name='id']").val();
+                            var fkey = $("input[name='key']").val();
+                            var fval = $("textarea[name='value']").val();
+
+                            if (fid !== undefined && fid !== "") {
+                                fid = encodeURIComponent(fid);
+                            }
+                            if (fkey !== undefined && fkey !== "") {
+                                fkey = encodeURIComponent(fkey);
+                            }
+                            if (fval !== undefined && fval !== "") {
+                                fval = encodeURIComponent(fval);
+                            }
+
+                            var pdata = `name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(fid)}&key=${fkey}&value=${fval}`;
+
                             $.post("/api/redis/edit", pdata, function (edata) {
                                 layer.close(index);
                                 $("#search_btn").click();
                             });
                         },
                         btn2: function (index, layero) {
-                            var pdata = $($("#edit_form")[1]).serialize();
-                            pdata = pdata.replaceAll("\\+", "%20");
-                            $.post("/api/redis/edit", pdata, function (edata) {
-                                layer.close(index);
-                                $("#search_btn").click();
-                            });
                             layer.close(index);
                         }
                     });
