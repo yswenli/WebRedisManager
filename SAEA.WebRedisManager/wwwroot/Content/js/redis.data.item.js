@@ -31,7 +31,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             break;
     }
 
-    $.get(`/api/redis/getcount?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&ID=${encodeURI(item_id)}`, null, function (gdata) {
+    $.get(`/api/redis/getcount?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&ID=${encodeURIComponent(item_id)}`, null, function (gdata) {
 
         $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data} 【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
 
@@ -64,7 +64,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             , shade: 0.01
         });
 
-        var rurl = `/api/redis/getitems?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURI(item_id)}&key=${searchKey}&offset=${dataOffset}`;
+        var rurl = `/api/redis/getitems?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${searchKey}&offset=${dataOffset}`;
         $.get(rurl, null, function (jdata) {
 
             if (jdata.Code === 1) {
@@ -93,9 +93,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         $("#table-container").html(table_content);
                         for (var datakey in jdata.Data) {
                             thtml = `<tr>
-                                                                <td>${datakey}</td>
-                                                                <td style="width:85%;">${jdata.Data[datakey]}</td>
-                                                                <td data-name="${encodeURI(redis_name)}" data-dbindex="${db_index}" data-id="${encodeURI(item_id)}" data-key="${encodeURI(datakey)}" data-val="${encodeURI(jdata.Data[datakey])}">
+                                                                <td>${jdata.Data[datakey]}</td>
+                                                                <td style="width:85%;">${datakey}</td>
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-id="${encodeURIComponent(item_id)}" data-key="${encodeURIComponent(jdata.Data[datakey])}" data-val="${encodeURIComponent(datakey)}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -122,7 +122,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
-                                                                <td data-name="${encodeURI(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURI(item_id)}" data-val="${encodeURI(jdata.Data[i])}">
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(item_id)}" data-val="${encodeURIComponent(jdata.Data[i])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -149,7 +149,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             thtml = `<tr>
                                         <td>${jdata.Data[i].Score}</td>
                                         <td>${jdata.Data[i].Value}</td>
-                                        <td data-name="${encodeURI(redis_name)}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${encodeURI(jdata.Data[i].Value)}">
+                                        <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${encodeURIComponent(jdata.Data[i].Value)}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -176,7 +176,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             thtml = `<tr>
                                                                 <td>${item_id}</td>
                                                                 <td>${jdata.Data[i]}</td>
-                                                                <td data-name="${encodeURI(redis_name)}" data-dbindex="${db_index}" data-key="${i}" data-val="${encodeURI(jdata.Data[i])}">
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${i}" data-val="${encodeURIComponent(jdata.Data[i])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -232,7 +232,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             $("#edit-form-container").html(edit_form_html);
 
                             $.ajaxSettings.async = false;
-                            $.post(`/api/redis/delitem?name=${encodeURI(redis_name)}&dbindex=${db_index}&id=${encodeURI(item_id)}&type=${item_type}&key=${key}&value=${val}`, null, null);
+                            $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${key}&value=${val}`, null, null);
                             $.ajaxSettings.async = true;
                             break;
                         case 4:
@@ -257,7 +257,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             $("#edit-form-container").html(edit_form_html);
 
                             $.ajaxSettings.async = false;
-                            $.post(`/api/redis/delitem?name=${encodeURI(redis_name)}&dbindex=${db_index}&id=${encodeURI(item_id)}&type=${item_type}&key=${key}&value=${val}`, null, null);
+                            $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${key}&value=${val}`, null, null);
                             $.ajaxSettings.async = true;
                             break;
 
@@ -315,11 +315,11 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
                     var delLink = $(this).parent();
 
-                    var key = encodeURI(delLink.attr("data-key"));
+                    var key = encodeURIComponent(delLink.attr("data-key"));
 
                     var val = delLink.attr("data-val");
                     if (val !== undefined) {
-                        val = encodeURI(val);
+                        val = encodeURIComponent(val);
                     }
 
                     layer.confirm("确认要删除此项数据么?", {
@@ -328,7 +328,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         function (index) {
                             switch (item_type * 1) {
                                 case 2:
-                                    $.post(`/api/redis/delitem?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURI(item_id)}&key=${key}&value=${val}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${key}&value=${val}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -338,7 +338,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     });
                                     break;
                                 case 3:
-                                    $.post(`/api/redis/delitem?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&key=${key}&value=${val}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&key=${key}&value=${val}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -348,7 +348,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     });
                                     break;
                                 case 4:
-                                    $.post(`/api/redis/delitem?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURI(item_id)}&value=${val}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&value=${val}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -358,7 +358,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     });
                                     break;
                                 case 5:
-                                    $.post(`/api/redis/delitem?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURI(item_id)}&key=${key}&value=${val}`, null, function (data) {
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${key}&value=${val}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }
@@ -411,7 +411,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/additem.html?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURI(item_id)}`, 'no']
+            content: [`/additem.html?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}`, 'no']
         });
     });
     //修改按钮
@@ -425,7 +425,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             move: false,
             maxmin: false,
             time: 0,
-            content: [`/rename.html?name=${encodeURI(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURI(item_id)}`, 'no']
+            content: [`/rename.html?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}`, 'no']
         });
     });
 });
