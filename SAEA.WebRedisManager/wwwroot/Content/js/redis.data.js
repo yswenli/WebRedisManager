@@ -55,8 +55,8 @@
 
                 for (var i = 0; i < jdata.Data.length; i++) {
                     var thtml = `<tr>
-                                                                                                <td>${jdata.Data[i].Key}</td>
                                                                                                 <td>${jdata.Data[i].Type}</td>
+                                                                                                <td>${jdata.Data[i].Key}</td>
                                                                                                 <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Key}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;

@@ -79,7 +79,7 @@
                                     //点击redus db
                                     $("a.redis_db_link").on("click", function () {
 
-                                        debugger;
+                                        
 
                                         var sname = $(this).attr("data-name");
                                         var dbindex = $(this).attr("data-db");

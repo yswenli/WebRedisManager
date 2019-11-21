@@ -104,14 +104,14 @@
             axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
             $.get(redis_info_url, "name=" + redis_name + "&isCpu=1", function (redis_info_data) {
-                //debugger;
+                //
                 var data0 = option1.series[0].data;
                 if (redis_info_data.Code === 2) {
                     data0.shift();
                     data0.push(-1);
                 }
                 else {
-                    //debugger;
+                    //
                     data0.shift();
                     data0.push(redis_info_data.Data);
                 }
@@ -225,14 +225,14 @@
             axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
             $.get(redis_info_url, "name=" + redis_name + "&isCpu=0", function (redis_info_data) {
-                //debugger;
+                //
                 var data0 = option2.series[0].data;
                 if (redis_info_data.Code === 2) {
                     data0.shift();
                     data0.push(-1);
                 }
                 else {
-                    //debugger;
+                    //
                     data0.shift();
                     data0.push(redis_info_data.Data);
                 }

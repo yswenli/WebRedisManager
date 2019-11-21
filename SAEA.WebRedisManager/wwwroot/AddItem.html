@@ -100,9 +100,9 @@
             //提交数据
             $("#add_btn").click(function () {
 
-                var item_data_id = $("input[name='id']").val();
-                var item_data_key = $("input[name='key']").val();
-                var item_data_val = $("#redis_value").val();
+                var item_data_id = encodeURIComponent($("input[name='id']").val());
+                var item_data_key = encodeURIComponent($("input[name='key']").val());
+                var item_data_val = encodeURIComponent($("#redis_value").val());
 
                 var url = `/api/redis/set?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_data_id}&key=${item_data_key}&value=${item_data_val}`;
                 $.post(url, null, function (sdata) {

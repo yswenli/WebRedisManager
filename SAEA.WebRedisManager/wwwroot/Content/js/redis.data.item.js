@@ -1,5 +1,9 @@
-﻿String.prototype.replaceAll = function (s1, s2) {
+﻿/// <reference path="formhelper.js" />
+String.prototype.replaceAll = function (s1, s2) {
     return this.replace(new RegExp(s1, "gm"), s2);
+}
+function htmlEncode(text) {
+    return text.replace(/&/g, '&amp').replace(/\"/g, '&quot').replace(/</g, '&lt').replace(/>/g, '&gt');
 }
 
 
@@ -86,7 +90,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 <tr>
                                     <th>key</th>
                                     <th style="width:80%;">value</th>
-                                    <th>操作</th>
+                                    <th style="width:70px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -94,8 +98,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         $("#table-container").html(table_content);
                         for (var datakey in jdata.Data) {
                             thtml = `<tr>
-                                                                <td>${datakey}</td>
-                                                                <td style="width:85%;">${jdata.Data[datakey]}</td>
+                                                                <td>${htmlEncode(datakey)}</td>
+                                                                <td>${htmlEncode(jdata.Data[datakey])}</td>
                                                                 <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-id="${encodeURIComponent(item_id)}" data-key="${encodeURIComponent(datakey)}" data-val="${encodeURIComponent(jdata.Data[datakey])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
@@ -113,7 +117,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 <tr>
                                     <th>key</th>
                                     <th style="width:80%;">value</th>
-                                    <th>操作</th>
+                                    <th style="width:70px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -121,8 +125,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         $("#table-container").html(table_content);
                         for (var i = 0; i < jdata.Data.length; i++) {
                             thtml = `<tr>
-                                                                <td>${item_id}</td>
-                                                                <td>${jdata.Data[i]}</td>
+                                                                <td>${htmlEncode(item_id)}</td>
+                                                                <td>${htmlEncode(jdata.Data[i])}</td>
                                                                 <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(item_id)}" data-val="${encodeURIComponent(jdata.Data[i])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
@@ -140,7 +144,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 <tr>
                                     <th>score</th>
                                     <th style="width:80%;">value</th>
-                                    <th>操作</th>
+                                    <th style="width:70px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -149,7 +153,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         for (i = 0; i < jdata.Data.length; i++) {
                             thtml = `<tr>
                                         <td>${jdata.Data[i].Score}</td>
-                                        <td>${jdata.Data[i].Value}</td>
+                                        <td>${htmlEncode(jdata.Data[i].Value)}</td>
                                         <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${encodeURIComponent(jdata.Data[i].Value)}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
@@ -167,7 +171,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                 <tr>
                                     <th>key</th>
                                     <th style="width:80%;">value</th>
-                                    <th>操作</th>
+                                    <th style="width:70px;">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -175,8 +179,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         $("#table-container").html(table_content);
                         for (i = 0; i < jdata.Data.length; i++) {
                             thtml = `<tr>
-                                                                <td>${item_id}</td>
-                                                                <td>${jdata.Data[i]}</td>
+                                                                <td>${htmlEncode(item_id)}</td>
+                                                                <td>${htmlEncode(jdata.Data[i])}</td>
                                                                 <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${i}" data-val="${encodeURIComponent(jdata.Data[i])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
@@ -188,12 +192,17 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         break;
                 }
 
+                
+                var totalHeight = $(parent.window.document).find("iframe").height();
+                var bodyMaxHeight = totalHeight - 233;
+                $("#table-container").css({ "max-height": bodyMaxHeight, "overflow": "scroll" });
+
                 //编辑
+                var edit_form_html = "";
                 $(".edit-link").off();
                 $(".edit-link").on("click", function () {
                     var key = decodeURIComponent($(this).parent().attr("data-key"));
                     var val = decodeURIComponent($(this).parent().attr("data-val"));
-                    var edit_form_html = "";
                     switch (item_type * 1) {
                         case 2:
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
@@ -214,7 +223,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                     </div>
                                                 </div>
                                             </form>`;
-                            $("#edit-form-container").html(edit_form_html);
                             break;
                         case 3:
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
@@ -230,7 +238,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                     </div>
                                                 </div>
                                             </form>`;
-                            $("#edit-form-container").html(edit_form_html);
                             break;
                         case 4:
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
@@ -251,7 +258,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                     </div>
                                                 </div>
                                             </form>`;
-                            $("#edit-form-container").html(edit_form_html);
                             break;
                         case 5:
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
@@ -267,7 +273,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                     </div>
                                                 </div>
                                             </form>`;
-                            $("#edit-form-container").html(edit_form_html);
                             break;
                     }
 
@@ -280,7 +285,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         move: false,
                         anim: 1,
                         time: 0,
-                        content: $("#edit-form-container").html(),
+                        content: edit_form_html,
                         btn: ['确定', '关闭'],
                         yes: function (index, layero) {
 
@@ -288,26 +293,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${encodeURIComponent(key)}&value=${encodeURIComponent(val)}`, null, null);
                             $.ajaxSettings.async = true;
 
-                            var fid = $("input[name='id']").val();
-                            if (fid !== undefined && fid !== "") {
-                                fid = encodeURIComponent(fid);
-                            }
-
-                            var fkey = $("input[name='key']").val();
-                            if (fkey !== undefined && fkey !== "") {
-                                fkey = encodeURIComponent(fkey);
-                            }
-
-                            var fval = $("textarea[name='value']").val();
-                            if (fval !== undefined && fval !== "") {
-                                fval = encodeURIComponent(fval);
-                            }
-
-                            var pdata = `name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${fid}&key=${fkey}&value=${fval}`;
-
-
-                            console.log(fval);
-                            debugger;
+                            var pdata = new FormHelper().SerializeForm("edit_form");
 
                             $.post("/api/redis/edit", pdata, function (edata) {
                                 layer.close(index);
