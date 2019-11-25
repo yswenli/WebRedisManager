@@ -48,7 +48,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                     if (result == "OK")
                     {
-                        _redisClients.Add(config.Name, redisClient);
+                        _redisClients[config.Name] = redisClient;
                     }
                     return result;
                 }
