@@ -28,85 +28,94 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static string Connect(Config config)
         {
-            try
+            lock (_locker)
             {
-                if (_redisClients.ContainsKey(config.Name))
+                try
                 {
-                    var redisClient = _redisClients[config.Name];
-
-                    if (!redisClient.IsConnected)
+                    if (_redisClients.ContainsKey(config.Name))
                     {
-                        return redisClient.Connect();
+                        var redisClient = _redisClients[config.Name];
+
+                        if (!redisClient.IsConnected)
+                        {
+                            return redisClient.Connect();
+                        }
+                        return "ok";
                     }
-                    return "ok";
+                    else
+                    {
+                        var redisClient = new RedisClient(config.IP + ":" + config.Port, config.Password, 10);
+
+                        var result = redisClient.Connect();
+
+                        if (result == "OK")
+                        {
+                            _redisClients[config.Name] = redisClient;
+                        }
+                        return result;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    var redisClient = new RedisClient(config.IP + ":" + config.Port, config.Password);
-
-                    var result = redisClient.Connect();
-
-                    if (result == "OK")
-                    {
-                        _redisClients[config.Name] = redisClient;
-                    }
-                    return result;
+                    return ex.Message;
                 }
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+            }            
         }
 
 
         public static string GetInfo(string name)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    return redisClient.Info();
-                }
-            }
+                    var redisClient = _redisClients[name];
 
-            return string.Empty;
+                    if (redisClient.IsConnected)
+                    {
+                        return redisClient.Info();
+                    }
+                }
+
+                return string.Empty;
+            }
         }
 
         public static string Clients(string name)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    var list = redisClient.ClientList();
+                    var redisClient = _redisClients[name];
 
-                    if (list != null && list.Any())
+                    if (redisClient.IsConnected)
                     {
-                        StringBuilder sb = new StringBuilder();
+                        var list = redisClient.ClientList();
 
-                        foreach (var item in list)
+                        if (list != null && list.Any())
                         {
-                            var arr = item.Split("id=", StringSplitOptions.RemoveEmptyEntries);
+                            StringBuilder sb = new StringBuilder();
 
-                            if (arr != null && arr.Any())
+                            foreach (var item in list)
                             {
-                                foreach (var sitem in arr)
+                                var arr = item.Split("id=", StringSplitOptions.RemoveEmptyEntries);
+
+                                if (arr != null && arr.Any())
                                 {
-                                    sb.Append($"<p class='redisclient_p'>id={sitem}<p>");
+                                    foreach (var sitem in arr)
+                                    {
+                                        sb.Append($"<p class='redisclient_p'>id={sitem}<p>");
+                                    }
                                 }
                             }
+                            return sb.ToString();
                         }
-                        return sb.ToString();
                     }
                 }
-            }
 
-            return string.Empty;
+                return string.Empty;
+            }
         }
 
 
@@ -194,38 +203,44 @@ namespace SAEA.Redis.WebManager.Libs
 
         public static bool IsCluster(string name)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    return redisClient.IsCluster;
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
+                    {
+                        return redisClient.IsCluster;
+                    }
                 }
+                return false;
             }
-            return false;
         }
 
 
         public static List<int> GetDBs(string name)
         {
-            List<int> result = new List<int>();
-
-            var redisClient = _redisClients[name];
-
-            if (redisClient.IsConnected)
+            lock (_locker)
             {
-                for (int i = 0; i < 20; i++)
+                List<int> result = new List<int>();
+
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
                 {
-                    if (redisClient.Select(i))
+                    for (int i = 0; i < 20; i++)
                     {
-                        result.Add(i);
+                        if (redisClient.Select(i))
+                        {
+                            result.Add(i);
+                        }
+                        else
+                            break;
                     }
-                    else
-                        break;
                 }
+                return result;
             }
-            return result;
         }
 
         /// <summary>
@@ -238,23 +253,26 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static List<string> GetKeys(int offset, string name, int dbIndex, string key = "*")
         {
-            List<string> result = new List<string>();
-
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
+                List<string> result = new List<string>();
 
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    var count = 50;
-                    if (!string.IsNullOrEmpty(key) && key != "*")
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
                     {
-                        count = 10000000;
+                        var count = 50;
+                        if (!string.IsNullOrEmpty(key) && key != "*")
+                        {
+                            count = 10000000;
+                        }
+                        result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
                     }
-                    result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
                 }
+                return result;
             }
-            return result;
         }
         /// <summary>
         /// 获取keytypes
@@ -266,40 +284,46 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static Dictionary<string, string> GetKeyTypes(int offset, string name, int dbIndex, string key = "*")
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-
-            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(50).ToList();
-
-            if (keys.Count > 0)
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
+                Dictionary<string, string> result = new Dictionary<string, string>();
 
-                foreach (var k in keys)
+                var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(50).ToList();
+
+                if (keys.Count > 0)
                 {
-                    var type = redisClient.Type(k);
+                    var redisClient = _redisClients[name];
 
-                    result.Add(k, type);
+                    foreach (var k in keys)
+                    {
+                        var type = redisClient.Type(k);
+
+                        result.Add(k, type);
+                    }
                 }
-            }
 
-            return result;
+                return result;
+            }
         }
 
         public static long BatchRemove(string name, int dbIndex, string key)
         {
-            var keys = GetKeys(0, name, dbIndex, key).Distinct().ToArray();
-
-            if (keys.Length > 0)
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
+                var keys = GetKeys(0, name, dbIndex, key).Distinct().ToArray();
 
-                foreach (var item in keys)
+                if (keys.Length > 0)
                 {
-                    redisClient.GetDataBase(dbIndex).Del(item);
-                }
-            }
+                    var redisClient = _redisClients[name];
 
-            return keys.Length;
+                    foreach (var item in keys)
+                    {
+                        redisClient.GetDataBase(dbIndex).Del(item);
+                    }
+                }
+
+                return keys.Length;
+            }
         }
 
 
@@ -311,17 +335,20 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static long GetDBSize(string name, int dbIndex)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    if (redisClient.Select(dbIndex))
-                        return redisClient.DBSize();
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
+                    {
+                        if (redisClient.Select(dbIndex))
+                            return redisClient.DBSize();
+                    }
                 }
+                return 0;
             }
-            return 0;
         }
 
         /// <summary>
@@ -333,13 +360,16 @@ namespace SAEA.Redis.WebManager.Libs
         /// <param name="value"></param>
         public static void StringSet(string name, int dbIndex, string key, string value)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    redisClient.GetDataBase(dbIndex).Set(key, value);
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
+                    {
+                        redisClient.GetDataBase(dbIndex).Set(key, value);
+                    }
                 }
             }
         }
@@ -354,13 +384,16 @@ namespace SAEA.Redis.WebManager.Libs
         /// <param name="value"></param>
         public static void HashSet(string name, int dbIndex, string hid, string key, string value)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    redisClient.GetDataBase(dbIndex).HSet(hid, key, value);
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
+                    {
+                        redisClient.GetDataBase(dbIndex).HSet(hid, key, value);
+                    }
                 }
             }
         }
@@ -368,16 +401,19 @@ namespace SAEA.Redis.WebManager.Libs
 
         public static int HashSetCount(string name, int dbIndex, string hid)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    return redisClient.GetDataBase(dbIndex).HLen(hid);
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
+                    {
+                        return redisClient.GetDataBase(dbIndex).HLen(hid);
+                    }
                 }
+                return 0;
             }
-            return 0;
         }
 
         /// <summary>
@@ -510,16 +546,19 @@ namespace SAEA.Redis.WebManager.Libs
         /// <param name="key"></param>
         public static string Get(string name, int dbIndex, string key)
         {
-            if (_redisClients.ContainsKey(name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    return redisClient.GetDataBase(dbIndex).Get(key);
+                    var redisClient = _redisClients[name];
+
+                    if (redisClient.IsConnected)
+                    {
+                        return redisClient.GetDataBase(dbIndex).Get(key);
+                    }
                 }
+                return string.Empty;
             }
-            return string.Empty;
         }
 
         /// <summary>
@@ -529,85 +568,91 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static object GetItems(int offset, RedisData redisData)
         {
-            object result = new object();
-
-            if (_redisClients.ContainsKey(redisData.Name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[redisData.Name];
+                object result = new object();
 
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(redisData.Name))
                 {
-                    if (redisData.Key == null) redisData.Key = "*";
+                    var redisClient = _redisClients[redisData.Name];
 
-                    switch (redisData.Type)
+                    if (redisClient.IsConnected)
                     {
-                        case 2:
-                            var hresult = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, offset, redisData.Key, 10);
-                            if (hresult.Data == null && hresult.Offset > 0)
-                            {
-                                hresult = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, hresult.Offset, redisData.Key, 1000000);
-                            }
-                            result = hresult.Data;
-                            break;
-                        case 3:
-                            var sresult = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 10);
-                            if (sresult.Data == null && sresult.Offset > 0)
-                            {
-                                sresult = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 1000000);
-                            }
-                            result = sresult.Data;
-                            break;
-                        case 4:
-                            var zresult = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 10);
-                            if (zresult.Data == null && zresult.Offset > 0)
-                            {
-                                zresult = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 1000000);
-                            }
-                            result = zresult.Data;
-                            break;
-                        case 5:
-                            result = redisClient.GetDataBase(redisData.DBIndex).LRang(redisData.ID, offset, 10);
-                            break;
+                        if (redisData.Key == null) redisData.Key = "*";
+
+                        switch (redisData.Type)
+                        {
+                            case 2:
+                                var hresult = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, offset, redisData.Key, 10);
+                                if (hresult.Data == null && hresult.Offset > 0)
+                                {
+                                    hresult = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, hresult.Offset, redisData.Key, 1000000);
+                                }
+                                result = hresult.Data;
+                                break;
+                            case 3:
+                                var sresult = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 10);
+                                if (sresult.Data == null && sresult.Offset > 0)
+                                {
+                                    sresult = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 1000000);
+                                }
+                                result = sresult.Data;
+                                break;
+                            case 4:
+                                var zresult = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 10);
+                                if (zresult.Data == null && zresult.Offset > 0)
+                                {
+                                    zresult = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 1000000);
+                                }
+                                result = zresult.Data;
+                                break;
+                            case 5:
+                                result = redisClient.GetDataBase(redisData.DBIndex).LRang(redisData.ID, offset, 10);
+                                break;
+                        }
                     }
                 }
+                return result;
             }
-            return result;
         }
 
         public static int GetItemsCount(int offset, RedisData redisData)
         {
-            var result = 0;
-
-            if (_redisClients.ContainsKey(redisData.Name))
+            lock (_locker)
             {
-                var redisClient = _redisClients[redisData.Name];
+                var result = 0;
 
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(redisData.Name))
                 {
-                    if (redisData.Key == null) redisData.Key = "*";
+                    var redisClient = _redisClients[redisData.Name];
 
-                    switch (redisData.Type)
+                    if (redisClient.IsConnected)
                     {
-                        case 2:
-                            var hdata = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, offset, redisData.Key, 10000).Data;
-                            result = hdata != null ? hdata.Count : 0;
-                            break;
-                        case 3:
-                            var sdata = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 10000).Data;
-                            result = sdata != null ? sdata.Count : 0;
-                            break;
-                        case 4:
-                            var zdata = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 10000).Data;
-                            result = zdata != null ? zdata.Count : 0;
-                            break;
-                        case 5:
-                            var ldata = redisClient.GetDataBase(redisData.DBIndex).LRang(redisData.ID, offset, 10000);
-                            result = ldata != null ? ldata.Count : 0;
-                            break;
+                        if (redisData.Key == null) redisData.Key = "*";
+
+                        switch (redisData.Type)
+                        {
+                            case 2:
+                                var hdata = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, offset, redisData.Key, 10000).Data;
+                                result = hdata != null ? hdata.Count : 0;
+                                break;
+                            case 3:
+                                var sdata = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 10000).Data;
+                                result = sdata != null ? sdata.Count : 0;
+                                break;
+                            case 4:
+                                var zdata = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 10000).Data;
+                                result = zdata != null ? zdata.Count : 0;
+                                break;
+                            case 5:
+                                var ldata = redisClient.GetDataBase(redisData.DBIndex).LRang(redisData.ID, offset, 10000);
+                                result = ldata != null ? ldata.Count : 0;
+                                break;
+                        }
                     }
                 }
+                return result;
             }
-            return result;
         }
 
         /// <summary>

@@ -3,7 +3,10 @@ String.prototype.replaceAll = function (s1, s2) {
     return this.replace(new RegExp(s1, "gm"), s2);
 }
 function htmlEncode(text) {
-    return text.replace(/&/g, '&amp').replace(/\"/g, '&quot').replace(/</g, '&lt').replace(/>/g, '&gt');
+    return text.replace(/&/g, '&amp;').replace(/\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function htmlDecode(text) {
+    return text.replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 }
 
 
@@ -202,6 +205,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 $(".edit-link").off();
                 $(".edit-link").on("click", function () {
                     var key = decodeURIComponent($(this).parent().attr("data-key"));
+                    key = htmlEncode(key);
                     var val = decodeURIComponent($(this).parent().attr("data-val"));
                     switch (item_type * 1) {
                         case 2:
@@ -288,7 +292,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         content: edit_form_html,
                         btn: ['确定', '关闭'],
                         yes: function (index, layero) {
-
+                            key = htmlDecode(key);
                             $.ajaxSettings.async = false;
                             $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&id=${encodeURIComponent(item_id)}&type=${item_type}&key=${encodeURIComponent(key)}&value=${encodeURIComponent(val)}`, null, null);
                             $.ajaxSettings.async = true;

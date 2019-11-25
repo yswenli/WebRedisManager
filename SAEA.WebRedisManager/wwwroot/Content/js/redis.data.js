@@ -1,4 +1,11 @@
-﻿layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
+﻿function htmlEncode(text) {
+    return text.replace(/&/g, '&amp;').replace(/\"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function htmlDecode(text) {
+    return text.replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+}
+
+layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var layer = layui.layer, form = layui.form, $ = layui.$, laypage = layui.laypage;
 
@@ -55,9 +62,9 @@
 
                 for (var i = 0; i < jdata.Data.length; i++) {
                     var thtml = `<tr>
-                                                                                                <td>${jdata.Data[i].Type}</td>
-                                                                                                <td>${jdata.Data[i].Key}</td>
-                                                                                                <td data-name="${redis_name}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Key}" data-type="${jdata.Data[i].Type}">
+                                    <td>${jdata.Data[i].Type}</td>
+                                    <td>${htmlEncode(decodeURIComponent(jdata.Data[i].Key))}</td>
+                                    <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(jdata.Data[i].Key)}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
                     $("#redis-data-body").append(thtml);
@@ -81,12 +88,12 @@
                             break;
                     }
 
-                    var key = encodeURI($(this).parent().attr("data-key"));
+                    var key = $(this).parent().attr("data-key");
                     if (type === "string") {
                         var info_url = `/api/redis/get?name=${redis_name}&dbindex=${db_index}&key=${key}`;
                         $.get(info_url, null, function (vdata) {
                             if (vdata.Code === 1) {
-                                layer.alert(vdata.Data);
+                                layer.alert(htmlEncode(vdata.Data));
                             }
                             else {
                                 layer.msg("操作失败:" + data.Message, { time: 2000 });
