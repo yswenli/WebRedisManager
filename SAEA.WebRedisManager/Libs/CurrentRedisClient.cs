@@ -264,9 +264,16 @@ namespace SAEA.Redis.WebManager.Libs
                     if (redisClient.IsConnected)
                     {
                         var count = 50;
+
                         if (!string.IsNullOrEmpty(key) && key != "*")
                         {
                             count = 10000000;
+
+                            if (key.IndexOf("*") == -1)
+                            {
+                                result.Add(redisClient.GetDataBase(dbIndex).Get(key));
+                                return result;
+                            }
                         }
                         result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
                     }
