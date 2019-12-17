@@ -295,7 +295,7 @@ namespace SAEA.Redis.WebManager.Libs
             {
                 Dictionary<string, string> result = new Dictionary<string, string>();
 
-                var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(50).ToList();
+                var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(20).ToList();
 
                 if (keys.Count > 0)
                 {
