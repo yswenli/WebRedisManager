@@ -263,11 +263,11 @@ namespace SAEA.Redis.WebManager.Libs
 
                     if (redisClient.IsConnected)
                     {
-                        var count = 20;
+                        var count = 50;
 
-                        if (!string.IsNullOrEmpty(key) && key != "*")
+                        if (!string.IsNullOrEmpty(key) && key != "*" && key != "[" && key != "]")
                         {
-                            if (key.IndexOf("*") == -1)
+                            if (key.IndexOf("*") == -1 && key.IndexOf("[") == -1 && key.IndexOf("]") == -1)
                             {
                                 if (redisClient.GetDataBase(dbIndex).Exists(key))
                                 {
@@ -292,7 +292,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                                         if (o == 0) break;
                                     }
-                                    if (result.Count >= 20) break;
+                                    if (result.Count >= 50) break;
                                 }
                                 while (true);
 
