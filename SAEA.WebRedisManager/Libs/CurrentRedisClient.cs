@@ -59,7 +59,7 @@ namespace SAEA.Redis.WebManager.Libs
                 {
                     return ex.Message;
                 }
-            }            
+            }
         }
 
 
@@ -263,19 +263,43 @@ namespace SAEA.Redis.WebManager.Libs
 
                     if (redisClient.IsConnected)
                     {
-                        var count = 50;
+                        var count = 20;
 
                         if (!string.IsNullOrEmpty(key) && key != "*")
                         {
-                            count = 10000000;
-
                             if (key.IndexOf("*") == -1)
                             {
-                                result.Add(redisClient.GetDataBase(dbIndex).Get(key));
+                                if (redisClient.GetDataBase(dbIndex).Exists(key))
+                                {
+                                    result.Add(key);
+                                }
                                 return result;
                             }
+                            else
+                            {
+                                var o = 0;
+                                do
+                                {
+                                    var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, count);
+
+                                    if (scanData != null)
+                                    {
+                                        if (scanData.Data != null && scanData.Data.Any())
+
+                                            result.AddRange(scanData.Data);
+
+                                        o = scanData.Offset;
+
+                                        if (o == 0) break;
+                                    }
+                                    if (result.Count >= 20) break;
+                                }
+                                while (true);
+
+                            }
                         }
-                        result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
+                        else
+                            result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
                     }
                 }
                 return result;
