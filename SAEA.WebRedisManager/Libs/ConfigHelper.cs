@@ -43,6 +43,13 @@ namespace SAEA.Redis.WebManager.Libs
             Save();
         }
 
+        public static void Set(List<Config> configs)
+        {
+            _list = configs;
+
+            Save();
+        }
+
         /// <summary>
         /// 读取配置列表
         /// </summary>

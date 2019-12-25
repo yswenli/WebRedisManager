@@ -5,6 +5,24 @@ function htmlDecode(text) {
     return text.replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 }
 
+function isJSON(str) {
+    if (typeof str === 'string') {
+        try {
+            var obj = JSON.parse(str);
+            if (str.indexOf('{') > -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (e) {
+            console.log(e);
+            return false;
+        }
+    }
+    return false;
+}
+
 layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var layer = layui.layer, form = layui.form, $ = layui.$, laypage = layui.laypage;
@@ -39,7 +57,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
     });
 
     //
-   
+
 
 
     //加载列表
@@ -89,11 +107,22 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     }
 
                     var key = $(this).parent().attr("data-key");
+
                     if (type === "string") {
+
                         var info_url = `/api/redis/get?name=${redis_name}&dbindex=${db_index}&key=${key}`;
+
                         $.get(info_url, null, function (vdata) {
+
                             if (vdata.Code === 1) {
-                                layer.alert(htmlEncode(vdata.Data));
+
+                                if (isJSON(vdata.Data)) {
+                                    var jsonMsg = htmlEncode(JSON.stringify(JSON.parse(vdata.Data), " ", 4));
+                                    layer.alert(`<pre>${jsonMsg}</pre>`);
+                                }
+                                else {
+                                    layer.alert(htmlEncode(vdata.Data));
+                                }
                             }
                             else {
                                 layer.msg("操作失败:" + data.Message, { time: 2000 });

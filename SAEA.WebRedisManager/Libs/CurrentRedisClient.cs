@@ -347,9 +347,21 @@ namespace SAEA.Redis.WebManager.Libs
                 {
                     var redisClient = _redisClients[name];
 
-                    foreach (var item in keys)
+                    var count = 50;
+
+                    var times = (keys.Length / 50) + (keys.Length % 50 == 0 ? 0 : 1);
+
+                    for (int i = 0; i < times; i++)
                     {
-                        redisClient.GetDataBase(dbIndex).Del(item);
+                        var skeys = keys.Skip(i * count).Take(count).ToList();
+
+                        if (skeys != null && skeys.Any())
+                        {
+                            foreach (var item in skeys)
+                            {
+                                redisClient.GetDataBase(dbIndex).Del(item);
+                            }
+                        }
                     }
                 }
 

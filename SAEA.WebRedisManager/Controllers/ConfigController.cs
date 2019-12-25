@@ -4,6 +4,7 @@ using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SAEA.Redis.WebManager.Controllers
 {
@@ -23,6 +24,26 @@ namespace SAEA.Redis.WebManager.Controllers
             try
             {
                 ConfigHelper.Set(config);
+
+                return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Data = string.Empty, Message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SetConfigs(string configs)
+        {
+            try
+            {
+                var confs = Deserialize<List<Config>>(configs);
+
+                if (confs != null && confs.Any())
+                {
+                    ConfigHelper.Set(confs);
+                }
 
                 return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
             }

@@ -12,8 +12,11 @@
         });
         //默认加载redis烈表
         $.get("/api/config/getlist", null, function (data) {
+
             layer.close(layerIndex);
+
             if (data.Code === 1) {
+
                 if (data.Data !== undefined && data.Data.length > 0) {
                     for (var i = 0; i < data.Data.length; i++) {
                         var html = `<dd class="layui-nav-itemed">
@@ -34,7 +37,7 @@
                         }
 
                         $(".redis_link").each(function (index) {
-                            if ($(this).text().indexOf(searchText) === -1) {
+                            if ($(this).text().indexOf(searchText) === -1 && $(this).attr("title").indexOf(searchText) === -1) {
                                 $(this).parent().hide();
                             }
                             else {
@@ -79,8 +82,6 @@
                                     //点击redus db
                                     $("a.redis_db_link").on("click", function () {
 
-                                        
-
                                         var sname = $(this).attr("data-name");
                                         var dbindex = $(this).attr("data-db");
 
@@ -92,8 +93,10 @@
                             else {
                                 layer.msg("操作失败:" + dbData.Message, { time: 2000 });
                             }
-                        })
+                        });
                     });
+                    //
+                    $("textarea[name='configs']").val(JSON.stringify(data.Data, " ", 4));
                 }
             }
             else {
@@ -135,6 +138,20 @@
             content: ['/remove.html', 'no']
         });
     });
+    //redis server configs按钮
+    $("#conf_link").on("click", function () {
+        layer.open({
+            title: 'Redis Server Configs',
+            type: 2,
+            area: ['670px', '560px'],
+            fixed: true,
+            resize: false,
+            move: false,
+            maxmin: false,
+            time: 0,
+            content: ['/configs.html', 'no']
+        });
+    });
 
     //提交添加redis表单
     $("#add_btn").on("click", function () {
@@ -172,6 +189,19 @@
                 });
             }
         );
+    });
+    //导入redis表单
+    $("#conf_btn").on("click", function () {
+        var configs = encodeURIComponent($("textarea[name='configs']").val());
+        var str = `configs=${configs}`;
+        $.post("/api/config/SetConfigs", str, function (data) {
+            if (data.Code === 1) {
+                parent.location.reload();
+            }
+            else {
+                layer.msg("操作失败:" + data.Message, { time: 2000 });
+            }
+        });
     });
 });
 
