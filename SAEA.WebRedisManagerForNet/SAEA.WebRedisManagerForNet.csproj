@@ -129,6 +129,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SAEA.WebRedisManager\Attr\AuthAttribute.cs">
+      <Link>Attr\AuthAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Controllers\ConfigController.cs">
       <Link>Controllers\ConfigController.cs</Link>
     </Compile>
@@ -141,11 +144,20 @@
     <Compile Include="..\SAEA.WebRedisManager\Controllers\RedisController.cs">
       <Link>Controllers\RedisController.cs</Link>
     </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Controllers\UserController.cs">
+      <Link>Controllers\UserController.cs</Link>
+    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Libs\ConfigHelper.cs">
       <Link>Libs\ConfigHelper.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Libs\CurrentRedisClient.cs">
       <Link>Libs\CurrentRedisClient.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\UserHelper.cs">
+      <Link>Libs\UserHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\UsersDataHelper.cs">
+      <Link>Libs\UsersDataHelper.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Models\Config.cs">
       <Link>Models\Config.cs</Link>
@@ -158,6 +170,12 @@
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Models\RedisData.cs">
       <Link>Models\RedisData.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Models\User.cs">
+      <Link>Models\User.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Models\UsersData.cs">
+      <Link>Models\UsersData.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Program.cs">
       <Link>Program.cs</Link>
@@ -372,6 +390,10 @@
     </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Keys.html">
       <Link>wwwroot\Keys.html</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SAEA.WebRedisManager\wwwroot\login.html">
+      <Link>wwwroot\login.html</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\RedisAdd.html">

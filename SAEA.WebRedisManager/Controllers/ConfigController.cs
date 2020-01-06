@@ -1,12 +1,11 @@
-﻿using SAEA.Http.Model;
-using SAEA.MVC;
+﻿using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SAEA.Redis.WebManager.Controllers
+namespace SAEA.WebRedisManager.Controllers
 {
     /// <summary>
     /// 配置处理api
@@ -60,7 +59,14 @@ namespace SAEA.Redis.WebManager.Controllers
         {
             try
             {
-                return Json(new JsonResult<List<Config>>() { Code = 1, Data = ConfigHelper.ReadList(), Message = "Ok" });
+                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                {
+                    return Json(new JsonResult<List<Config>>() { Code = 1, Data = ConfigHelper.ReadList(), Message = "Ok" });
+                }
+                else
+                {
+                    return Json(new JsonResult<List<Config>>() { Code = 3, Message = "当前操作需要登录" });
+                }
             }
             catch (Exception ex)
             {

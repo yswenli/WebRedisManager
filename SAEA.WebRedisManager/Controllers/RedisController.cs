@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SAEA.Redis.WebManager.Controllers
+namespace SAEA.WebRedisManager.Controllers
 {
     /// <summary>
     /// redis相关api
@@ -144,7 +144,7 @@ namespace SAEA.Redis.WebManager.Controllers
                         {
                             result = (usemem / totalmem * 100).ToString();
                         }
-                        
+
                     }
 
                     return Json(new JsonResult<string>() { Code = 1, Data = result, Message = "OK" });

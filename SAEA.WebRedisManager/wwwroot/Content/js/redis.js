@@ -11,6 +11,7 @@
             , shade: 0.01
         });
         //默认加载redis烈表
+
         $.get("/api/config/getlist", null, function (data) {
 
             layer.close(layerIndex);
@@ -99,10 +100,17 @@
                     $("textarea[name='configs']").val(JSON.stringify(data.Data, " ", 4));
                 }
             }
+            else if (data.Code === 3) {
+                layer.msg("操作失败:" + data.Message, { time: 2000 }, function () {
+                    location.href = "/login.html";
+                });
+            }
             else {
                 layer.msg("操作失败:" + data.Message, { time: 2000 });
             }
         });
+
+
     });
 
 

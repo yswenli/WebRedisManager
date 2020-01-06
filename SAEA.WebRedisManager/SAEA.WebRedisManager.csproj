@@ -25,6 +25,7 @@
     <None Remove="wwwroot\AddItem.html" />
     <None Remove="wwwroot\Chart.html" />
     <None Remove="wwwroot\configs.html" />
+    <None Remove="wwwroot\Content\css\admin.css" />
     <None Remove="wwwroot\content\css\bootstrap-theme.css" />
     <None Remove="wwwroot\content\css\bootstrap-theme.css.map" />
     <None Remove="wwwroot\content\css\bootstrap-theme.min.css" />
@@ -35,6 +36,7 @@
     <None Remove="wwwroot\content\css\bootstrap.min.css.map" />
     <None Remove="wwwroot\content\css\global.css" />
     <None Remove="wwwroot\content\css\layui.css" />
+    <None Remove="wwwroot\Content\css\login.css" />
     <None Remove="wwwroot\content\font\iconfont.woff" />
     <None Remove="wwwroot\content\js\bootstrap.js" />
     <None Remove="wwwroot\content\js\bootstrap.min.js" />
@@ -68,6 +70,7 @@
     <None Remove="wwwroot\IndexContent.html" />
     <None Remove="wwwroot\itemsview.html" />
     <None Remove="wwwroot\Keys.html" />
+    <None Remove="wwwroot\login.html" />
     <None Remove="wwwroot\RedisAdd.html" />
     <None Remove="wwwroot\Remove.html" />
     <None Remove="wwwroot\Rename.html" />
@@ -80,6 +83,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\configs.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\Content\css\admin.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\content\css\bootstrap-theme.css">
@@ -110,6 +116,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\content\css\layui.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\Content\css\login.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\content\font\iconfont.woff">
@@ -211,6 +220,9 @@
     <Content Include="wwwroot\keys.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="wwwroot\login.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="wwwroot\redisadd.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -231,6 +243,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Attr\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
