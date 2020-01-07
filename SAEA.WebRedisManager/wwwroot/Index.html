@@ -43,13 +43,19 @@
                             <cite>Redis Server Configs</cite>
                         </a>
                     </li>
+                    <li class="layui-nav-item ">
+                        <a id="account_link" href="javascript:;">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>Account Manager</cite>
+                        </a>
+                    </li>
                     <span class="layui-nav-bar" style="left: 44px; top: 55px; width: 0px; opacity: 0;"></span>
                 </ul>
             </div>
         </div>
         <div class="layui-side layui-bg-black">
             <div class="search-list">
-                <input type="text" id="search_list" autocomplete="off" class="layui-input search-list-input" placeholder="Option Name">
+                <input type="text" id="search_list" autocomplete="off" class="layui-input search-list-input layui-icon layui-icon-search" placeholder="&#xe615;">
             </div>
             <div class="layui-side-scroll">
                 <ul class="layui-nav layui-nav-tree site-demo-nav">
@@ -80,13 +86,13 @@
         <div class="layui-footer footer footer-demo"></div>
         <script src="content/js/layui.js"></script>
         <script>
-            window.global = {
-                pageType: 'demo'
-                , preview: function () {
-                    var preview = document.getElementById('LAY_preview');
-                    return preview ? preview.innerHTML : '';
-                }()
-            };
+            //window.global = {
+            //    pageType: 'demo'
+            //    , preview: function () {
+            //        var preview = document.getElementById('LAY_preview');
+            //        return preview ? preview.innerHTML : '';
+            //    }()
+            //};
             layui.config({
                 base: '/content/lay/modules/layui/'
                 , version: '1531663423583'

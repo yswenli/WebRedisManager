@@ -1,0 +1,268 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" style="background-color: #f2f2f2;">
+<head>
+    <meta charset="utf-8" />
+    <title>User List</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link href="/content/css/layui.css" rel="stylesheet" />
+    <link href="/content/css/global.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-fluid">
+        <div class="layui-col-md12" style="margin-top:15px;">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <button class="layui-btn layui-icon layui-icon-username" id="add_user_btn"> add user</button>
+                    <button class="layui-btn layui-btn-normal layui-icon layui-icon-face-surprised" id="logout_btn"> logout</button>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>UserName</th>
+                                <th>Password</th>
+                                <th>Role</th>
+                                <th>NickName</th>
+                                <th style="width:140px;">action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="redis-data-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="content/js/layui.js"></script>
+    <script type="text/javascript">
+        layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
+
+            var layer = layui.layer, form = layui.form, $ = layui.$, laypage = layui.laypage;
+
+            form.on('switch(switchTest)', function (data) {
+                layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis)
+            });
+
+            var layerIndex = -1;
+
+            layerIndex = layer.msg('加载中', {
+                icon: 16
+                , shade: 0.01
+            });
+
+            $.get("/api/user/getuserlist", null, function (data) {
+
+                layer.close(layerIndex);
+
+                $("#redis-data-body").html("");
+
+                if (data.Code === 1) {
+
+                    for (var i = 0; i < data.Data.length; i++) {
+
+                        var thtml = `<tr><td>${data.Data[i].ID}</td><td>${data.Data[i].UserName}</td><td>${data.Data[i].Password}</td><td>${data.Data[i].Role === 1 ? "Admin" : "User"}</td><td>${data.Data[i].NickName}</td><td>
+                                        <a href="javascript:;" class="update-link" data-id="${data.Data[i].ID}" data-username="${encodeURIComponent(data.Data[i].UserName)}" data-password="${encodeURIComponent(data.Data[i].Password)}" data-role="${data.Data[i].Role}" data-nickname="${encodeURIComponent(data.Data[i].NickName)}">Update</a> |
+                                        <a href="javascript:;" class="del-link" data-id="${data.Data[i].ID}">Delete</a>
+                                    </td></tr>`;
+
+                        $("#redis-data-body").append(thtml);
+                    }
+
+                    $(".del-link").click(function () {
+                        var dellink = $(this);
+                        var uid = dellink.attr("data-id");
+                        layer.confirm('确认要删除此用户吗？', { icon: 3, title: '提示' }, function (index) {
+
+                            $.post("/api/user/rem", "uid=" + uid, function (rdata) {
+                                if (rdata.Code === 1) {
+                                    layer.msg("操作成功", { time: 2000 });
+                                    dellink.parent().parent().remove();
+                                }
+                                else if (rdata.Code === 3) {
+                                    layer.msg("操作失败:" + rdata.Message, { time: 2000 }, function () {
+                                        location.href = "/login.html";
+                                    });
+                                }
+                                else {
+                                    layer.msg("操作失败:" + rdata.Message, { time: 2000 });
+                                }
+                            });
+
+                            layer.close(index);
+                        });
+
+
+                    });
+
+                    $(".update-link").click(function () {
+                        var uuid = $(this).attr("data-id");
+                        var uusername = $(this).attr("data-username");
+                        var upassword = $(this).attr("data-password");
+                        var urole = $(this).attr("data-role");
+                        var unickname = $(this).attr("data-nickname");
+                        layer.open({
+                            type: 1,
+                            area: ['500px', '400px'],
+                            title: 'add user',
+                            shade: 0.6,
+                            maxmin: false,
+                            anim: 1,
+                            content: `<form id="update_user_form" class="layui-form" action="" style="width:480px;padding-top:15px;">
+                                            <div class="layui-form-item">
+                                            <label class="layui-form-label">UserName</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" value="${uusername}">
+                                            </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                            <label class="layui-form-label">Password</label>
+                                            <div class="layui-input-block">
+                                                <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" value="${upassword}">
+                                            </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                            <label class="layui-form-label">Confirm Password</label>
+                                            <div class="layui-input-block">
+                                                <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input">
+                                            </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                            <label class="layui-form-label">Role</label>
+                                                <div class="layui-input-block">
+                                                    <select name="role" style="display:block;width: 370px;height: 36px;border: 1px solid #e6e6e6;color: #757575;">
+                                                    <option value="1" ${urole == 1 ? "selected" : ""}>Admin</option>
+                                                    <option value="2" ${urole == 1 ? "" : "selected"}>User</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                            <label class="layui-form-label">NickName</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" value="${unickname}">
+                                            </div>
+                                            </div>
+                                    </form>`,
+                            btn: ['OK', 'Cancel'],
+                            btn1: function (index, layero) {
+                                var username = encodeURIComponent($("input[name='username']").val());
+                                var password = encodeURIComponent($("input[name='password']").val());
+                                var confirmPwd = encodeURIComponent($("input[name='confirmPwd']").val());
+                                var role = $("select[name='role']").val();
+                                var nickname = encodeURIComponent($("input[name='nickname']").val());
+                                var addUserData = `id=${uuid}&username=${username}&password=${password}&confirmPwd=${confirmPwd}&role=${role}&nickname=${nickname}`;
+                                $.post("/api/user/set", addUserData, function (adata) {
+                                    if (adata.Code === 1) {
+                                        layer.msg("操作成功", { time: 2000 }, function () { location.reload(); });
+                                    }
+                                    else {
+                                        layer.msg("操作失败:" + adata.Message, { time: 2000 });
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+                else if (data.Code === 3) {
+                    layer.msg("操作失败:" + data.Message, { time: 2000 }, function () {
+                        location.href = "/login.html";
+                    });
+                }
+                else {
+                    layer.msg("操作失败:" + data.Message, { time: 2000 });
+                }
+            });
+
+
+            //
+
+            $("#add_user_btn").click(function () {
+                layer.open({
+                    type: 1,
+                    area: ['500px', '400px'],
+                    title: 'add user',
+                    shade: 0.6,
+                    maxmin: false,
+                    anim: 1,
+                    content: `<form id="add_user_form" class="layui-form" action="" style="width:480px;padding-top:15px;">
+                                <div class="layui-form-item">
+                                <label class="layui-form-label">UserName</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input">
+                                </div>
+                                </div>
+                                <div class="layui-form-item">
+                                <label class="layui-form-label">Password</label>
+                                <div class="layui-input-block">
+                                    <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input">
+                                </div>
+                                </div>
+                                <div class="layui-form-item">
+                                <label class="layui-form-label">Confirm Password</label>
+                                <div class="layui-input-block">
+                                    <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input">
+                                </div>
+                                </div>
+                                <div class="layui-form-item">
+                                <label class="layui-form-label">Role</label>
+                                    <div class="layui-input-block">
+                                        <select name="role" style="display:block;width: 370px;height: 36px;border: 1px solid #e6e6e6;color: #757575;">
+                                        <option value="1">Admin</option>
+                                        <option value="2" selected>User</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                <label class="layui-form-label">NickName</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input">
+                                </div>
+                                </div>
+                        </form>`,
+                    btn: ['OK', 'Cancel'],
+                    btn1: function (index, layero) {
+                        var username = encodeURIComponent($("input[name='username']").val());
+                        var password = encodeURIComponent($("input[name='password']").val());
+                        var confirmPwd = encodeURIComponent($("input[name='confirmPwd']").val());
+                        var role = $("select[name='role']").val();
+                        var nickname = encodeURIComponent($("input[name='nickname']").val());
+                        var addUserData = `username=${username}&password=${password}&confirmPwd=${confirmPwd}&role=${role}&nickname=${nickname}`;
+                        $.post("/api/user/set", addUserData, function (adata) {
+                            if (adata.Code === 1) {
+                                layer.msg("操作成功", { time: 2000 }, function () { location.reload(); });
+                            }
+                            else {
+                                layer.msg("操作失败:" + adata.Message, { time: 2000 });
+                            }
+                        });
+                    }
+                });
+
+            });
+            //
+            $("#logout_btn").click(function () {
+                layer.confirm('确定要注销吗?', { icon: 3, title: '提示' }, function (index) {
+
+                    $.post("/api/user/logout", null, function (data) {
+                        if (data.Code === 1) {
+                            layer.msg(data.Message, { time: 2000 }, function () {
+                                top.location.href = "/login.html";
+                            });
+                        }
+                        else {
+                            layer.msg(data.Message, { time: 2000 });
+                        }
+                    });
+
+                    layer.close(index);
+                });
+            });
+            //
+        });
+    </script>
+</body>
+</html>

@@ -43,6 +43,10 @@ namespace SAEA.Redis.WebManager.Libs
             Save();
         }
 
+        /// <summary>
+        /// 设置缓存
+        /// </summary>
+        /// <param name="configs"></param>
         public static void Set(List<Config> configs)
         {
             _list = configs;

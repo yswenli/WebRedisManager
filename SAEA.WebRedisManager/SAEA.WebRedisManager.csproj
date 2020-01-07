@@ -74,6 +74,7 @@
     <None Remove="wwwroot\RedisAdd.html" />
     <None Remove="wwwroot\Remove.html" />
     <None Remove="wwwroot\Rename.html" />
+    <None Remove="wwwroot\userlist.html" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="wwwroot\addItem.html">
@@ -230,6 +231,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="wwwroot\rename.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wwwroot\userlist.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

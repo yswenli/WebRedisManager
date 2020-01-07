@@ -15,9 +15,6 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SAEA.WebRedisManager.Models
 {
@@ -30,5 +27,13 @@ namespace SAEA.WebRedisManager.Models
         public string NickName { get; set; }
 
         public string Password { get; set; }
+
+        public Role Role { get; set; }
+    }
+
+    public enum Role
+    {
+        Admin = 1,
+        User = 2
     }
 }

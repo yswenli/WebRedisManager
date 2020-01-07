@@ -161,6 +161,11 @@
         });
     });
 
+    //users list按钮
+    $("#account_link").on("click", function () {
+        $(".layadmin-iframe").attr("src", "/userlist.html");
+    });
+
     //提交添加redis表单
     $("#add_btn").on("click", function () {
         //var str = $("#add_form").serialize(); //layui jquery bug

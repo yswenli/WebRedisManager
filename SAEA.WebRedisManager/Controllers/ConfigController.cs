@@ -1,6 +1,8 @@
 ﻿using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
+using SAEA.WebRedisManager.Libs;
+using SAEA.WebRedisManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +24,18 @@ namespace SAEA.WebRedisManager.Controllers
         {
             try
             {
-                ConfigHelper.Set(config);
+                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                {
+                    config.Creator = HttpContext.Current.Session["uid"].ToString();
 
-                return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
+                    ConfigHelper.Set(config);
+
+                    return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
+                }
+                else
+                {
+                    return Json(new JsonResult<List<Config>>() { Code = 3, Message = "当前操作需要登录" });
+                }
             }
             catch (Exception ex)
             {
@@ -37,14 +48,48 @@ namespace SAEA.WebRedisManager.Controllers
         {
             try
             {
-                var confs = Deserialize<List<Config>>(configs);
-
-                if (confs != null && confs.Any())
+                if (string.IsNullOrWhiteSpace(configs))
                 {
-                    ConfigHelper.Set(confs);
+                    return Json(new JsonResult<string>() { Code = 2, Data = string.Empty, Message = "配置不能为空" });
                 }
 
-                return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
+                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                {
+                    var confs = Deserialize<List<Config>>(configs);
+
+                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                    if (user.Role == Role.User)
+                    {
+                        var old = ConfigHelper.ReadList();
+
+                        if (old != null && old.Any())
+                        {
+                            old.RemoveAll(b => b.Creator == user.ID);
+                        }
+
+                        if (confs != null && confs.Any())
+                        {
+                            confs = confs.Where(b => b.Creator == user.ID).ToList();
+
+                            if (confs != null || confs.Any())
+                            {
+                                old.AddRange(confs);
+                            }
+                        }
+                        ConfigHelper.Set(old);
+                    }
+                    else
+                    {
+                        ConfigHelper.Set(confs);
+                    }
+
+                    return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
+                }
+                else
+                {
+                    return Json(new JsonResult<List<Config>>() { Code = 3, Message = "当前操作需要登录" });
+                }
             }
             catch (Exception ex)
             {
@@ -61,7 +106,27 @@ namespace SAEA.WebRedisManager.Controllers
             {
                 if (HttpContext.Current.Session.Keys.Contains("uid"))
                 {
-                    return Json(new JsonResult<List<Config>>() { Code = 1, Data = ConfigHelper.ReadList(), Message = "Ok" });
+                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                    if (user != null)
+                    {
+                        if (user.Role == Role.Admin)
+                        {
+                            return Json(new JsonResult<List<Config>>() { Code = 1, Data = ConfigHelper.ReadList(), Message = "Ok" });
+                        }
+                        else
+                        {
+                            var list = ConfigHelper.ReadList();
+
+                            if (list != null && list.Any())
+                            {
+                                list = list.Where(b => b.Creator == user.ID).ToList();
+
+                                return Json(new JsonResult<List<Config>>() { Code = 1, Data = list, Message = "Ok" });
+                            }
+                        }
+                    }
+                    return Json(new JsonResult<List<Config>>() { Code = 1, Data = new List<Config>(), Message = "Ok" });
                 }
                 else
                 {
@@ -90,6 +155,7 @@ namespace SAEA.WebRedisManager.Controllers
                 return Json(new JsonResult<Config>() { Code = 2, Message = ex.Message });
             }
         }
+
         [HttpPost]
         public ActionResult Rem(string name)
         {

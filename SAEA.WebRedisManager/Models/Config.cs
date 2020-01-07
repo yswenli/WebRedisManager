@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SAEA.Redis.WebManager.Models
+﻿namespace SAEA.Redis.WebManager.Models
 {
     /// <summary>
     /// SAEA.Redis.WebManager配置
@@ -29,6 +23,12 @@ namespace SAEA.Redis.WebManager.Models
         public string Password
         {
             get; set;
+        }
+
+        public string Creator
+        {
+            get;
+            set;
         }
 
     }

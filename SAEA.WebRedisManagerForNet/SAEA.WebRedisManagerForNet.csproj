@@ -129,9 +129,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\SAEA.WebRedisManager\Attr\AuthAttribute.cs">
-      <Link>Attr\AuthAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Controllers\ConfigController.cs">
       <Link>Controllers\ConfigController.cs</Link>
     </Compile>
@@ -224,6 +221,10 @@
       <Link>wwwroot\Console.html</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\css\admin.css">
+      <Link>wwwroot\Content\css\admin.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\css\bootstrap-theme.css">
       <Link>wwwroot\Content\css\bootstrap-theme.css</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -246,6 +247,10 @@
     </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\css\layui.css">
       <Link>wwwroot\Content\css\layui.css</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\css\login.css">
+      <Link>wwwroot\Content\css\login.css</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Content\img\6139455.png">
@@ -406,6 +411,10 @@
     </Content>
     <Content Include="..\SAEA.WebRedisManager\wwwroot\Rename.html">
       <Link>wwwroot\Rename.html</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\SAEA.WebRedisManager\wwwroot\userlist.html">
+      <Link>wwwroot\userlist.html</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="favicon.ico" />

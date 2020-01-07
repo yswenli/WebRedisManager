@@ -179,42 +179,12 @@ layui.define(['code', 'element', 'table', 'util'], function (exports) {
 
 
     for (var i = 0; i < $('.adsbygoogle').length; i++) {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    }
+        (adsbygoogle = window.adsbygoogle || []).push({});   }
 
 
     //灞曠ず褰撳墠鐗堟湰
     $('.site-showv').html(layui.v);
 
-    //鑾峰彇涓嬭浇鏁�
-    $.get('//fly.layui.com/api/handle?id=10&type=find', function (res) {
-        $('.site-showdowns').html(res.number);
-    }, 'jsonp');
-
-    //璁板綍涓嬭浇
-    $('.site-down').on('click', function () {
-        $.get('//fly.layui.com/api/handle?id=10', function () { }, 'jsonp');
-    });
-
-    //鑾峰彇Github鏁版嵁
-    var getStars = $('#getStars');
-    if (getStars[0]) {
-        $.get('https://api.github.com/repos/sentsin/layui', function (res) {
-            getStars.html(res.stargazers_count);
-        }, 'json');
-    }
-
-    //鍥哄畾Bar
-    if (global.pageType !== 'demo') {
-        util.fixbar({
-            bar1: true
-            , click: function (type) {
-                if (type === 'bar1') {
-                    location.href = '//fly.layui.com/';
-                }
-            }
-        });
-    }
 
     //绐楀彛scroll
     ; !function () {
@@ -347,28 +317,28 @@ layui.define(['code', 'element', 'table', 'util'], function (exports) {
     }
 
 
-    //鏌ョ湅浠ｇ爜
-    $(function () {
-        var DemoCode = $('#LAY_democode');
-        DemoCode.val([
-            DemoCode.val()
-            , '<body>'
-            , global.preview
-            , '\n<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>'
-            , '\n<!-- 娉ㄦ剰锛氬鏋滀綘鐩存帴澶嶅埗鎵€鏈変唬鐮佸埌鏈湴锛屼笂杩癹s璺緞闇€瑕佹敼鎴愪綘鏈湴鐨� -->'
-            , $('#LAY_democodejs').html()
-            , '\n</body>\n</html>'
-        ].join(''));
-    });
+    ////鏌ョ湅浠ｇ爜
+    //$(function () {
+    //    var DemoCode = $('#LAY_democode');
+    //    DemoCode.val([
+    //        DemoCode.val()
+    //        , '<body>'
+    //        , global.preview
+    //        , '\n<script src="//res.layui.com/layui/dist/layui.js" charset="utf-8"></script>'
+    //        , '\n<!-- 娉ㄦ剰锛氬鏋滀綘鐩存帴澶嶅埗鎵€鏈変唬鐮佸埌鏈湴锛屼笂杩癹s璺緞闇€瑕佹敼鎴愪綘鏈湴鐨� -->'
+    //        , $('#LAY_democodejs').html()
+    //        , '\n</body>\n</html>'
+    //    ].join(''));
+    //});
 
-    //鐐瑰嚮鏌ョ湅浠ｇ爜閫夐」
-    element.on('tab(demoTitle)', function (obj) {
-        if (obj.index === 1) {
-            if (device.ie && device.ie < 9) {
-                layer.alert('寮虹儓涓嶆帹鑽愪綘閫氳繃ie8/9 鏌ョ湅浠ｇ爜锛佸洜涓猴紝鎵€鏈夌殑鏍囩閮戒細琚牸寮忔垚澶у啓锛屼笖娌℃湁鎹㈣绗︼紝褰卞搷闃呰');
-            }
-        }
-    })
+    ////鐐瑰嚮鏌ョ湅浠ｇ爜閫夐」
+    //element.on('tab(demoTitle)', function (obj) {
+    //    if (obj.index === 1) {
+    //        if (device.ie && device.ie < 9) {
+    //            layer.alert('寮虹儓涓嶆帹鑽愪綘閫氳繃ie8/9 鏌ョ湅浠ｇ爜锛佸洜涓猴紝鎵€鏈夌殑鏍囩閮戒細琚牸寮忔垚澶у啓锛屼笖娌℃湁鎹㈣绗︼紝褰卞搷闃呰');
+    //        }
+    //    }
+    //})
 
 
     //鎵嬫満璁惧鐨勭畝鍗曢€傞厤

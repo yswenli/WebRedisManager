@@ -20,6 +20,8 @@ using SAEA.Redis.WebManager.Models;
 using SAEA.WebRedisManager.Libs;
 using SAEA.WebRedisManager.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SAEA.WebRedisManager.Controllers
 {
@@ -49,7 +51,8 @@ namespace SAEA.WebRedisManager.Controllers
                         ID = Guid.NewGuid().ToString("N"),
                         UserName = userName,
                         Password = password,
-                        NickName = "WALLE"
+                        NickName = "WALLE",
+                        Role = Role.Admin
                     };
 
                     UserHelper.Set(newUser);
@@ -72,22 +75,135 @@ namespace SAEA.WebRedisManager.Controllers
         }
 
         /// <summary>
-        /// 注册新用户
+        /// 注销
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Logout()
+        {
+            try
+            {
+                HttpContext.Current.Session.Remove("uid");
+
+                return Json(new JsonResult<string>() { Code = 1, Message = "注销成功" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = "注销用户失败，" + ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 添加用户
         /// </summary>
         /// <param name="user"></param>
+        /// <param name="confirmPwd"></param>
+        /// <param name="role"></param>
         /// <returns></returns>
-        public ActionResult Regist(User user,string confirmPwd)
+        public ActionResult Set(User user, string confirmPwd, int role)
         {
             if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password) || string.IsNullOrEmpty(user.NickName)) return Json(new JsonResult<string>() { Code = 2, Message = "用户名、密码或昵称不能为空" });
 
-            if (string.IsNullOrEmpty(confirmPwd) || user.Password!= confirmPwd)
+            if (string.IsNullOrEmpty(confirmPwd) || user.Password != confirmPwd)
             {
                 return Json(new JsonResult<string>() { Code = 2, Message = "两次输入的密码不一致" });
             }
-
+            if (string.IsNullOrEmpty(user.ID))
+                user.ID = Guid.NewGuid().ToString("N");
+            user.Role = role == 1 ? Role.Admin : Role.User;
             UserHelper.Set(user);
+            return Json(new JsonResult<string>() { Code = 1, Message = "注册成功" });
+        }
 
-            return Json(new JsonResult<string>() { Code = 1, Message = "注册成功"});
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetUserList()
+        {
+            try
+            {
+                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                {
+                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                    if (user != null)
+                    {
+                        if (user.Role == Role.Admin)
+                        {
+                            return Json(new JsonResult<List<User>>() { Code = 1, Data = UserHelper.ReadList(), Message = "Ok" });
+                        }
+                    }
+                    return Json(new JsonResult<List<User>>() { Code = 4, Message = "权限不足，请联系管理员" });
+                }
+                else
+                {
+                    return Json(new JsonResult<List<User>>() { Code = 3, Message = "当前操作需要登录" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<List<User>>() { Code = 2, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 移除用户列表
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public ActionResult Rem(string uid)
+        {
+            try
+            {
+                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                {
+                    var cuid = HttpContext.Current.Session["uid"].ToString();
+
+                    if (cuid == uid)
+                    {
+                        throw new Exception("禁止删除当前用户！");
+                    }
+
+                    var user = UserHelper.Get(cuid);
+
+                    if (user != null)
+                    {
+                        if (user.Role == Role.Admin)
+                        {
+                            UserHelper.Rem(uid);
+
+                            return Json(new JsonResult<List<User>>() { Code = 1, Message = "Ok" });
+                        }
+                    }
+                    return Json(new JsonResult<List<User>>() { Code = 4, Message = "权限不足，请联系管理员" });
+                }
+                else
+                {
+                    return Json(new JsonResult<List<User>>() { Code = 3, Message = "当前操作需要登录" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<List<User>>() { Code = 2, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 是否是空项
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult IsEmpty()
+        {
+            try
+            {
+                var userList = UserHelper.ReadList();
+
+                return Json(new JsonResult<bool>() { Code = 1, Data = (userList == null || !userList.Any()) });
+            }
+            catch (Exception ex)
+            {
+                return Json(new JsonResult<bool>() { Code = 2, Data = false, Message = ex.Message });
+            }
         }
     }
 }

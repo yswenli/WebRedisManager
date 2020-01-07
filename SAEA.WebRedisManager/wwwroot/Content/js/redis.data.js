@@ -29,6 +29,11 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var layerIndex = -1;
 
+    layerIndex = layer.msg('加载中', {
+        icon: 16
+        , shade: 0.01
+    });
+
     var redis_name = GetRequest().name;
 
     var db_index = GetRequest().dbindex;
@@ -37,6 +42,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     //keys列表
     $.get(`/api/redis/getdbsize?name=${redis_name}&dbindex=${db_index}`, null, function (gdata) {
+
+        layer.close(layerIndex);
 
         $(".keys-header").html(`【<a style="color:#009688;" href="/chart.html?name=${redis_name}">返回</a>】 keys列表 <i class="layui-icon layui-icon-refresh" style="color:#009688;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURI(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
 
