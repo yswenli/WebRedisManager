@@ -44,10 +44,6 @@
 
             var layer = layui.layer, form = layui.form, $ = layui.$, laypage = layui.laypage;
 
-            form.on('switch(switchTest)', function (data) {
-                layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis)
-            });
-
             var layerIndex = -1;
 
             layerIndex = layer.msg('加载中', {
@@ -116,19 +112,19 @@
                                             <div class="layui-form-item">
                                             <label class="layui-form-label">UserName</label>
                                             <div class="layui-input-block">
-                                                <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" value="${uusername}">
+                                                <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" value="${uusername}" maxlength="20" />
                                             </div>
                                             </div>
                                             <div class="layui-form-item">
                                             <label class="layui-form-label">Password</label>
                                             <div class="layui-input-block">
-                                                <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" value="${upassword}">
+                                                <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" value="${upassword}" maxlength="20" />
                                             </div>
                                             </div>
                                             <div class="layui-form-item">
                                             <label class="layui-form-label">Confirm Password</label>
                                             <div class="layui-input-block">
-                                                <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input">
+                                                <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input" maxlength="20" />
                                             </div>
                                             </div>
                                             <div class="layui-form-item">
@@ -143,7 +139,7 @@
                                             <div class="layui-form-item">
                                             <label class="layui-form-label">NickName</label>
                                             <div class="layui-input-block">
-                                                <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" value="${unickname}">
+                                                <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" value="${unickname}" maxlength="20" />
                                             </div>
                                             </div>
                                     </form>`,
@@ -168,8 +164,13 @@
                     });
                 }
                 else if (data.Code === 3) {
-                    layer.msg("操作失败:" + data.Message, { time: 2000 }, function () {
+                    layer.msg("操作失败:" + data.Message, { time: 2000, shade: 0.3, shadeClose: false }, function () {
                         location.href = "/login.html";
+                    });
+                }
+                else if (data.Code === 4) {
+                    layer.msg("操作失败:" + data.Message, { time: 2000, shade: 0.3, shadeClose: false }, function () {
+                        location.href = "/indexcontent.html";
                     });
                 }
                 else {
@@ -192,19 +193,19 @@
                                 <div class="layui-form-item">
                                 <label class="layui-form-label">UserName</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input">
+                                    <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" maxlength="20" />
                                 </div>
                                 </div>
                                 <div class="layui-form-item">
                                 <label class="layui-form-label">Password</label>
                                 <div class="layui-input-block">
-                                    <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input">
+                                    <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" maxlength="20" />
                                 </div>
                                 </div>
                                 <div class="layui-form-item">
                                 <label class="layui-form-label">Confirm Password</label>
                                 <div class="layui-input-block">
-                                    <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input">
+                                    <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input" maxlength="20" />
                                 </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -219,7 +220,7 @@
                                 <div class="layui-form-item">
                                 <label class="layui-form-label">NickName</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input">
+                                    <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" maxlength="20" />
                                 </div>
                                 </div>
                         </form>`,

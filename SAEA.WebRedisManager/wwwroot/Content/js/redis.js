@@ -178,6 +178,11 @@
             if (data.Code === 1) {
                 parent.location.reload();
             }
+            else if (data.Code === 3) {
+                layer.msg("操作失败:" + data.Message, { time: 2000, shade: 0.3, shadeClose: false }, function () {
+                    top.location.href = "/login.html";
+                });
+            }
             else {
                 layer.msg("操作失败:" + data.Message, { time: 2000 });
             }
@@ -195,6 +200,11 @@
                 $.post("/api/config/rem", json, function (data) {
                     if (data.Code === 1) {
                         parent.location.reload();
+                    }
+                    else if (data.Code === 3) {
+                        layer.msg("操作失败:" + data.Message, { time: 2000, shade: 0.3, shadeClose: false }, function () {
+                            top.location.href = "/login.html";
+                        });
                     }
                     else {
                         layer.msg("操作失败:" + data.Message, { time: 2000 });

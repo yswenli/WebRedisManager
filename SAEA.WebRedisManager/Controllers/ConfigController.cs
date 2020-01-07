@@ -161,13 +161,43 @@ namespace SAEA.WebRedisManager.Controllers
         {
             try
             {
-                ConfigHelper.Rem(name);
+                if (string.IsNullOrEmpty(name)) return Json(new JsonResult<string>() { Code = 2, Message = "传入的配置项名称不能为空！" });
 
-                return Json(new JsonResult<string>() { Code = 1, Data = "Ok", Message = "Ok" });
+                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                {
+                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                    if (user.Role == Role.Admin)
+                    {
+                        ConfigHelper.Rem(name);
+                        return Json(new JsonResult<bool>() { Code = 1, Data = true, Message = "Ok" });
+                    }
+                    else
+                    {
+                        var config = ConfigHelper.Get(name);
+
+                        if (config == null) return Json(new JsonResult<bool>() { Code = 2, Message = "找不到名称为" + name + "的配置！" });
+
+                        if(config.Creator== user.ID)
+                        {
+                            ConfigHelper.Rem(name);
+                            return Json(new JsonResult<bool>() { Code = 1, Data = true, Message = "Ok" });
+                        }
+                        else
+                        {
+                            return Json(new JsonResult<bool>() { Code = 4, Message = "权限不足，请联系管理员！" });
+                        }
+                    }                    
+                }
+                else
+                {
+                    return Json(new JsonResult<bool>() { Code = 3, Message = "当前操作需要登录" });
+                }
+
             }
             catch (Exception ex)
             {
-                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+                return Json(new JsonResult<bool>() { Code = 2, Message = ex.Message });
             }
         }
 

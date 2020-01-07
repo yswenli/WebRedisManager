@@ -50,7 +50,7 @@ namespace SAEA.WebRedisManager.Controllers
                     {
                         ID = Guid.NewGuid().ToString("N"),
                         UserName = userName,
-                        Password = password,
+                        Password = password.Substring(0, 20),
                         NickName = "WALLE",
                         Role = Role.Admin
                     };
@@ -109,6 +109,9 @@ namespace SAEA.WebRedisManager.Controllers
             }
             if (string.IsNullOrEmpty(user.ID))
                 user.ID = Guid.NewGuid().ToString("N");
+            user.UserName = user.UserName.Substring(0, 20);
+            user.Password = user.Password.Substring(0, 20);
+            user.NickName = user.NickName.Substring(0, 20);
             user.Role = role == 1 ? Role.Admin : Role.User;
             UserHelper.Set(user);
             return Json(new JsonResult<string>() { Code = 1, Message = "注册成功" });
