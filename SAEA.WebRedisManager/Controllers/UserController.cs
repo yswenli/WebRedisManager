@@ -17,6 +17,7 @@
 *****************************************************************************/
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Models;
+using SAEA.WebRedisManager.Attr;
 using SAEA.WebRedisManager.Libs;
 using SAEA.WebRedisManager.Models;
 using System;
@@ -121,27 +122,12 @@ namespace SAEA.WebRedisManager.Controllers
         /// 获取用户列表
         /// </summary>
         /// <returns></returns>
+        [Auth(true, true)]
         public ActionResult GetUserList()
         {
             try
             {
-                if (HttpContext.Current.Session.Keys.Contains("uid"))
-                {
-                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
-
-                    if (user != null)
-                    {
-                        if (user.Role == Role.Admin)
-                        {
-                            return Json(new JsonResult<List<User>>() { Code = 1, Data = UserHelper.ReadList(), Message = "Ok" });
-                        }
-                    }
-                    return Json(new JsonResult<List<User>>() { Code = 4, Message = "权限不足，请联系管理员" });
-                }
-                else
-                {
-                    return Json(new JsonResult<List<User>>() { Code = 3, Message = "当前操作需要登录" });
-                }
+                return Json(new JsonResult<List<User>>() { Code = 1, Data = UserHelper.ReadList(), Message = "Ok" });
             }
             catch (Exception ex)
             {

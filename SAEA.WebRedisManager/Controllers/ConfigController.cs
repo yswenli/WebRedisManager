@@ -1,6 +1,7 @@
 ﻿using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
+using SAEA.WebRedisManager.Attr;
 using SAEA.WebRedisManager.Libs;
 using SAEA.WebRedisManager.Models;
 using System;
@@ -20,22 +21,16 @@ namespace SAEA.WebRedisManager.Controllers
         /// <param name="config"></param>
         /// <returns></returns>
         [HttpPost]
+        [Auth(false, true)]
         public ActionResult Set(Config config)
         {
             try
             {
-                if (HttpContext.Current.Session.Keys.Contains("uid"))
-                {
-                    config.Creator = HttpContext.Current.Session["uid"].ToString();
+                config.Creator = HttpContext.Current.Session["uid"].ToString();
 
-                    ConfigHelper.Set(config);
+                ConfigHelper.Set(config);
 
-                    return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
-                }
-                else
-                {
-                    return Json(new JsonResult<List<Config>>() { Code = 3, Message = "当前操作需要登录" });
-                }
+                return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
             }
             catch (Exception ex)
             {
@@ -43,6 +38,7 @@ namespace SAEA.WebRedisManager.Controllers
             }
         }
 
+        [Auth(false, true)]
         [HttpPost]
         public ActionResult SetConfigs(string configs)
         {
@@ -53,43 +49,36 @@ namespace SAEA.WebRedisManager.Controllers
                     return Json(new JsonResult<string>() { Code = 2, Data = string.Empty, Message = "配置不能为空" });
                 }
 
-                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                var confs = Deserialize<List<Config>>(configs);
+
+                var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                if (user.Role == Role.User)
                 {
-                    var confs = Deserialize<List<Config>>(configs);
+                    var old = ConfigHelper.ReadList();
 
-                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
-
-                    if (user.Role == Role.User)
+                    if (old != null && old.Any())
                     {
-                        var old = ConfigHelper.ReadList();
-
-                        if (old != null && old.Any())
-                        {
-                            old.RemoveAll(b => b.Creator == user.ID);
-                        }
-
-                        if (confs != null && confs.Any())
-                        {
-                            confs = confs.Where(b => b.Creator == user.ID).ToList();
-
-                            if (confs != null || confs.Any())
-                            {
-                                old.AddRange(confs);
-                            }
-                        }
-                        ConfigHelper.Set(old);
-                    }
-                    else
-                    {
-                        ConfigHelper.Set(confs);
+                        old.RemoveAll(b => b.Creator == user.ID);
                     }
 
-                    return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
+                    if (confs != null && confs.Any())
+                    {
+                        confs = confs.Where(b => b.Creator == user.ID).ToList();
+
+                        if (confs != null || confs.Any())
+                        {
+                            old.AddRange(confs);
+                        }
+                    }
+                    ConfigHelper.Set(old);
                 }
                 else
                 {
-                    return Json(new JsonResult<List<Config>>() { Code = 3, Message = "当前操作需要登录" });
+                    ConfigHelper.Set(confs);
                 }
+
+                return Json(new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" });
             }
             catch (Exception ex)
             {
@@ -100,38 +89,32 @@ namespace SAEA.WebRedisManager.Controllers
         /// 获取全部配置
         /// </summary>
         /// <returns></returns>
+        [Auth(false, true)]
         public ActionResult GetList()
         {
             try
             {
-                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                if (user != null)
                 {
-                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
-
-                    if (user != null)
+                    if (user.Role == Role.Admin)
                     {
-                        if (user.Role == Role.Admin)
-                        {
-                            return Json(new JsonResult<List<Config>>() { Code = 1, Data = ConfigHelper.ReadList(), Message = "Ok" });
-                        }
-                        else
-                        {
-                            var list = ConfigHelper.ReadList();
+                        return Json(new JsonResult<List<Config>>() { Code = 1, Data = ConfigHelper.ReadList(), Message = "Ok" });
+                    }
+                    else
+                    {
+                        var list = ConfigHelper.ReadList();
 
-                            if (list != null && list.Any())
-                            {
-                                list = list.Where(b => b.Creator == user.ID).ToList();
+                        if (list != null && list.Any())
+                        {
+                            list = list.Where(b => b.Creator == user.ID).ToList();
 
-                                return Json(new JsonResult<List<Config>>() { Code = 1, Data = list, Message = "Ok" });
-                            }
+                            return Json(new JsonResult<List<Config>>() { Code = 1, Data = list, Message = "Ok" });
                         }
                     }
-                    return Json(new JsonResult<List<Config>>() { Code = 1, Data = new List<Config>(), Message = "Ok" });
                 }
-                else
-                {
-                    return Json(new JsonResult<List<Config>>() { Code = 3, Message = "当前操作需要登录" });
-                }
+                return Json(new JsonResult<List<Config>>() { Code = 1, Data = new List<Config>(), Message = "Ok" });
             }
             catch (Exception ex)
             {
@@ -156,6 +139,7 @@ namespace SAEA.WebRedisManager.Controllers
             }
         }
 
+        [Auth(false, true)]
         [HttpPost]
         public ActionResult Rem(string name)
         {
@@ -163,35 +147,28 @@ namespace SAEA.WebRedisManager.Controllers
             {
                 if (string.IsNullOrEmpty(name)) return Json(new JsonResult<string>() { Code = 2, Message = "传入的配置项名称不能为空！" });
 
-                if (HttpContext.Current.Session.Keys.Contains("uid"))
-                {
-                    var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+                var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
 
-                    if (user.Role == Role.Admin)
+                if (user.Role == Role.Admin)
+                {
+                    ConfigHelper.Rem(name);
+                    return Json(new JsonResult<bool>() { Code = 1, Data = true, Message = "Ok" });
+                }
+                else
+                {
+                    var config = ConfigHelper.Get(name);
+
+                    if (config == null) return Json(new JsonResult<bool>() { Code = 2, Message = "找不到名称为" + name + "的配置！" });
+
+                    if (config.Creator == user.ID)
                     {
                         ConfigHelper.Rem(name);
                         return Json(new JsonResult<bool>() { Code = 1, Data = true, Message = "Ok" });
                     }
                     else
                     {
-                        var config = ConfigHelper.Get(name);
-
-                        if (config == null) return Json(new JsonResult<bool>() { Code = 2, Message = "找不到名称为" + name + "的配置！" });
-
-                        if(config.Creator== user.ID)
-                        {
-                            ConfigHelper.Rem(name);
-                            return Json(new JsonResult<bool>() { Code = 1, Data = true, Message = "Ok" });
-                        }
-                        else
-                        {
-                            return Json(new JsonResult<bool>() { Code = 4, Message = "权限不足，请联系管理员！" });
-                        }
-                    }                    
-                }
-                else
-                {
-                    return Json(new JsonResult<bool>() { Code = 3, Message = "当前操作需要登录" });
+                        return Json(new JsonResult<bool>() { Code = 4, Message = "权限不足，请联系管理员！" });
+                    }
                 }
 
             }

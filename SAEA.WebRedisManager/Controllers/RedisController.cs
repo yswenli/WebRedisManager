@@ -144,7 +144,6 @@ namespace SAEA.WebRedisManager.Controllers
                         {
                             result = (usemem / totalmem * 100).ToString();
                         }
-
                     }
 
                     return Json(new JsonResult<string>() { Code = 1, Data = result, Message = "OK" });
