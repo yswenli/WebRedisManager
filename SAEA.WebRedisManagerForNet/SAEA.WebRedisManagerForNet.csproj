@@ -147,6 +147,9 @@
     <Compile Include="..\SAEA.WebRedisManager\Controllers\UserController.cs">
       <Link>Controllers\UserController.cs</Link>
     </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\AESHelper.cs">
+      <Link>Libs\AESHelper.cs</Link>
+    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Libs\ConfigHelper.cs">
       <Link>Libs\ConfigHelper.cs</Link>
     </Compile>

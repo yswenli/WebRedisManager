@@ -21,7 +21,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace SAEA.WebRedisManager.Libs
 {
@@ -75,7 +74,7 @@ namespace SAEA.WebRedisManager.Libs
         /// <returns></returns>
         public static List<User> ReadList()
         {
-            var filePath = Path.Combine(GetCurrentPath("Config"), "UserConfig.json");
+            var filePath = Path.Combine(GetCurrentPath("Config"), "userconfig.json");
 
             if (File.Exists(filePath))
             {
@@ -83,7 +82,10 @@ namespace SAEA.WebRedisManager.Libs
 
                 if (!string.IsNullOrEmpty(json))
                 {
-                    _list = SerializeHelper.Deserialize<List<User>>(json);
+                    var str = AESTool.Decrypt(json, "yswenli", false);
+
+                    _list = SerializeHelper.Deserialize<List<User>>(str);
+
                     if (_list != null && _list.Count > 0)
                         return _list;
                 }
@@ -97,15 +99,24 @@ namespace SAEA.WebRedisManager.Libs
         /// </summary>
         public static void Save()
         {
-            var json = SerializeHelper.Serialize(_list);
-
-            var filePath = Path.Combine(GetCurrentPath("Config"), "UserConfig.json");
-
-            if (File.Exists(filePath))
+            try
             {
-                File.Delete(filePath);
+                var json = SerializeHelper.Serialize(_list);
+
+                var str = AESTool.Encrypt(json, "yswenli", false);
+
+                var filePath = Path.Combine(GetCurrentPath("Config"), "userconfig.json");
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+                File.AppendAllText(filePath, str);
             }
-            File.AppendAllText(filePath, json);
+            catch(Exception ex)
+            {
+                LogHelper.Error("UserHelper.Save", ex);
+            }
         }
 
         /// <summary>
