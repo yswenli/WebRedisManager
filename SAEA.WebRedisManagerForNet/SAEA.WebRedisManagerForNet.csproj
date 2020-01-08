@@ -156,9 +156,6 @@
     <Compile Include="..\SAEA.WebRedisManager\Libs\UserHelper.cs">
       <Link>Libs\UserHelper.cs</Link>
     </Compile>
-    <Compile Include="..\SAEA.WebRedisManager\Libs\UsersDataHelper.cs">
-      <Link>Libs\UsersDataHelper.cs</Link>
-    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Models\Config.cs">
       <Link>Models\Config.cs</Link>
     </Compile>
@@ -173,9 +170,6 @@
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Models\User.cs">
       <Link>Models\User.cs</Link>
-    </Compile>
-    <Compile Include="..\SAEA.WebRedisManager\Models\UsersData.cs">
-      <Link>Models\UsersData.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Program.cs">
       <Link>Program.cs</Link>
