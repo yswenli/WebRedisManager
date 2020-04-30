@@ -87,8 +87,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
                 for (var i = 0; i < jdata.Data.length; i++) {
                     var thtml = `<tr>
-                                    <td>${jdata.Data[i].Type}</td>
+                                    <td>${jdata.Data[i].Type}</td>                                    
                                     <td>${htmlEncode(decodeURIComponent(jdata.Data[i].Key))}</td>
+                                    <td>${jdata.Data[i].TTL}</td>
                                     <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(jdata.Data[i].Key)}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
@@ -247,7 +248,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
         layer.open({
             title: '添加redis数据',
             type: 2,
-            area: ['580px', '376px'],
+            area: ['580px', '534px'],
             fixed: true,
             resize: false,
             move: false,

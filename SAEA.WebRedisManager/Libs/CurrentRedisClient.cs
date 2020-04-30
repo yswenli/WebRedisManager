@@ -234,51 +234,59 @@ namespace SAEA.Redis.WebManager.Libs
         {
             List<string> result = new List<string>();
 
-            if (_redisClients.ContainsKey(name))
+            try
             {
-                var redisClient = _redisClients[name];
-
-                if (redisClient.IsConnected)
+                if (_redisClients.ContainsKey(name))
                 {
-                    var count = 50;
+                    var redisClient = _redisClients[name];
 
-                    if (!string.IsNullOrEmpty(key) && key != "*" && key != "[" && key != "]")
+                    if (redisClient.IsConnected)
                     {
-                        if (key.IndexOf("*") == -1 && key.IndexOf("[") == -1 && key.IndexOf("]") == -1)
+                        var count = 50;
+
+                        if (!string.IsNullOrEmpty(key) && key != "*" && key != "[" && key != "]")
                         {
-                            if (redisClient.GetDataBase(dbIndex).Exists(key))
+                            if (key.IndexOf("*") == -1 && key.IndexOf("[") == -1 && key.IndexOf("]") == -1)
                             {
-                                result.Add(key);
+                                if (redisClient.GetDataBase(dbIndex).Exists(key))
+                                {
+                                    result.Add(key);
+                                }
+                                return result;
                             }
-                            return result;
+                            else
+                            {
+                                var o = 0;
+                                do
+                                {
+                                    var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, count);
+
+                                    if (scanData != null)
+                                    {
+                                        if (scanData.Data != null && scanData.Data.Any())
+
+                                            result.AddRange(scanData.Data);
+
+                                        o = scanData.Offset;
+
+                                        if (o == 0) break;
+                                    }
+                                    if (result.Count >= 50) break;
+                                }
+                                while (true);
+
+                            }
                         }
                         else
-                        {
-                            var o = 0;
-                            do
-                            {
-                                var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, count);
-
-                                if (scanData != null)
-                                {
-                                    if (scanData.Data != null && scanData.Data.Any())
-
-                                        result.AddRange(scanData.Data);
-
-                                    o = scanData.Offset;
-
-                                    if (o == 0) break;
-                                }
-                                if (result.Count >= 50) break;
-                            }
-                            while (true);
-
-                        }
+                            result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
                     }
-                    else
-                        result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
                 }
             }
+            catch (Exception ex)
+            {
+                LogHelper.Error("CurrentRedisClient.GetKeys", ex, offset, name, dbIndex, key);
+            }
+
             return result;
         }
         /// <summary>
@@ -336,6 +344,34 @@ namespace SAEA.Redis.WebManager.Libs
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// 设置过期时间
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <param name="key"></param>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        public static void SetTTL(string name, int dbIndex, string key,int seconds)
+        {
+            var redisClient = _redisClients[name];
+
+            redisClient.GetDataBase(dbIndex).Expire(key, seconds);
+        }
+        /// <summary>
+        /// 获取过期时间
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static int GetTTL(string name, int dbIndex, string key)
+        {
+            var redisClient = _redisClients[name];
+
+            return redisClient.GetDataBase(dbIndex).Ttl(key);
         }
 
         /// <summary>

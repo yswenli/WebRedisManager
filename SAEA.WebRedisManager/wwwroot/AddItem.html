@@ -44,7 +44,13 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">value</label>
                         <div class="layui-input-block">
-                            <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="3"></textarea>
+                            <textarea id="redis_value" type="text" name="value" autocomplete="off" placeholder="value" class="layui-textarea" lay-verify="required" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">ttl</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="redis_ttl" name="ttl" autocomplete="off" placeholder="yyyy-MM-dd HH:mm:ss" class="layui-input" lay-verify="required" />
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -58,11 +64,21 @@
         </div>
     </div>
     <script src="content/js/requestpamars.js"></script>
+    <script src="Content/js/datetimehelper.js"></script>
     <script src="content/js/layui.js"></script>
     <script>
-        layui.use(['jquery', 'layer', 'form'], function () {
+        layui.use(['jquery', 'layer', 'form', 'laydate'], function () {
 
-            var layer = layui.layer, form = layui.form, $ = layui.$;
+            var layer = layui.layer, form = layui.form, $ = layui.$, laydate = layui.laydate;
+
+            //格子主题
+            laydate.render({
+                elem: '#redis_ttl'
+                , theme: 'grid'
+                , type: 'datetime'
+                , calendar: true
+                , value: new Date()
+            });
 
             var redis_name = GetRequest().name;
 
@@ -92,6 +108,7 @@
             });
             //选中默认类型
             var select = 'dd[lay-value=' + item_type + ']';
+
             $('#type-select').siblings("div.layui-form-select").find('dl').find(select).click();
 
             $("input[name='id']").val(item_id);
@@ -103,8 +120,9 @@
                 var item_data_id = encodeURIComponent($("input[name='id']").val());
                 var item_data_key = encodeURIComponent($("input[name='key']").val());
                 var item_data_val = encodeURIComponent($("#redis_value").val());
+                var item_data_ttl = datetimehelper_getSecondsFromNow($("#redis_ttl").val());
 
-                var url = `/api/redis/set?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_data_id}&key=${item_data_key}&value=${item_data_val}`;
+                var url = `/api/redis/set?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_data_id}&key=${item_data_key}&value=${item_data_val}&ttl=${item_data_ttl}`;
                 $.post(url, null, function (sdata) {
                     if (sdata.Code == 1) {
                         parent.location.reload();

@@ -196,7 +196,14 @@ namespace SAEA.WebRedisManager.Controllers
 
                 if (data != null)
                 {
-                    return Json(new JsonResult<List<KeyType>>() { Code = 1, Data = data.ToKeyTypes().Take(50).ToList(), Message = "OK" });
+                    var dts = data.ToKeyTypes().Take(50).ToList();
+
+                    foreach (var item in dts)
+                    {
+                        item.TTL = CurrentRedisClient.GetTTL(name, dbIndex, item.Key);
+                    }
+
+                    return Json(new JsonResult<List<KeyType>>() { Code = 1, Data = dts, Message = "OK" });
                 }
                 return Json(new JsonResult<string>() { Code = 3, Message = "暂未读取数据" });
             }
@@ -264,9 +271,10 @@ namespace SAEA.WebRedisManager.Controllers
                             CurrentRedisClient.LPush(redisData.Name, redisData.DBIndex, redisData.ID, redisData.Value);
                             break;
                         default:
-
-                            break;
+                            throw new Exception("不支持的类型，redisData.Type：" + redisData.Type);
                     }
+
+                    if (redisData.TTL > 0) CurrentRedisClient.SetTTL(redisData.Name, redisData.DBIndex, redisData.ID, redisData.TTL);
                 }
                 result.Code = 1;
                 result.Message = "ok";
