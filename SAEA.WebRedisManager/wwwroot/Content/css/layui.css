@@ -1636,7 +1636,7 @@ a {
     }
 
 .layui-card-header {
-    height: 42px;
+    max-height: 42px;
     line-height: 42px;
     padding: 0 15px;
     border-bottom: 1px solid #f6f6f6;
@@ -4453,7 +4453,7 @@ body .layui-util-face {
 
 #add_form {
     display: block;
-    max-height: 490px;
+    max-height: 500px;
 }
 
 #edit_form {

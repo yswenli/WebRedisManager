@@ -278,7 +278,7 @@ namespace SAEA.Redis.WebManager.Libs
                             }
                         }
                         else
-                            result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count).Data;
+                            result = redisClient.GetDataBase(dbIndex).Scan(offset, key, count)?.Data;
                     }
                 }
             }

@@ -79,6 +79,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
         });
 
         var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
+
         $.get(rurl, null, function (jdata) {
 
             if (jdata.Code === 1) {
@@ -89,11 +90,20 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     var thtml = `<tr>
                                     <td>${jdata.Data[i].Type}</td>                                    
                                     <td>${htmlEncode(decodeURIComponent(jdata.Data[i].Key))}</td>
-                                    <td>${jdata.Data[i].TTL}</td>
-                                    <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(jdata.Data[i].Key)}" data-type="${jdata.Data[i].Type}">
+                                    <td>-1</td>
+                                    <td class="redis-data-td" data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(jdata.Data[i].Key)}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
                     $("#redis-data-body").append(thtml);
+
+                    $(".redis-data-td").each(function (tdindex) {
+                        var ttl_td = $(this).prev();
+                        var td_key = $(this).attr("data-key");
+                        var td_url = `/api/redis/getttl?name=${redis_name}&dbindex=${db_index}&key=${td_key}`;
+                        $.get(td_url, null, function (tddata) {
+                            ttl_td.html(tddata.Data);
+                        });
+                    });
                 }
                 //查看
                 $(".view-link").on("click", function () {
@@ -248,7 +258,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
         layer.open({
             title: '添加redis数据',
             type: 2,
-            area: ['580px', '534px'],
+            area: ['580px', '544px'],
             fixed: true,
             resize: false,
             move: false,

@@ -254,6 +254,7 @@
   <ItemGroup>
     <PackageReference Include="SAEA.MVC" Version="5.3.2.1" />
     <PackageReference Include="SAEA.RedisSocket" Version="5.3.2.1" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>

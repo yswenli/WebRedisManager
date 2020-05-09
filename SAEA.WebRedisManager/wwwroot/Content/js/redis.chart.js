@@ -314,7 +314,7 @@
 <tr><td>Passwords Confirm</td><td><input name="pwd2" type="password" autocomplete="off" placeholder="Passwords0!" class="layui-input" lay-verify="required" value="" /></td></tr></table>
           </form>`;
         layer.open({
-            title: 'Add slave node for redis cluster ',
+            title: 'Alter Passwords ',
             type: 1,
             area: ['460px', '260px'],
             fixed: true,

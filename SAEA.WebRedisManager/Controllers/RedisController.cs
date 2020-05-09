@@ -198,11 +198,6 @@ namespace SAEA.WebRedisManager.Controllers
                 {
                     var dts = data.ToKeyTypes().Take(50).ToList();
 
-                    foreach (var item in dts)
-                    {
-                        item.TTL = CurrentRedisClient.GetTTL(name, dbIndex, item.Key);
-                    }
-
                     return Json(new JsonResult<List<KeyType>>() { Code = 1, Data = dts, Message = "OK" });
                 }
                 return Json(new JsonResult<string>() { Code = 3, Message = "暂未读取数据" });
@@ -211,6 +206,32 @@ namespace SAEA.WebRedisManager.Controllers
             {
                 LogHelper.Error($"RedisController.GetKeyTypes name:{name}", ex);
                 return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// 获取ttl
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public ActionResult GetTtl(string name, int dbIndex, string key)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(key))
+                {
+                    var data = CurrentRedisClient.GetTTL(name, dbIndex, key);
+
+                    return Json(new JsonResult<int>() { Code = 1, Data = data, Message = "OK" });
+                }
+                return Json(new JsonResult<int>() { Code = 3, Message = "未获取ttl数据" });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error($"RedisController.BatchRemove name:{name}", ex);
+                return Json(new JsonResult<int>() { Code = 2, Message = ex.Message });
             }
         }
 

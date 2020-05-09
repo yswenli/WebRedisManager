@@ -103,6 +103,7 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Pipelines, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.4.7.1\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
     </Reference>
@@ -147,6 +148,9 @@
     <Compile Include="..\SAEA.WebRedisManager\Controllers\UserController.cs">
       <Link>Controllers\UserController.cs</Link>
     </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Controllers\VerificationController.cs">
+      <Link>Controllers\VerificationController.cs</Link>
+    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Libs\AESHelper.cs">
       <Link>Libs\AESHelper.cs</Link>
     </Compile>
@@ -158,6 +162,21 @@
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Libs\UserHelper.cs">
       <Link>Libs\UserHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\Verification\AnimatedGifEncoder.cs">
+      <Link>Libs\Verification\AnimatedGifEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\Verification\GifDecoder.cs">
+      <Link>Libs\Verification\GifDecoder.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\Verification\LZWEncoder.cs">
+      <Link>Libs\Verification\LZWEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\Verification\NeuQuant.cs">
+      <Link>Libs\Verification\NeuQuant.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Libs\Verification\VerificationCode.cs">
+      <Link>Libs\Verification\VerificationCode.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Models\Config.cs">
       <Link>Models\Config.cs</Link>

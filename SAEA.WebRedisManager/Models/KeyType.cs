@@ -17,11 +17,6 @@ namespace SAEA.Redis.WebManager.Models
         {
             get; set;
         }
-
-        public int TTL
-        {
-            get; set;
-        }
     }
 
     public static class Extiontions
