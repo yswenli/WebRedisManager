@@ -403,9 +403,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
     //添加按钮
     $("#add_link").on("click", function () {
         layer.open({
-            title: '添加redis数据',
+            title: 'set redis数据',
             type: 2,
-            area: ['580px', '376px'],
+            area: ['580px', '544px'],
             fixed: true,
             resize: false,
             move: false,
