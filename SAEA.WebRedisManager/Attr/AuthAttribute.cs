@@ -76,28 +76,9 @@ namespace SAEA.WebRedisManager.Attr
 
         public override void OnActionExecuted(ActionResult result)
         {
-            var des = new StringBuilder();
-
-            if (!HttpContext.Current.Session.Keys.Contains("uid"))
-            {
-                des.Append("user:未登录用户");
-            }
-            else
-            {
-                des.Append("user:用户" + HttpContext.Current.Session["uid"]);
-            }
-
-            des.Append(",url:" + HttpContext.Current.Request.Url);
-
-            des.Append(",inputs:" + SerializeHelper.Serialize(HttpContext.Current.Request.Parmas));
-
-            des.Append(",outputs:" + SerializeHelper.Serialize(result));
-
-            des.Append(",cost:" + _stopwatch.Elapsed.TotalMilliseconds);
-
             _stopwatch.Stop();
 
-            LogHelper.Info(HttpContext.Current.Request.Url, result);
+            LogHelper.Info(HttpContext.Current.Request.Url, HttpContext.Current.Request.Parmas, result, _stopwatch.ElapsedMilliseconds);
         }
     }
 }
