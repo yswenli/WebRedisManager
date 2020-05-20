@@ -25,6 +25,9 @@ using System.Text;
 
 namespace SAEA.WebRedisManager.Attr
 {
+    /// <summary>
+    /// 验证并记录日志
+    /// </summary>
     public class AuthAttribute : ActionFilterAttribute
     {
         Stopwatch _stopwatch;
@@ -81,7 +84,7 @@ namespace SAEA.WebRedisManager.Attr
             }
             else
             {
-                des.Append("user:用户" + HttpContext.Current.Session.Keys.Contains("uid").ToString());
+                des.Append("user:用户" + HttpContext.Current.Session["uid"]);
             }
 
             des.Append(",url:" + HttpContext.Current.Request.Url);
@@ -92,9 +95,9 @@ namespace SAEA.WebRedisManager.Attr
 
             des.Append(",cost:" + _stopwatch.Elapsed.TotalMilliseconds);
 
-            LogHelper.Info(des.ToString());
-
             _stopwatch.Stop();
+
+            LogHelper.Info(HttpContext.Current.Request.Url, result);
         }
     }
 }

@@ -15,6 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using SAEA.Common;
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Models;
 using SAEA.WebRedisManager.Attr;
@@ -39,39 +40,47 @@ namespace SAEA.WebRedisManager.Controllers
         /// <returns></returns>
         public ActionResult Login(string userName, string password)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)) return Json(new JsonResult<string>() { Code = 2, Message = "用户名或密码不能为空" });
-
-            var user = UserHelper.Login(userName, password);
-
-            if (user == null)
+            try
             {
-                if (userName == "yswenli" && !UserHelper.Exists("yswenli"))
+                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)) return Json(new JsonResult<string>() { Code = 2, Message = "用户名或密码不能为空" });
+
+                var user = UserHelper.Login(userName, password);
+
+                if (user == null)
                 {
-                    var newUser = new User()
+                    if (userName == "yswenli" && !UserHelper.Exists("yswenli"))
                     {
-                        ID = Guid.NewGuid().ToString("N"),
-                        UserName = userName.Length > 20 ? userName.Substring(0, 20) : userName,
-                        Password = password.Length > 20 ? password.Substring(0, 20) : password,
-                        NickName = "WALLE",
-                        Role = Role.Admin
-                    };
+                        var newUser = new User()
+                        {
+                            ID = Guid.NewGuid().ToString("N"),
+                            UserName = userName.Length > 20 ? userName.Substring(0, 20) : userName,
+                            Password = password.Length > 20 ? password.Substring(0, 20) : password,
+                            NickName = "WALLE",
+                            Role = Role.Admin
+                        };
 
-                    UserHelper.Set(newUser);
+                        UserHelper.Set(newUser);
 
-                    HttpContext.Current.Session["uid"] = newUser.ID;
+                        HttpContext.Current.Session["uid"] = newUser.ID;
 
-                    return Json(new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + newUser.NickName + "地访问" });
+                        return Json(new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + newUser.NickName + "地访问" });
+                    }
+                    else
+                    {
+                        return Json(new JsonResult<string>() { Code = 2, Message = "用户名或密码不正确" });
+                    }
                 }
                 else
                 {
-                    return Json(new JsonResult<string>() { Code = 2, Message = "用户名或密码不正确" });
+                    HttpContext.Current.Session["uid"] = user.ID;
+
+                    return Json(new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + user.NickName + "地访问" });
                 }
             }
-            else
+            catch (Exception ex)
             {
-                HttpContext.Current.Session["uid"] = user.ID;
-
-                return Json(new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + user.NickName + "地访问" });
+                LogHelper.Error("UserController.Login", ex, userName, password);
+                return Json(new JsonResult<string>() { Code = 2, Message = "登录失败，系统异常，" + ex.Message });
             }
         }
 
@@ -102,20 +111,27 @@ namespace SAEA.WebRedisManager.Controllers
         /// <returns></returns>
         public ActionResult Set(User user, string confirmPwd, int role)
         {
-            if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password) || string.IsNullOrEmpty(user.NickName)) return Json(new JsonResult<string>() { Code = 2, Message = "用户名、密码或昵称不能为空" });
-
-            if (string.IsNullOrEmpty(confirmPwd) || user.Password != confirmPwd)
+            try
             {
-                return Json(new JsonResult<string>() { Code = 2, Message = "两次输入的密码不一致" });
+                if (string.IsNullOrEmpty(user.UserName) || string.IsNullOrEmpty(user.Password) || string.IsNullOrEmpty(user.NickName)) return Json(new JsonResult<string>() { Code = 2, Message = "用户名、密码或昵称不能为空" });
+
+                if (string.IsNullOrEmpty(confirmPwd) || user.Password != confirmPwd)
+                {
+                    return Json(new JsonResult<string>() { Code = 2, Message = "两次输入的密码不一致" });
+                }
+                if (string.IsNullOrEmpty(user.ID))
+                    user.ID = Guid.NewGuid().ToString("N");
+                user.UserName = user.UserName.Length > 20 ? user.UserName.Substring(0, 20) : user.UserName;
+                user.Password = user.Password.Length > 20 ? user.Password.Substring(0, 20) : user.Password;
+                user.NickName = user.NickName.Length > 20 ? user.NickName.Substring(0, 20) : user.NickName;
+                user.Role = role == 1 ? Role.Admin : Role.User;
+                UserHelper.Set(user);
+                return Json(new JsonResult<string>() { Code = 1, Message = "注册成功" });
             }
-            if (string.IsNullOrEmpty(user.ID))
-                user.ID = Guid.NewGuid().ToString("N");
-            user.UserName = user.UserName.Length > 20 ? user.UserName.Substring(0, 20) : user.UserName;
-            user.Password = user.Password.Length > 20 ? user.Password.Substring(0, 20) : user.Password;
-            user.NickName = user.NickName.Length > 20 ? user.NickName.Substring(0, 20) : user.NickName;
-            user.Role = role == 1 ? Role.Admin : Role.User;
-            UserHelper.Set(user);
-            return Json(new JsonResult<string>() { Code = 1, Message = "注册成功" });
+            catch(Exception ex)
+            {
+                return Json(new JsonResult<List<User>>() { Code = 2, Message = ex.Message });
+            }
         }
 
         /// <summary>
