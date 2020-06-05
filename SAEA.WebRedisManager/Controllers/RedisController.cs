@@ -4,6 +4,7 @@ using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
 using SAEA.RedisSocket.Model;
+using SAEA.WebRedisManager.Libs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,44 +119,10 @@ namespace SAEA.WebRedisManager.Controllers
         /// <returns></returns>
         public ActionResult GetInfo(string name, bool isCpu)
         {
-            try
-            {
-                var data = CurrentRedisClient.GetServerInfo(name);
-
-                if (data != null)
-                {
-                    var result = "0";
-
-                    if (isCpu)
-                    {
-                        result = CurrentRedisClient.CpuUsed(name).ToString();
-                    }
-                    else
-                    {
-                        var totalmem = CurrentRedisClient.GetMaxMem(name);
-
-                        var usemem = double.Parse(data.used_memory);
-
-                        if (totalmem == 0)
-                        {
-                            result = totalmem.ToString();
-                        }
-                        else
-                        {
-                            result = (usemem / totalmem * 100).ToString();
-                        }
-                    }
-
-                    return Json(new JsonResult<string>() { Code = 1, Data = result, Message = "OK" });
-                }
-                return Json(new JsonResult<string>() { Code = 2, Message = "暂未读取数据" });
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error($"RedisController.GetInfo name:{name}", ex);
-                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
-            }
+            return Json(ServerInfoDataHelper.GetInfo(name, isCpu));
         }
+
+        
 
         /// <summary>
         /// 获取db中的元素数量

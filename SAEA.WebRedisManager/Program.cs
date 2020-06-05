@@ -1,5 +1,9 @@
 ﻿using SAEA.Common;
 using SAEA.MVC;
+using SAEA.WebRedisManager.Libs;
+using SAEA.WebSocket;
+using SAEA.WebSocket.Type;
+using System;
 
 namespace SAEA.WebRedisManager
 {
@@ -20,6 +24,10 @@ namespace SAEA.WebRedisManager
             SAEAMvcApplication mvcApplication = new SAEAMvcApplication(config);
 
             mvcApplication.Start();
+
+            WebSocketsHelper webSocketsHelper = new WebSocketsHelper();
+
+            webSocketsHelper.Start();
 
             ConsoleHelper.WriteLine("WebRedisManager Already started");
 
