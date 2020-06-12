@@ -88,6 +88,7 @@ namespace SAEA.WebRedisManager.Controllers
         /// 注销
         /// </summary>
         /// <returns></returns>
+        [Auth(false, true)]
         public ActionResult Logout()
         {
             try
@@ -109,6 +110,7 @@ namespace SAEA.WebRedisManager.Controllers
         /// <param name="confirmPwd"></param>
         /// <param name="role"></param>
         /// <returns></returns>
+        [Auth(true, true)]
         public ActionResult Set(User user, string confirmPwd, int role)
         {
             try
@@ -128,7 +130,7 @@ namespace SAEA.WebRedisManager.Controllers
                 UserHelper.Set(user);
                 return Json(new JsonResult<string>() { Code = 1, Message = "注册成功" });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new JsonResult<List<User>>() { Code = 2, Message = ex.Message });
             }
@@ -156,6 +158,7 @@ namespace SAEA.WebRedisManager.Controllers
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
+        [Auth(true, true)]
         public ActionResult Rem(string uid)
         {
             try
@@ -194,7 +197,7 @@ namespace SAEA.WebRedisManager.Controllers
         }
 
         /// <summary>
-        /// 是否是空项
+        /// 是否是空项，是否是首次使用系统
         /// </summary>
         /// <returns></returns>
         public ActionResult IsEmpty()
@@ -208,6 +211,22 @@ namespace SAEA.WebRedisManager.Controllers
             catch (Exception ex)
             {
                 return Json(new JsonResult<bool>() { Code = 2, Data = false, Message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Authenticated
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Authenticated()
+        {
+            if (HttpContext.Current.Session.Keys.Contains("uid"))
+            {
+                return Json(new JsonResult<bool>() { Code = 1, Data = true });
+            }
+            else
+            {
+                return Json(new JsonResult<bool>() { Code = 1, Data = false });
             }
         }
     }

@@ -253,8 +253,9 @@
         }
     }
 
-
     function LineChart11(eId, chart_title, redis_name) {
+
+        var chatData = 0;
 
         var dom1 = document.getElementById(eId);
         if (dom1 === undefined) return;
@@ -339,45 +340,58 @@
             ]
         };
 
+        clearInterval(app1.timeTicket);
+
         app1.count = 22;
 
+        app1.timeTicket = setInterval(function () {
+
+            axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+
+            var data0 = option1.series[0].data;
+            data0.shift();
+            data0.push(chatData);
+
+            option1.xAxis[0].data.shift();
+            option1.xAxis[0].data.push(axisData);
+            myChart1.setOption(option1);
+
+        }, 1100);
+
+
         if (option1 && typeof option1 === "object") {
+            var startTime = +new Date();
             myChart1.setOption(option1, true);
+            var endTime = +new Date();
+            var updateTime = endTime - startTime;
+            // console.log("Time used:", updateTime);
         }
 
-        var ws = new WebSocket("ws://127.0.0.1:16380/");
+        var ws = new WebSocket("ws://127.0.0.1:16666/");
         ws.onopen = function (evt) {
             console.log("Connection open ...");
             ws.send("getinfo");
+            ws.send(`{"Name":"${redis_name}","IsCput":true}`);
         };
         ws.onmessage = function (event) {
             if (typeof event.data === String) {
 
                 axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
 
-                var redis_info_data = JSON.parse(event.data);
+                if (redis_info_data.Code === 1)
+                    var redis_info_data = JSON.parse(event.data);
 
-                var data0 = option1.series[0].data;
-                if (redis_info_data.Code === 2) {
-                    data0.shift();
-                    data0.push(-1);
-                }
-                else {
-                    //
-                    data0.shift();
-                    data0.push(redis_info_data.Data);
-                }
+                chatData = redis_info_data.Data
 
-                option1.xAxis[0].data.shift();
-                option1.xAxis[0].data.push(axisData);
-                myChart1.setOption(option1);
             }
-            console.log("Received Message: " + event.data);
+            console.log("CPU Received Message: " + event.data);
         };
-        ws.send(`{"Name":"${redis_name}","IsCput":true}`);
     }
 
     function LineChart22(eId, chart_title, redis_name) {
+
+        var chatData = 0;
+
         var dom2 = document.getElementById(eId);
         if (dom2 === undefined) return;
         var myChart2 = echarts.init(dom2);
@@ -461,16 +475,37 @@
             ]
         };
 
+        clearInterval(app2.timeTicket);
+
         app2.count = 22;
 
-        if (option2 && typeof option2 === "object") {
-            myChart2.setOption(option2, true);
-        }
+        app2.timeTicket = setInterval(function () {
 
-        var ws = new WebSocket("ws://127.0.0.1:16380/");
+            axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+
+            var data0 = option2.series[0].data;
+            data0.shift();
+            data0.push(chatData);
+
+            option2.xAxis[0].data.shift();
+            option2.xAxis[0].data.push(axisData);
+            myChart2.setOption(option2);
+
+        }, 1200);
+
+
+        if (option2 && typeof option2 === "object") {
+            var startTime = +new Date();
+            myChart2.setOption(option2, true);
+            var endTime = +new Date();
+            var updateTime = endTime - startTime;
+            // console.log("Time used:", updateTime);
+        }
+        var ws = new WebSocket("ws://127.0.0.1:16666/");
         ws.onopen = function (evt) {
             console.log("Connection open ...");
             ws.send("getinfo");
+            ws.send(`{"Name":"${redis_name}","IsCput":false}`);
         };
         ws.onmessage = function (event) {
             if (typeof event.data === String) {
@@ -479,24 +514,11 @@
 
                 var redis_info_data = JSON.parse(event.data);
 
-                var data0 = option2.series[0].data;
-                if (redis_info_data.Code === 2) {
-                    data0.shift();
-                    data0.push(-1);
-                }
-                else {
-                    //
-                    data0.shift();
-                    data0.push(redis_info_data.Data);
-                }
-
-                option2.xAxis[0].data.shift();
-                option2.xAxis[0].data.push(axisData);
-                myChart2.setOption(option2);
+                if (redis_info_data.Code === 1)
+                    chatData = redis_info_data.Data;
             }
-            console.log("Received Message: " + event.data);
+            console.log("MEM Received Message: " + event.data);
         };
-        ws.send(`{"Name":"${redis_name}","IsCput":false}`);
     }
 
     var name = decodeURI(GetRequest().name);

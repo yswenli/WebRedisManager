@@ -11,7 +11,7 @@ namespace SAEA.WebRedisManager
     {
         static void Main(string[] args)
         {
-            ConsoleHelper.Title = "WebRedisManager v5.3.2.1";
+            ConsoleHelper.Title = "WebRedisManager v5.3.2.5";
 
             var config = SAEAMvcApplicationConfigBuilder.Read();
 
@@ -31,7 +31,7 @@ namespace SAEA.WebRedisManager
 
             ConsoleHelper.WriteLine("WebRedisManager Already started");
 
-            ConsoleHelper.WriteLine("Please open on Browser：http://localhost:16379/");
+            ConsoleHelper.WriteLine("Please open on Browser：http://127.0.0.1:16379/");
 
             ConsoleHelper.WriteLine("Enter to exit service...");
 

@@ -16,6 +16,7 @@
 *描    述：
 *****************************************************************************/
 using SAEA.Common;
+using SAEA.MVC;
 using SAEA.WebRedisManager.Models;
 using System;
 using System.Collections.Generic;
@@ -113,7 +114,7 @@ namespace SAEA.WebRedisManager.Libs
                 }
                 File.AppendAllText(filePath, str);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogHelper.Error("UserHelper.Save", ex);
             }

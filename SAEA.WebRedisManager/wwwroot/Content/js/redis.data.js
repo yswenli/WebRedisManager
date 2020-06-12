@@ -45,7 +45,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
         layer.close(layerIndex);
 
-        $(".keys-header").html(`【<a style="color:#009688;" href="/chart.html?name=${redis_name}">返回</a>】 keys列表 <i class="layui-icon layui-icon-refresh" style="color:#009688;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURI(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
+        $(".keys-header").html(`【<a style="color:#009688;" href="/chart.html?name=${redis_name}">Back</a>】 Keys List <i class="layui-icon layui-icon-refresh" style="color:#009688;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURI(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
 
         $("#redis_console").click(() => {
             layer.full(layer.open({
@@ -87,11 +87,20 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 $("#redis-data-body").html("");
 
                 for (var i = 0; i < jdata.Data.length; i++) {
+
+                    var tkey = jdata.Data[i].Key;
+
+                    if (tkey.indexOf("%")) {
+                        tkey = tkey.replace(/%/g, '%25');
+                    }
+                    var tkey1 = htmlEncode(decodeURIComponent(tkey));
+                    var tkey2 = encodeURIComponent(tkey);
+
                     var thtml = `<tr>
                                     <td>${jdata.Data[i].Type}</td>                                    
-                                    <td>${htmlEncode(decodeURIComponent(jdata.Data[i].Key))}</td>
-                                    <td>-1</td>
-                                    <td class="redis-data-td" data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(jdata.Data[i].Key)}" data-type="${jdata.Data[i].Type}">
+                                    <td>${tkey1}</td>
+                                    <td><img src="/content/js/css/modules/layer/default/loading-2.gif" width="18" /></td>
+                                    <td class="redis-data-td" data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${tkey2}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
                     $("#redis-data-body").append(thtml);
@@ -203,7 +212,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             loadList("*");
         }
         else {
-            loadList(searchKey);
+            loadList(encodeURIComponent(searchKey));
         }
     });
 

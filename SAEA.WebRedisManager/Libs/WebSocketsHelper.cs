@@ -16,12 +16,14 @@
 *描    述：
 *****************************************************************************/
 using SAEA.Common;
+using SAEA.MVC;
 using SAEA.WebSocket;
 using SAEA.WebSocket.Model;
 using SAEA.WebSocket.Type;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,13 +31,13 @@ namespace SAEA.WebRedisManager.Libs
 {
     public class WebSocketsHelper
     {
-        ConcurrentDictionary<string, DateTime> _dic = new ConcurrentDictionary<string, DateTime>();
+        ConcurrentDictionary<string, DateTime> _dic1 = new ConcurrentDictionary<string, DateTime>();
 
         WSServer _wsServer = null;
 
-        public WebSocketsHelper(int port = 16380)
+        public WebSocketsHelper(int port = 16666)
         {
-            _wsServer = new WSServer(16380);
+            _wsServer = new WSServer(port);
             _wsServer.OnMessage += WsServer_OnMessage;
             _wsServer.OnDisconnected += WsServer_OnDisconnected;
         }
@@ -49,7 +51,7 @@ namespace SAEA.WebRedisManager.Libs
         {
             if (msg != null)
             {
-                if (_dic.ContainsKey(cid) && msg.Content != null && msg.Content.Any())
+                if (_dic1.ContainsKey(cid) && msg.Content != null && msg.Content.Any())
                 {
                     var json = Encoding.UTF8.GetString(msg.Content);
 
@@ -95,8 +97,12 @@ namespace SAEA.WebRedisManager.Libs
 
                         if (s == "getinfo")
                         {
-                            _dic.TryAdd(cid, DateTimeHelper.Now);
+                            _dic1.TryAdd(cid, DateTimeHelper.Now);
 
+                            return;
+                        }
+                        else
+                        {
                             return;
                         }
                     }
