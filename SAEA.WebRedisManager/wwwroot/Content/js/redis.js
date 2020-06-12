@@ -9,7 +9,7 @@
 
         var atimer = setInterval(function () {
             $.get("/user/authenticated", null, function (adata) {
-                if (adata.Code === 1 && adata.Data == false) {
+                if (adata.Code === 1 && adata.Data === false) {
                     layer.msg("当前操作需要登录", { time: 2000 }, function () {
                         clearInterval(atimer);
                         location.href = "/login.html";

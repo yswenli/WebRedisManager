@@ -72,7 +72,7 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '占用率',
+                    name: '使用率',
                     max: 100,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
@@ -80,7 +80,7 @@
             ],
             series: [
                 {
-                    name: '占用率',
+                    name: '使用率',
                     type: 'line',
                     data: (function () {
                         var res = [];
@@ -101,8 +101,6 @@
 
         app1.timeTicket = setInterval(function () {
 
-            axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-
             $.get(redis_info_url, "name=" + redis_name + "&isCpu=1", function (redis_info_data) {
                 //
                 var data0 = option1.series[0].data;
@@ -117,6 +115,7 @@
                 }
             });
             option1.xAxis[0].data.shift();
+            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
             option1.xAxis[0].data.push(axisData);
             myChart1.setOption(option1);
 
@@ -193,7 +192,7 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '占用率',
+                    name: '使用率',
                     max: 100,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
@@ -201,7 +200,7 @@
             ],
             series: [
                 {
-                    name: '占用率',
+                    name: '使用率',
                     type: 'line',
                     data: (function () {
                         var res = [];
@@ -220,9 +219,7 @@
 
         app2.count = 22;
 
-        app2.timeTicket = setInterval(function () {
-
-            axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+        app2.timeTicket = setInterval(function () {            
 
             $.get(redis_info_url, "name=" + redis_name + "&isCpu=0", function (redis_info_data) {
                 //
@@ -238,6 +235,7 @@
                 }
             });
             option2.xAxis[0].data.shift();
+            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
             option2.xAxis[0].data.push(axisData);
             myChart2.setOption(option2);
 
@@ -317,7 +315,7 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '占用率',
+                    name: '使用率',
                     max: 100,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
@@ -325,7 +323,7 @@
             ],
             series: [
                 {
-                    name: '占用率',
+                    name: '使用率',
                     type: 'line',
                     data: (function () {
                         var res = [];
@@ -346,13 +344,11 @@
 
         app1.timeTicket = setInterval(function () {
 
-            axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-
             var data0 = option1.series[0].data;
             data0.shift();
             data0.push(chatData);
-
             option1.xAxis[0].data.shift();
+            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
             option1.xAxis[0].data.push(axisData);
             myChart1.setOption(option1);
 
@@ -374,15 +370,15 @@
             ws.send(`{"Name":"${redis_name}","IsCput":true}`);
         };
         ws.onmessage = function (event) {
+
             if (typeof event.data === String) {
 
-                axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+                var redis_info_data = JSON.parse(event.data);
 
-                if (redis_info_data.Code === 1)
-                    var redis_info_data = JSON.parse(event.data);
-
-                chatData = redis_info_data.Data
-
+                if (redis_info_data.Code === 1) {
+                    
+                    chatData = redis_info_data.Data
+                }
             }
             console.log("CPU Received Message: " + event.data);
         };
@@ -452,7 +448,7 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '占用率',
+                    name: '使用率',
                     max: 100,
                     min: 0,
                     boundaryGap: [0.2, 0.2]
@@ -460,7 +456,7 @@
             ],
             series: [
                 {
-                    name: '占用率',
+                    name: '使用率',
                     type: 'line',
                     data: (function () {
                         var res = [];
@@ -481,13 +477,11 @@
 
         app2.timeTicket = setInterval(function () {
 
-            axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-
             var data0 = option2.series[0].data;
             data0.shift();
             data0.push(chatData);
-
             option2.xAxis[0].data.shift();
+            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
             option2.xAxis[0].data.push(axisData);
             myChart2.setOption(option2);
 
@@ -510,12 +504,11 @@
         ws.onmessage = function (event) {
             if (typeof event.data === String) {
 
-                axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-
                 var redis_info_data = JSON.parse(event.data);
 
-                if (redis_info_data.Code === 1)
-                    chatData = redis_info_data.Data;
+                if (redis_info_data.Code === 1) {
+                    chatData = redis_info_data.Data
+                }
             }
             console.log("MEM Received Message: " + event.data);
         };

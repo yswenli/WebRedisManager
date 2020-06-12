@@ -67,10 +67,18 @@ namespace SAEA.WebRedisManager.Libs
                         {
                             while (true)
                             {
-                                var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, requestData.IsCpu));
+                                try
+                                {
+                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, requestData.IsCpu));
 
-                                _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
+                                    _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
 
+                                }
+                                catch
+                                {
+                                    _dic1.TryRemove(cid, out DateTime v);
+                                    break;
+                                }
                                 ThreadHelper.Sleep(1000);
                             }
                         });
@@ -79,9 +87,17 @@ namespace SAEA.WebRedisManager.Libs
                         {
                             while (true)
                             {
-                                var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, requestData.IsCpu));
+                                try
+                                {
+                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, requestData.IsCpu));
 
-                                _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
+                                    _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
+                                }
+                                catch
+                                {
+                                    _dic1.TryRemove(cid, out DateTime v);
+                                    break;
+                                }
 
                                 ThreadHelper.Sleep(1000);
                             }
