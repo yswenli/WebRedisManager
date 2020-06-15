@@ -251,9 +251,10 @@
         }
     }
 
-    function LineChart11(eId, chart_title, redis_name) {
 
-        var chatData = 0;
+    var chatData1 = 0;
+    
+    function LineChart11(eId, chart_title, redis_name) {        
 
         var dom1 = document.getElementById(eId);
         if (dom1 === undefined) return;
@@ -346,7 +347,7 @@
 
             var data0 = option1.series[0].data;
             data0.shift();
-            data0.push(chatData);
+            data0.push(chatData1);
             option1.xAxis[0].data.shift();
             var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
             option1.xAxis[0].data.push(axisData);
@@ -367,27 +368,24 @@
         ws.onopen = function (evt) {
             console.log("Connection open ...");
             ws.send("getinfo");
-            ws.send(`{"Name":"${redis_name}","IsCput":true}`);
+            ws.send(`{"Name":"${redis_name}","IsCpu":true}`);
         };
         ws.onmessage = function (event) {
 
-            if (typeof event.data === String) {
+            var redis_info_data = JSON.parse(event.data);
 
-                var redis_info_data = JSON.parse(event.data);
+            if (redis_info_data.Code === 1) {
 
-                if (redis_info_data.Code === 1) {
-                    
-                    chatData = redis_info_data.Data
-                }
+                chatData1 = redis_info_data.Data;
             }
-            console.log("CPU Received Message: " + event.data);
         };
     }
 
+    var chatData2 = 0;
+
     function LineChart22(eId, chart_title, redis_name) {
 
-        var chatData = 0;
-
+        
         var dom2 = document.getElementById(eId);
         if (dom2 === undefined) return;
         var myChart2 = echarts.init(dom2);
@@ -479,7 +477,7 @@
 
             var data0 = option2.series[0].data;
             data0.shift();
-            data0.push(chatData);
+            data0.push(chatData2);
             option2.xAxis[0].data.shift();
             var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
             option2.xAxis[0].data.push(axisData);
@@ -499,18 +497,15 @@
         ws.onopen = function (evt) {
             console.log("Connection open ...");
             ws.send("getinfo");
-            ws.send(`{"Name":"${redis_name}","IsCput":false}`);
+            ws.send(`{"Name":"${redis_name}","IsCpu":false}`);
         };
         ws.onmessage = function (event) {
-            if (typeof event.data === String) {
 
-                var redis_info_data = JSON.parse(event.data);
+            var redis_info_data = JSON.parse(event.data);
 
-                if (redis_info_data.Code === 1) {
-                    chatData = redis_info_data.Data
-                }
+            if (redis_info_data.Code === 1) {
+                chatData2 = redis_info_data.Data;
             }
-            console.log("MEM Received Message: " + event.data);
         };
     }
 

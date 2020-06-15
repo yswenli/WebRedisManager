@@ -16,14 +16,12 @@
 *描    述：
 *****************************************************************************/
 using SAEA.Common;
-using SAEA.MVC;
 using SAEA.WebSocket;
 using SAEA.WebSocket.Model;
 using SAEA.WebSocket.Type;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,7 +42,7 @@ namespace SAEA.WebRedisManager.Libs
 
         private void WsServer_OnDisconnected(string cid)
         {
-            LogHelper.Error("WebSocketServer", new Exception("断开连接"), cid);
+            _dic1.TryRemove(cid, out DateTime dt);
         }
 
         private void WsServer_OnMessage(string cid, WebSocket.Model.WSProtocal msg)
@@ -65,11 +63,11 @@ namespace SAEA.WebRedisManager.Libs
                     if (requestData.IsCpu)
                         Task.Factory.StartNew(() =>
                         {
-                            while (true)
+                            while (_dic1.ContainsKey(cid))
                             {
                                 try
                                 {
-                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, requestData.IsCpu));
+                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, true));
 
                                     _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
 
@@ -85,11 +83,11 @@ namespace SAEA.WebRedisManager.Libs
                     else
                         Task.Factory.StartNew(() =>
                         {
-                            while (true)
+                            while (_dic1.ContainsKey(cid))
                             {
                                 try
                                 {
-                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, requestData.IsCpu));
+                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, false));
 
                                     _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
                                 }
@@ -99,7 +97,7 @@ namespace SAEA.WebRedisManager.Libs
                                     break;
                                 }
 
-                                ThreadHelper.Sleep(1000);
+                                ThreadHelper.Sleep(1100);
                             }
                         });
 
