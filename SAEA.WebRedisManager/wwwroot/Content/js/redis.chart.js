@@ -364,7 +364,7 @@
             // console.log("Time used:", updateTime);
         }
 
-        var ws = new WebSocket("ws://127.0.0.1:16666/");
+        var ws = new WebSocket(`ws://${document.domain}:16666/`);
         ws.onopen = function (evt) {
             console.log("Connection open ...");
             ws.send("getinfo");
@@ -493,7 +493,7 @@
             var updateTime = endTime - startTime;
             // console.log("Time used:", updateTime);
         }
-        var ws = new WebSocket("ws://127.0.0.1:16666/");
+        var ws = new WebSocket(`ws://${document.domain}:16666/`);
         ws.onopen = function (evt) {
             console.log("Connection open ...");
             ws.send("getinfo");
