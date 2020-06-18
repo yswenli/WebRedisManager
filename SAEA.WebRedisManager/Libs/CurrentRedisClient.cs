@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace SAEA.Redis.WebManager.Libs
 {
@@ -256,25 +257,34 @@ namespace SAEA.Redis.WebManager.Libs
                             }
                             else
                             {
-                                var o = 0;
-                                do
+                                using (CancellationTokenSource cts = new CancellationTokenSource())
                                 {
-                                    var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, count);
-
-                                    if (scanData != null)
+                                    TaskHelper.TimeoutAfterAsync((t) =>
                                     {
-                                        if (scanData.Data != null && scanData.Data.Any())
+                                        return TaskHelper.Run(() =>
+                                        {
+                                            var o = 0;
+                                            do
+                                            {
+                                                var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, count);
 
-                                            result.AddRange(scanData.Data);
+                                                if (scanData != null)
+                                                {
+                                                    if (scanData.Data != null && scanData.Data.Any())
 
-                                        o = scanData.Offset;
+                                                        result.AddRange(scanData.Data);
 
-                                        if (o == 0) break;
-                                    }
-                                    if (result.Count >= 50) break;
+                                                    o = scanData.Offset;
+
+                                                    if (o == 0) break;
+                                                }
+                                                if (result.Count >= 50) break;
+                                            }
+                                            while (o > 0 && !t.IsCancellationRequested);
+                                        });
+
+                                    }, TimeSpan.FromSeconds(60), cts.Token).GetAwaiter().GetResult();
                                 }
-                                while (true);
-
                             }
                         }
                         else
@@ -354,7 +364,7 @@ namespace SAEA.Redis.WebManager.Libs
         /// <param name="key"></param>
         /// <param name="seconds"></param>
         /// <returns></returns>
-        public static void SetTTL(string name, int dbIndex, string key,int seconds)
+        public static void SetTTL(string name, int dbIndex, string key, int seconds)
         {
             var redisClient = _redisClients[name];
 
@@ -387,32 +397,42 @@ namespace SAEA.Redis.WebManager.Libs
 
             var offset = 0;
 
-            do
+            using (CancellationTokenSource cts = new CancellationTokenSource())
             {
-                var keys = GetAllKeys(ref offset, name, dbIndex, key).Distinct().ToArray();
-
-                if (keys.Length > 0)
+                TaskHelper.TimeoutAfterAsync((t) =>
                 {
-                    var redisClient = _redisClients[name];
-
-                    var count = 20;
-
-                    var times = (keys.Length / count) + (keys.Length % count == 0 ? 0 : 1);
-
-                    for (int i = 0; i < times; i++)
+                    return TaskHelper.Run(() =>
                     {
-                        var skeys = keys.Skip(i * count).Take(count).ToList();
-
-                        if (skeys != null && skeys.Any())
+                        do
                         {
-                            redisClient.GetDataBase(dbIndex).Del(skeys.ToArray());
-                        }
-                    }
-                }
+                            var keys = GetAllKeys(ref offset, name, dbIndex, key).Distinct().ToArray();
 
-                len += keys.Length;
+                            if (keys.Length > 0)
+                            {
+                                var redisClient = _redisClients[name];
+
+                                var count = 20;
+
+                                var times = (keys.Length / count) + (keys.Length % count == 0 ? 0 : 1);
+
+                                for (int i = 0; i < times; i++)
+                                {
+                                    var skeys = keys.Skip(i * count).Take(count).ToList();
+
+                                    if (skeys != null && skeys.Any())
+                                    {
+                                        redisClient.GetDataBase(dbIndex).Del(skeys.ToArray());
+                                    }
+                                }
+                            }
+
+                            len += keys.Length;
+                        }
+                        while (offset > 0 && !t.IsCancellationRequested);
+                    });
+
+                }, TimeSpan.FromSeconds(60), cts.Token).GetAwaiter().GetResult();
             }
-            while (offset != 0);
 
             return len;
         }
@@ -432,8 +452,9 @@ namespace SAEA.Redis.WebManager.Libs
 
                 if (redisClient.IsConnected)
                 {
-                    if (redisClient.Select(dbIndex))
-                        return redisClient.DBSize();
+                    redisClient.Select(dbIndex);
+
+                    return redisClient.DBSize();
                 }
             }
             return 0;

@@ -11,7 +11,7 @@ namespace SAEA.WebRedisManager
     {
         static void Main(string[] args)
         {
-            ConsoleHelper.Title = "WebRedisManager v5.3.2.5";
+            ConsoleHelper.Title = "WebRedisManager v5.3.2.8";
 
             var config = SAEAMvcApplicationConfigBuilder.Read();
 
