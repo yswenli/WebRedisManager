@@ -122,7 +122,6 @@ namespace SAEA.WebRedisManager.Libs
                     }
                 }
             }
-            _wsServer.Disconnect(cid, new WSProtocal(WSProtocalType.Close, null));
         }
 
         public void Start()
