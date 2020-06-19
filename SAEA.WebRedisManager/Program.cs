@@ -1,9 +1,6 @@
 ﻿using SAEA.Common;
 using SAEA.MVC;
 using SAEA.WebRedisManager.Libs;
-using SAEA.WebSocket;
-using SAEA.WebSocket.Type;
-using System;
 
 namespace SAEA.WebRedisManager
 {
@@ -11,7 +8,7 @@ namespace SAEA.WebRedisManager
     {
         static void Main(string[] args)
         {
-            ConsoleHelper.Title = "WebRedisManager v5.3.2.8";
+            ConsoleHelper.Title = "SAEA.WebRedisManager v5.3.2.8";
 
             var config = SAEAMvcApplicationConfigBuilder.Read();
 
@@ -21,15 +18,19 @@ namespace SAEA.WebRedisManager
 
             SAEAMvcApplicationConfigBuilder.Write(config);
 
+            //启动api
+
             SAEAMvcApplication mvcApplication = new SAEAMvcApplication(config);
 
             mvcApplication.Start();
 
-            WebSocketsHelper webSocketsHelper = new WebSocketsHelper();
+            //启动websocket
+
+            WebSocketsHelper webSocketsHelper = new WebSocketsHelper(port: 16666);
 
             webSocketsHelper.Start();
 
-            ConsoleHelper.WriteLine("WebRedisManager Already started");
+            ConsoleHelper.WriteLine("SAEA.WebRedisManager Already started");
 
             ConsoleHelper.WriteLine("Please open on Browser：http://127.0.0.1:16379/");
 

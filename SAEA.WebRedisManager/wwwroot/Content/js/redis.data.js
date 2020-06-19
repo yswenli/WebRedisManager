@@ -244,19 +244,17 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     layerIndex = layer.msg('正在批量删除中', {
                         icon: 16
                         , shade: 0.3
-                        , time: 50000
+                        , time: 60000
                     });
 
                     var brurl = `/api/redis/batchremove?name=${redis_name}&dbindex=${db_index}&key=${searchKey}`;
 
                     $.get(brurl, null, function (olen) {
-
                         layer.msg(`批量删除已完成，已成功删除${olen.Data}条`, {
                             icon: 1, time: 2000
                         }, function () {
                             $("#search_btn").click();
                         });
-
                     });
                 }
             }
