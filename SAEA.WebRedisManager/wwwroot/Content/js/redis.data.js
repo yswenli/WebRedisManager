@@ -45,7 +45,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
         layer.close(layerIndex);
 
-        $(".keys-header").html(`【<a style="color:#009688;" href="/chart.html?name=${redis_name}">Back</a>】 Keys List <i class="layui-icon layui-icon-refresh" style="color:#009688;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURI(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
+        $(".keys-header").html(`【<a style="color:#009688;" href="/chart.html?name=${redis_name}"><i class="layui-icon layui-icon-return"></i></a>】 Keys List <i class="layui-icon layui-icon-refresh" style="color:#009688;cursor: pointer;" onclick="location.reload();" title="刷新"></i> redisName:<small>${decodeURI(redis_name)}</small> dbIndex:<small>${db_index}</small> dbsize:<small>${gdata.Data}</small>【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
 
         $("#redis_console").click(() => {
             layer.full(layer.open({
