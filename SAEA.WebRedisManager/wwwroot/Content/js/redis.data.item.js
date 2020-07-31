@@ -184,7 +184,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                             thtml = `<tr>
                                                                 <td>${htmlEncode(item_id)}</td>
                                                                 <td>${htmlEncode(jdata.Data[i])}</td>
-                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${i}" data-val="${encodeURIComponent(jdata.Data[i])}">
+                                                                <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${item_id}" data-index="${i}" data-val="${encodeURIComponent(jdata.Data[i])}">
 <a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
@@ -358,7 +358,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     });
                                     break;
                                 case 5:
-                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${encodeURIComponent(item_id)}&key=${key}&value=${val}`, null, function (data) {
+                                    var rowIndex = encodeURIComponent(delLink.attr("data-index"));
+                                    $.post(`/api/redis/delitem?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&id=${key}&key=${rowIndex}&value=${val}`, null, function (data) {
                                         if (data.Code === 1) {
                                             $("#search_btn").click();
                                         }

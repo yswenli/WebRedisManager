@@ -86,7 +86,7 @@
 
             var item_type = GetRequest().type;
 
-            var item_id = GetRequest().id;
+            var item_id = decodeURIComponent(GetRequest().id);
 
             //增加下拉列表改变事件
             form.on('select(type-select)', function (data) {

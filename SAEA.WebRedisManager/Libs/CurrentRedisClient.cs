@@ -39,7 +39,7 @@ namespace SAEA.Redis.WebManager.Libs
                     {
                         return redisClient.Connect();
                     }
-                    return "ok";
+                    return "OK";
                 }
                 else
                 {
@@ -56,6 +56,7 @@ namespace SAEA.Redis.WebManager.Libs
             }
             catch (Exception ex)
             {
+                LogHelper.Error("连接到redis失败", ex, config);
                 return ex.Message;
             }
         }
@@ -820,8 +821,8 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID, new string[] { redisData.Value });
                             break;
                         case 5:
-                            redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.ID, int.Parse(redisData.Key), "---VALUE REMOVED BY WEBREDISMANAGER---");
-                            redisClient.GetDataBase(redisData.DBIndex).LRemove(redisData.ID, 0, "---VALUE REMOVED BY WEBREDISMANAGER---");
+                            redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.Key, int.Parse(redisData.Key), "---VALUE REMOVED BY WEBREDISMANAGER---");
+                            redisClient.GetDataBase(redisData.DBIndex).LRemove(redisData.Key, 0, "---VALUE REMOVED BY WEBREDISMANAGER---");
                             break;
                     }
                 }
