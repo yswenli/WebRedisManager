@@ -178,28 +178,29 @@ namespace SAEA.WebRedisManager.Controllers
         }
 
         /// <summary>
-        /// 获取ttl
+        /// 获取ttls
         /// </summary>
         /// <param name="name"></param>
         /// <param name="dbIndex"></param>
-        /// <param name="key"></param>
+        /// <param name="keys"></param>
         /// <returns></returns>
-        public ActionResult GetTtl(string name, int dbIndex, string key)
+        public ActionResult GetTtls(string name, int dbIndex, string keys)
         {
             try
             {
-                if (!string.IsNullOrEmpty(key))
+                if (!string.IsNullOrEmpty(keys))
                 {
-                    var data = CurrentRedisClient.GetTTL(name, dbIndex, key);
 
-                    return Json(new JsonResult<int>() { Code = 1, Data = data, Message = "OK" });
+                    var data = CurrentRedisClient.GetTTLs(name, dbIndex, keys);
+
+                    return Json(new JsonResult<List<int>>() { Code = 1, Data = data, Message = "OK" });
                 }
-                return Json(new JsonResult<int>() { Code = 3, Message = "未获取ttl数据" });
+                return Json(new JsonResult<List<int>>() { Code = 3, Message = "未获取ttl数据" });
             }
             catch (Exception ex)
             {
                 LogHelper.Error($"RedisController.BatchRemove name:{name}", ex);
-                return Json(new JsonResult<int>() { Code = 2, Message = ex.Message });
+                return Json(new JsonResult<List<int>>() { Code = 2, Message = ex.Message });
             }
         }
 

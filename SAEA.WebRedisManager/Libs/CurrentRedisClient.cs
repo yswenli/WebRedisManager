@@ -242,7 +242,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                     if (redisClient.IsConnected)
                     {
-                        var count = 50;
+                        var count = 20;
 
                         if (!string.IsNullOrEmpty(key) && key != "*" && key != "[" && key != "]")
                         {
@@ -265,7 +265,7 @@ namespace SAEA.Redis.WebManager.Libs
                                             var o = 0;
                                             do
                                             {
-                                                var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, count);
+                                                var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, 50);
 
                                                 if (scanData != null)
                                                 {
@@ -277,7 +277,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                                                     if (o == 0) break;
                                                 }
-                                                if (result.Count >= 50) break;
+                                                if (result.Count >= count) break;
                                             }
                                             while (o > 0 && !t.IsCancellationRequested);
                                         });
@@ -338,7 +338,7 @@ namespace SAEA.Redis.WebManager.Libs
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
-            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(50).ToList();
+            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(20).ToList();
 
             if (keys.Count > 0)
             {
@@ -381,6 +381,47 @@ namespace SAEA.Redis.WebManager.Libs
             var redisClient = _redisClients[name];
 
             return redisClient.GetDataBase(dbIndex).Ttl(key);
+        }
+
+
+        /// <summary>
+        /// 获取过期时间
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="dbIndex"></param>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        public static List<int> GetTTLs(string name, int dbIndex, string keys)
+        {
+            if (!string.IsNullOrEmpty(keys))
+            {
+                var arr = keys.Split(",", StringSplitOptions.RemoveEmptyEntries);
+
+                if (arr != null && arr.Any())
+                {
+                    var redisClient = _redisClients[name];
+
+                    var db = redisClient.GetDataBase(dbIndex);
+
+                    var batch = db.CreatedBatch();
+
+                    foreach (var item in arr)
+                    {
+                        batch.TtlAsync(item);
+                    }
+
+                    List<int> result = new List<int>();
+                    foreach (var item in batch.Execute())
+                    {
+                        if (int.TryParse(item.ToString(), out int data))
+                        {
+                            result.Add(data);
+                        }
+                    }
+                    return result;
+                }
+            }
+            return null;
         }
 
         /// <summary>

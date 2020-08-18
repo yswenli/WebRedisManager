@@ -105,16 +105,24 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                                                             </tr>`;
                     $("#redis-data-body").append(thtml);
 
-                    setTimeout(function () {
+
+                    setInterval(function () {
+                        var ttlKeys = "";
+
                         $(".redis-data-td").each(function (tdindex) {
-                            var ttl_td = $(this).prev();
                             var td_key = $(this).attr("data-key");
-                            var td_url = `/api/redis/getttl?name=${redis_name}&dbindex=${db_index}&key=${td_key}`;
-                            $.get(td_url, null, function (tddata) {
-                                ttl_td.html(tddata.Data);
+                            ttlKeys = ttlKeys + td_key + ",";
+                        });
+
+                        var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
+
+                        $.get(td_url, null, function (tddata) {
+                            $(".redis-data-td").each(function (tdindex) {
+                                var ttl_td = $(this).prev();
+                                ttl_td.html(tddata.Data[tdindex]);
                             });
                         });
-                    }, 200);
+                    }, 1000);
                 }
                 //查看
                 $(".view-link").on("click", function () {
