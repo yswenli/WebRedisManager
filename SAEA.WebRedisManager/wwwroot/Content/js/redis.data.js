@@ -103,23 +103,24 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     <td class="redis-data-td" data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${tkey2}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
-                    $("#redis-data-body").append(thtml);
-
-                    //更新ttl
-                    var ttlKeys = "";
-                    $(".redis-data-td").each(function (tdindex) {
-                        var td_key = $(this).attr("data-key");
-                        ttlKeys = ttlKeys + td_key + ",";
-                    });
-                    var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
-                    setInterval(function () {
-                        $.get(td_url, null, function (tddata) {
-                            $(".ttl-td").each(function (tdindex) {
-                                $(this).html(tddata.Data[tdindex]);
-                            });
-                        });
-                    }, 3000);
+                    $("#redis-data-body").append(thtml);                   
                 }
+
+                //更新ttl
+                var ttlKeys = "";
+                $(".redis-data-td").each(function (tdindex) {
+                    var td_key = $(this).attr("data-key");
+                    ttlKeys = ttlKeys + td_key + ",";
+                });
+                var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
+                setInterval(function () {
+                    $.get(td_url, null, function (tddata) {
+                        $(".ttl-td").each(function (tdindex) {
+                            $(this).html(tddata.Data[tdindex]);
+                        });
+                    });
+                }, 3000);
+
                 //查看
                 $(".view-link").on("click", function () {
                     var type = $(this).parent().attr("data-type");
