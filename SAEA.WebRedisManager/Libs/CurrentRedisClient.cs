@@ -31,10 +31,10 @@ namespace SAEA.Redis.WebManager.Libs
         {
             try
             {
-                if (_redisClients.ContainsKey(config.Name))
-                {
-                    var redisClient = _redisClients[config.Name];
+                RedisClient redisClient;
 
+                if (_redisClients.TryGetValue(config.Name, out redisClient))
+                {
                     if (!redisClient.IsConnected)
                     {
                         return redisClient.Connect();
@@ -43,13 +43,13 @@ namespace SAEA.Redis.WebManager.Libs
                 }
                 else
                 {
-                    var redisClient = new RedisClient(config.IP + ":" + config.Port, config.Password, 10);
+                    redisClient = new RedisClient(config.IP + ":" + config.Port, config.Password);
 
                     var result = redisClient.Connect();
 
                     if (result == "OK")
                     {
-                        _redisClients[config.Name] = redisClient;
+                        _redisClients.TryAdd(config.Name, redisClient);
                     }
                     return result;
                 }
@@ -282,7 +282,7 @@ namespace SAEA.Redis.WebManager.Libs
                                             while (o > 0 && !t.IsCancellationRequested);
                                         });
 
-                                    }, TimeSpan.FromSeconds(60), cts.Token).GetAwaiter().GetResult();
+                                    }, TimeSpan.FromSeconds(30), cts.Token).GetAwaiter().GetResult();
                                 }
                             }
                         }
@@ -338,7 +338,7 @@ namespace SAEA.Redis.WebManager.Libs
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
-            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(20).ToList();
+            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(50).ToList();
 
             if (keys.Count > 0)
             {
