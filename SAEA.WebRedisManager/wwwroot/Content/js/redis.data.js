@@ -105,24 +105,21 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                                                             </tr>`;
                     $("#redis-data-body").append(thtml);
 
-
+                    //更新ttl
+                    var ttlKeys = "";
+                    $(".redis-data-td").each(function (tdindex) {
+                        var td_key = $(this).attr("data-key");
+                        ttlKeys = ttlKeys + td_key + ",";
+                    });
+                    var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
                     setInterval(function () {
-                        var ttlKeys = "";
-
-                        $(".redis-data-td").each(function (tdindex) {
-                            var td_key = $(this).attr("data-key");
-                            ttlKeys = ttlKeys + td_key + ",";
-                        });
-
-                        var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
-
                         $.get(td_url, null, function (tddata) {
                             $(".redis-data-td").each(function (tdindex) {
                                 var ttl_td = $(this).prev();
                                 ttl_td.html(tddata.Data[tdindex]);
                             });
                         });
-                    }, 1000);
+                    }, 3000);
                 }
                 //查看
                 $(".view-link").on("click", function () {
