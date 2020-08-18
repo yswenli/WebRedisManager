@@ -17,7 +17,7 @@ namespace SAEA.Redis.WebManager.Libs
     public static class CurrentRedisClient
     {
 
-        static Dictionary<string, RedisClient> _redisClients = new Dictionary<string, RedisClient>();
+        static ConcurrentDictionary<string, RedisClient> _redisClients = new ConcurrentDictionary<string, RedisClient>();
 
 
         static object _locker = new object();
@@ -110,8 +110,6 @@ namespace SAEA.Redis.WebManager.Libs
 
             return string.Empty;
         }
-
-
 
 
         public static ServerInfo GetServerInfo(string name)
@@ -211,7 +209,7 @@ namespace SAEA.Redis.WebManager.Libs
 
             if (redisClient.IsConnected)
             {
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 16; i++)
                 {
                     if (redisClient.Select(i))
                     {

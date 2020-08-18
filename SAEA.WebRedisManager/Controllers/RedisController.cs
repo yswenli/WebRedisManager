@@ -1,5 +1,4 @@
 ﻿using SAEA.Common;
-using SAEA.Http.Model;
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
@@ -26,31 +25,53 @@ namespace SAEA.WebRedisManager.Controllers
         {
             try
             {
+                Console.WriteLine("Connect 1");
+
                 if (!string.IsNullOrEmpty(name))
                 {
+
+                    Console.WriteLine("Connect 2");
+
                     name = SAEA.Http.HttpUtility.UrlDecode(name);
+
+                    Console.WriteLine("Connect 3");
 
                     var config = ConfigHelper.Get(name);
 
+                    Console.WriteLine("Connect 4");
+
                     var cnnResult = CurrentRedisClient.Connect(config);
+
+                    Console.WriteLine("Connect 5");
 
                     if (string.Compare(cnnResult, "OK", true) != 0)
                     {
                         throw new Exception(cnnResult);
                     }
 
+                    Console.WriteLine("Connect 6");
+
                     var isCluster = CurrentRedisClient.IsCluster(config.Name);
+
+                    Console.WriteLine("Connect 7");
 
                     var data = new List<int>();
 
                     if (!isCluster)
                     {
+                        Console.WriteLine("Connect 8");
+
                         data = CurrentRedisClient.GetDBs(name);
                     }
                     else
                     {
+                        Console.WriteLine("Connect 9");
+
                         data.Add(0);
                     }
+
+                    Console.WriteLine("Connect 10");
+
                     return Json(new JsonResult<List<int>>() { Code = 1, Data = data, Message = "OK" });
                 }
 
@@ -122,7 +143,7 @@ namespace SAEA.WebRedisManager.Controllers
             return Json(ServerInfoDataHelper.GetInfo(name, isCpu));
         }
 
-        
+
 
         /// <summary>
         /// 获取db中的元素数量

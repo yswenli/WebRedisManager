@@ -220,7 +220,7 @@ namespace SAEA.WebRedisManager.Controllers
         /// <returns></returns>
         public ActionResult Authenticated()
         {
-            if (HttpContext.Current.Session.Keys.Contains("uid"))
+            if (HttpContext.Current.Session.Keys != null && HttpContext.Current.Session.Keys.Contains("uid"))
             {
                 return Json(new JsonResult<bool>() { Code = 1, Data = true });
             }

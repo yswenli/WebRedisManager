@@ -15,14 +15,11 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.Common;
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Models;
 using SAEA.WebRedisManager.Libs.Verification;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SAEA.WebRedisManager.Controllers
 {
@@ -75,12 +72,12 @@ namespace SAEA.WebRedisManager.Controllers
                         return Json(new JsonResult<bool>() { Code = 1, Data = true });
                     }
                 }
-               
+
                 return Json(new JsonResult<bool>() { Code = 1, Data = false, Message = "验证码不正确！" });
             }
             catch (Exception ex)
             {
-                return Json(new JsonResult<bool>() { Code = 999, Data = false, Message = ex.Message });
+                return Json(new JsonResult<bool>() { Code = 1, Data = false, Message = "验证码不正确！" });
             }
         }
     }

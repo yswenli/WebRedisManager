@@ -100,7 +100,9 @@ namespace SAEA.Redis.WebManager.Libs
         /// <returns></returns>
         public static Config Get(string name)
         {
-            if (_list == null || _list.Count < 1) ReadList();
+            if (_list == null || !_list.Any()) ReadList();
+
+            if (_list == null || !_list.Any()) return null;
 
             return _list.Where(b => b.Name == name).FirstOrDefault();
         }

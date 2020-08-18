@@ -140,7 +140,9 @@ namespace SAEA.WebRedisManager.Libs
         /// <returns></returns>
         public static User Login(string userName, string password)
         {
-            if (_list == null || _list.Count < 1) ReadList();
+            if (_list == null || !_list.Any()) ReadList();
+
+            if (_list == null || !_list.Any()) return null;
 
             return _list.Where(b => b.UserName == userName && b.Password == password).FirstOrDefault();
         }

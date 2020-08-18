@@ -34,7 +34,7 @@ namespace SAEA.WebRedisManager.Attr
 
         bool _isAdmin = false;
 
-        public AuthAttribute(bool isEnabled) : base(isEnabled)
+        public AuthAttribute(bool isEnabled)
         {
 
         }
