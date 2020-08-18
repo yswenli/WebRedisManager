@@ -97,9 +97,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     var tkey2 = encodeURIComponent(tkey);
 
                     var thtml = `<tr>
-                                    <td>${jdata.Data[i].Type}</td>                                    
+                                    <td>${jdata.Data[i].Type}</td>
                                     <td>${tkey1}</td>
-                                    <td><img src="/content/js/css/modules/layer/default/loading-2.gif" width="18" /></td>
+                                    <td class="ttl-td"><img src="/content/js/css/modules/layer/default/loading-2.gif" width="18" /></td>
                                     <td class="redis-data-td" data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${tkey2}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
@@ -114,9 +114,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
                     setInterval(function () {
                         $.get(td_url, null, function (tddata) {
-                            $(".redis-data-td").each(function (tdindex) {
-                                var ttl_td = $(this).prev();
-                                ttl_td.html(tddata.Data[tdindex]);
+                            $(".ttl-td").each(function (tdindex) {
+                                $(this).html(tddata.Data[tdindex]);
                             });
                         });
                     }, 3000);
