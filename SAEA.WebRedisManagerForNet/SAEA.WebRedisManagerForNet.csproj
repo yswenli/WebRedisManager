@@ -90,23 +90,23 @@
     <Reference Include="protobuf-net.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\packages\protobuf-net.Core.3.0.29\lib\net461\protobuf-net.Core.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Common, Version=5.3.3.1, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Common.5.3.3.1\lib\netstandard2.0\SAEA.Common.dll</HintPath>
+    <Reference Include="SAEA.Common, Version=5.3.3.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Common.5.3.3.2\lib\netstandard2.0\SAEA.Common.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Http, Version=5.3.3.1, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Http.5.3.3.1\lib\netstandard2.0\SAEA.Http.dll</HintPath>
+    <Reference Include="SAEA.Http, Version=5.3.3.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Http.5.3.3.2\lib\netstandard2.0\SAEA.Http.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.MVC, Version=5.3.3.1, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.MVC.5.3.3.1\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
+    <Reference Include="SAEA.MVC, Version=5.3.3.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.MVC.5.3.3.2\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.RedisSocket, Version=5.3.3.1, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.RedisSocket.5.3.3.1\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
+    <Reference Include="SAEA.RedisSocket, Version=5.3.3.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.RedisSocket.5.3.3.2\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Sockets, Version=5.3.3.1, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Sockets.5.3.3.1\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
+    <Reference Include="SAEA.Sockets, Version=5.3.3.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Sockets.5.3.3.2\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.WebSocket, Version=5.3.3.1, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.WebSocket.5.3.3.1\lib\netstandard2.0\SAEA.WebSocket.dll</HintPath>
+    <Reference Include="SAEA.WebSocket, Version=5.3.3.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.WebSocket.5.3.3.2\lib\netstandard2.0\SAEA.WebSocket.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
