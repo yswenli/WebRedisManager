@@ -71,12 +71,18 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var dataOffset = 0;
 
+    var interval = null;
+
     function loadList(searchKey) {
 
         layerIndex = layer.msg('加载中', {
             icon: 16
             , shade: 0.3, time: 50000
         });
+
+        if (interval !== null) {
+            clearInterval(interval);
+        }
 
         var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
 
@@ -103,7 +109,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     <td class="redis-data-td" data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${tkey2}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
-                    $("#redis-data-body").append(thtml);                   
+                    $("#redis-data-body").append(thtml);
                 }
 
                 //更新ttl
@@ -113,13 +119,13 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     ttlKeys = ttlKeys + td_key + ",";
                 });
                 var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
-                setInterval(function () {
+                interval = setInterval(function () {
                     $.get(td_url, null, function (tddata) {
                         $(".ttl-td").each(function (tdindex) {
                             $(this).html(tddata.Data[tdindex]);
                         });
                     });
-                }, 3000);
+                }, 1000);
 
                 //查看
                 $(".view-link").on("click", function () {
