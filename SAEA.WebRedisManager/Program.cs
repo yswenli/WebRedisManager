@@ -12,10 +12,6 @@ namespace SAEA.WebRedisManager
 
             var config = SAEAMvcApplicationConfigBuilder.Read();
 
-            config.Port = 16379;
-
-            config.Count = 100;
-
             SAEAMvcApplicationConfigBuilder.Write(config);
 
             //启动api
@@ -32,7 +28,7 @@ namespace SAEA.WebRedisManager
 
             ConsoleHelper.WriteLine("SAEA.WebRedisManager Already started");
 
-            ConsoleHelper.WriteLine("Please open on Browser：http://127.0.0.1:16379/");
+            ConsoleHelper.WriteLine($"Please open on Browser：http://127.0.0.1:{config.Port}/");
 
             ConsoleHelper.WriteLine("Enter to exit service...");
 
