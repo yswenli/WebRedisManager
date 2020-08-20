@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace SAEA.Redis.WebManager.Libs
 {
@@ -256,33 +257,31 @@ namespace SAEA.Redis.WebManager.Libs
                             }
                             else
                             {
-                                using (CancellationTokenSource cts = new CancellationTokenSource())
+                                using (CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(20)))
                                 {
-                                    TaskHelper.TimeoutAfterAsync((t) =>
+                                    var token = cts.Token;
+
+                                    Task.Run(() =>
                                     {
-                                        return TaskHelper.Run(() =>
+                                        var o = 0;
+                                        do
                                         {
-                                            var o = 0;
-                                            do
+                                            var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, 50);
+
+                                            if (scanData != null)
                                             {
-                                                var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, 50);
+                                                if (scanData.Data != null && scanData.Data.Any())
 
-                                                if (scanData != null)
-                                                {
-                                                    if (scanData.Data != null && scanData.Data.Any())
+                                                    result.AddRange(scanData.Data);
 
-                                                        result.AddRange(scanData.Data);
+                                                o = scanData.Offset;
 
-                                                    o = scanData.Offset;
-
-                                                    if (o == 0) break;
-                                                }
-                                                if (result.Count >= count) break;
+                                                if (o == 0) break;
                                             }
-                                            while (o > 0 && !t.IsCancellationRequested);
-                                        });
-
-                                    }, TimeSpan.FromSeconds(30), cts.Token).GetAwaiter().GetResult();
+                                            if (result.Count >= count) break;
+                                        }
+                                        while (o > 0 && !token.IsCancellationRequested);
+                                    }).Wait(token);
                                 }
                             }
                         }
@@ -326,6 +325,9 @@ namespace SAEA.Redis.WebManager.Libs
             }
             return result;
         }
+
+
+
         /// <summary>
         /// 获取keytypes
         /// </summary>
@@ -437,41 +439,35 @@ namespace SAEA.Redis.WebManager.Libs
 
             var offset = 0;
 
-            using (CancellationTokenSource cts = new CancellationTokenSource())
+            var redisClient = _redisClients[name];
+
+            using (CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(30)))
             {
-                TaskHelper.TimeoutAfterAsync((t) =>
+                var token = cts.Token;
+
+                Task.Run(() =>
                 {
-                    return TaskHelper.Run(() =>
+                    do
                     {
-                        do
+                        var keys = GetAllKeys(ref offset, name, dbIndex, key, 50).Distinct().ToArray();
+
+                        if (keys != null && keys.Any())
                         {
-                            var keys = GetAllKeys(ref offset, name, dbIndex, key).Distinct().ToArray();
+                            var batch = redisClient.GetDataBase(dbIndex).CreatedBatch();
 
-                            if (keys.Length > 0)
+                            foreach (var item in keys)
                             {
-                                var redisClient = _redisClients[name];
-
-                                var count = 20;
-
-                                var times = (keys.Length / count) + (keys.Length % count == 0 ? 0 : 1);
-
-                                for (int i = 0; i < times; i++)
-                                {
-                                    var skeys = keys.Skip(i * count).Take(count).ToList();
-
-                                    if (skeys != null && skeys.Any())
-                                    {
-                                        redisClient.GetDataBase(dbIndex).Del(skeys.ToArray());
-                                    }
-                                }
+                                batch.DelAsync(item);
                             }
 
-                            len += keys.Length;
+                            batch.Execute().ToList();
                         }
-                        while (offset > 0 && !t.IsCancellationRequested);
-                    });
 
-                }, TimeSpan.FromSeconds(60), cts.Token).GetAwaiter().GetResult();
+                        len += keys.Length;
+                    }
+                    while (offset > 0 && !token.IsCancellationRequested);
+
+                }, token).Wait();
             }
 
             return len;

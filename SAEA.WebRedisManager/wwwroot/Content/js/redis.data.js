@@ -71,18 +71,12 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var dataOffset = 0;
 
-    var interval = null;
-
     function loadList(searchKey) {
 
         layerIndex = layer.msg('加载中', {
             icon: 16
             , shade: 0.3, time: 50000
         });
-
-        if (interval !== null) {
-            clearInterval(interval);
-        }
 
         var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
 
@@ -119,13 +113,13 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     ttlKeys = ttlKeys + td_key + ",";
                 });
                 var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
-                interval = setInterval(function () {
+                setTimeout(function () {
                     $.get(td_url, null, function (tddata) {
                         $(".ttl-td").each(function (tdindex) {
                             $(this).html(tddata.Data[tdindex]);
                         });
                     });
-                }, 1000);
+                }, 500);
 
                 //查看
                 $(".view-link").on("click", function () {
