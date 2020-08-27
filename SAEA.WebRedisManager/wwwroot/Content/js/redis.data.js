@@ -71,6 +71,8 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var dataOffset = 0;
 
+    var timer = null;
+
     function loadList(searchKey) {
 
         layerIndex = layer.msg('加载中', {
@@ -112,14 +114,24 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     var td_key = $(this).attr("data-key");
                     ttlKeys = ttlKeys + td_key + ",";
                 });
+
                 var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
-                setTimeout(function () {
+
+                var getttl = function () {
                     $.get(td_url, null, function (tddata) {
                         $(".ttl-td").each(function (tdindex) {
                             $(this).html(tddata.Data[tdindex]);
                         });
                     });
-                }, 500);
+                }
+
+                if (timer === null) {
+                    getttl();
+                    timer = setInterval(function () {
+                        getttl();
+                    }, 3000);
+                }
+
 
                 //查看
                 $(".view-link").on("click", function () {
