@@ -50,11 +50,15 @@ layui.use(['jquery', 'layer', 'form'], function () {
                 , shade: 0.01
             });
 
-            var input = `${new Date().Format("yyyy-MM-dd HH:mm:ss")}输入：\r\n ${decodeURI(cmd)}\r\n\r\n`;
+            var t1 = new Date();
+
+            var input = `${t1.Format("yyyy-MM-dd hh:mm:ss.S")}\r\nCommand:${decodeURI(cmd)},`;
 
             $.post("/console/sendcmd", `name=${redis_name}&cmd=${cmd}`, (result) => {
 
-                var output = `${new Date().Format("yyyy-MM-dd HH:mm:ss")}输出：\r\n${result}\r\n\r\n${$("#resultTxt").val()}`;
+                var t2 = new Date();
+
+                var output = `Cost:${t2.getTime() - t1.getTime()},Result:\r\n${result}\r\n\r\n${$("#resultTxt").val()}`;
 
                 $("#resultTxt").val(input + output);
                 $("#resultTxt")[0].scrollTop = 0;
@@ -70,4 +74,43 @@ layui.use(['jquery', 'layer', 'form'], function () {
         $("#resultTxt").val("");
     });
 
+    $(".autocomplete").keyup(function () {
+
+        var cur = $(this);
+
+        var wordStr = cur.val();
+
+        if ($("#autocomplete_div").html() === undefined) {
+            $("body").append("<div id='autocomplete_div' style='position:absolute;margin:0px;padding:3px;border:1px solid #ccc;display:block;width:150px;min-height:50px;height:auto;overflow:hidden;background:#fafafa;'></div>")
+        }
+
+        $("#autocomplete_div").css("left", cur.offset().left).css("top", cur.offset().top + 35);
+
+        $("#autocomplete_div").mouseleave(function () {
+            $("#autocomplete_div").slideUp(300);
+        });
+
+        $("#autocomplete_div").html("");
+
+        $.post("/api/console/getcmd?t=" + (new Date().getMilliseconds()), { input: wordStr }, function (data) {
+            if (data.Code === 1) {
+                var dhtml = "";
+                data.Data.forEach(function (element) {
+                    dhtml += `<div>${element}</div>`;
+                });
+                $("#autocomplete_div").html(dhtml).slideDown(300);
+                $("#autocomplete_div div").hover(function () { $(this).css({ "background": "#0563C1", "color": "#fff", "cursor":"pointer" }); }, function () { $(this).css({ "background": "#fff", "color": "#000" }); });
+            }
+            else {
+                $("#autocomplete_div").slideUp(300);
+            }
+            $("#autocomplete_div div").click(function () {
+                cur.val($(this).html());
+                $("#autocomplete_div").slideUp(300);
+            });
+        });
+    });
+    $(".autocomplete").click(function () {
+        $(this).keyup();
+    });
 });

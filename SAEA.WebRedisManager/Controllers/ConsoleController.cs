@@ -17,6 +17,10 @@
 *****************************************************************************/
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
+using SAEA.Redis.WebManager.Models;
+using SAEA.WebRedisManager.Libs;
+using System;
+using System.Collections.Generic;
 
 namespace SAEA.WebRedisManager.Controllers
 {
@@ -24,11 +28,28 @@ namespace SAEA.WebRedisManager.Controllers
     {
         public ActionResult SendCmd(string name, string cmd)
         {
-            if (!string.IsNullOrEmpty(name) &&!string.IsNullOrEmpty(cmd))
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(cmd))
             {
                 return Content(CurrentRedisClient.Send(name, cmd));
             }
             return Content("输入的命令不能为空~");
+        }
+
+        /// <summary>
+        /// 获取输入的命令
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public ActionResult GetCMD(string input)
+        {
+            try
+            {
+                return Json(new JsonResult<IEnumerable<string>>() { Code = 1,Data= RedisCmdHelper.GetList(input) });
+            }
+            catch(Exception ex)
+            {
+                return Json(new JsonResult<string>() { Code = 2, Message = ex.Message });
+            }
         }
     }
 }

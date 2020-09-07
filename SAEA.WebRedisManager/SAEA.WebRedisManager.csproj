@@ -252,9 +252,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SAEA.MVC" Version="5.3.3.6" />
-    <PackageReference Include="SAEA.RedisSocket" Version="5.3.3.5" />
-    <PackageReference Include="SAEA.WebSocket" Version="5.3.3.5" />
+    <PackageReference Include="SAEA.MVC" Version="5.3.3.7" />
+    <PackageReference Include="SAEA.RedisSocket" Version="5.3.3.7" />
+    <PackageReference Include="SAEA.WebSocket" Version="5.3.3.7" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
