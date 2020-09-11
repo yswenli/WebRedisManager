@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <title>login - WebRedisManager</title>
-    <meta name="renderer" content="webkit"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <meta name="author" content="yswenli"/>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="author" content="yswenli" />
     <link href="Content/css/layui.css" rel="stylesheet" media="all" />
     <link href="Content/css/admin.css" rel="stylesheet" />
     <link href="Content/css/login.css" rel="stylesheet" />
@@ -39,7 +39,7 @@
                         </div>
                         <div class="layui-col-xs5">
                             <div style="margin-left: 10px;">
-                                <img src="/api/Verification/index/4" class="layadmin-user-login-codeimg" id="vercode-img" onclick="this.src='/api/Verification/index/4?t=' + new Date().getTime()" />
+                                <img src="/api/Verification/index/4" class="layadmin-user-login-codeimg" id="vercode-img" onclick="this.src='/api/Verification/index/4?t=' + new Date().getTime()" onerror="alert('If the captcha load is abnormal, please visit:https://www.cnblogs.com/yswenli/p/13652098.html')" />
                             </div>
                         </div>
                     </div>
