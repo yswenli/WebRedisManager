@@ -257,7 +257,7 @@ namespace SAEA.Redis.WebManager.Libs
                             }
                             else
                             {
-                                using (CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(20)))
+                                using (CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
                                 {
                                     var token = cts.Token;
 
@@ -266,7 +266,7 @@ namespace SAEA.Redis.WebManager.Libs
                                         var o = 0;
                                         do
                                         {
-                                            var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, 50);
+                                            var scanData = redisClient.GetDataBase(dbIndex).Scan(o, key, 10000);
 
                                             if (scanData != null)
                                             {
@@ -281,7 +281,7 @@ namespace SAEA.Redis.WebManager.Libs
                                             if (result.Count >= count) break;
                                         }
                                         while (o > 0 && !token.IsCancellationRequested);
-                                    }).Wait(token);
+                                    }).Wait();
                                 }
                             }
                         }
@@ -306,7 +306,7 @@ namespace SAEA.Redis.WebManager.Libs
         /// <param name="key"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public static List<string> GetAllKeys(ref int offset, string name, int dbIndex, string key = "*", int count = 50)
+        public static List<string> GetAllKeys(ref int offset, string name, int dbIndex, string key = "*", int count = 10000)
         {
             List<string> result = new List<string>();
 
