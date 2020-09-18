@@ -193,6 +193,11 @@ namespace SAEA.WebRedisManager.Controllers
 
                     var data = CurrentRedisClient.GetTTLs(name, dbIndex, keys);
 
+                    if (data == null || !data.Any())
+                    {
+                        data = CurrentRedisClient.GetTTLs2(name, dbIndex, keys).ToList();
+                    }
+
                     return Json(new JsonResult<List<int>>() { Code = 1, Data = data, Message = "OK" });
                 }
                 return Json(new JsonResult<List<int>>() { Code = 3, Message = "未获取ttl数据" });

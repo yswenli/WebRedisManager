@@ -426,6 +426,27 @@ namespace SAEA.Redis.WebManager.Libs
             return null;
         }
 
+        public static IEnumerable<int> GetTTLs2(string name, int dbIndex, string keys)
+        {
+            if (!string.IsNullOrEmpty(keys))
+            {
+                var arr = keys.Split(",", StringSplitOptions.RemoveEmptyEntries);
+
+                if (arr != null && arr.Any())
+                {
+                    var redisClient = _redisClients[name];
+
+                    var db = redisClient.GetDataBase(dbIndex);
+
+                    foreach (var item in arr)
+                    {
+                        yield return db.Ttl(item);
+                    }
+                }
+            }
+            yield break;
+        }
+
         /// <summary>
         /// 批量删除
         /// </summary>

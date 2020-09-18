@@ -1783,7 +1783,7 @@ body .site-demo-nav .layui-nav-item {
 
 body::-webkit-scrollbar, textarea::-webkit-scrollbar, div::-webkit-scrollbar {
     width: 10px;
-    height: 1px;
+    height: 0px;
 }
 
 body::-webkit-scrollbar-thumb, textarea::-webkit-scrollbar-thumb, div::-webkit-scrollbar-thumb {

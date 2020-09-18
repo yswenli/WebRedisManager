@@ -119,9 +119,11 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
                 var getttl = function () {
                     $.get(td_url, null, function (tddata) {
-                        $(".ttl-td").each(function (tdindex) {
-                            $(this).html(tddata.Data[tdindex]);
-                        });
+                        if (tddata.Code === 1) {
+                            $(".ttl-td").each(function (tdindex) {
+                                $(this).html(tddata.Data[tdindex]);
+                            });
+                        }
                     });
                 }
 
