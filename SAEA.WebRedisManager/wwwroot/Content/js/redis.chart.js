@@ -9,259 +9,20 @@
         , shade: 0.01
     });
 
-    //
-    function LineChart1(eId, chart_title, redis_info_url, redis_name) {
-
-        var dom1 = document.getElementById(eId);
-        if (dom1 === undefined) return;
-        var myChart1 = echarts.init(dom1);
-        var app1 = {};
-        var option1 = null;
-        option1 = {
-            title: {
-                text: chart_title
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: [chart_title]
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: { readOnly: false },
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-            dataZoom: {
-                show: false,
-                start: 0,
-                end: 100
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: true,
-                    data: (function () {
-                        var now = new Date();
-                        var res = [];
-                        var len = 20;
-                        while (len--) {
-                            res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
-                            now = new Date(now - 2000);
-                        }
-                        return res;
-                    })()
-                },
-                {
-                    type: 'category',
-                    boundaryGap: true,
-                    data: (function () {
-                        var res = [];
-                        var len = 20;
-                        while (len--) {
-                            //res.push(len + 1);
-                        }
-                        return res;
-                    })()
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    scale: true,
-                    name: '使用率',
-                    max: 100,
-                    min: 0,
-                    boundaryGap: [0.2, 0.2]
-                }
-            ],
-            series: [
-                {
-                    name: '使用率',
-                    type: 'line',
-                    data: (function () {
-                        var res = [];
-                        var len = 0;
-                        while (len < 20) {
-                            res.push((Math.random() * 10 + 20).toFixed(1) - 0);
-                            len++;
-                        }
-                        return res;
-                    })()
-                }
-            ]
-        };
-
-        clearInterval(app1.timeTicket);
-
-        app1.count = 22;
-
-        app1.timeTicket = setInterval(function () {
-
-            $.get(redis_info_url, "name=" + redis_name + "&isCpu=1", function (redis_info_data) {
-                //
-                var data0 = option1.series[0].data;
-                if (redis_info_data.Code === 2) {
-                    data0.shift();
-                    data0.push(-1);
-                }
-                else {
-                    //
-                    data0.shift();
-                    data0.push(redis_info_data.Data);
-                }
-            });
-            option1.xAxis[0].data.shift();
-            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-            option1.xAxis[0].data.push(axisData);
-            myChart1.setOption(option1);
-
-        }, 1100);
-
-
-        if (option1 && typeof option1 === "object") {
-            var startTime = +new Date();
-            myChart1.setOption(option1, true);
-            var endTime = +new Date();
-            var updateTime = endTime - startTime;
-            // console.log("Time used:", updateTime);
-        }
-    }
-
-    function LineChart2(eId, chart_title, redis_info_url, redis_name) {
-        var dom2 = document.getElementById(eId);
-        if (dom2 === undefined) return;
-        var myChart2 = echarts.init(dom2);
-        var app2 = {};
-        var option2 = null;
-        option2 = {
-            title: {
-                text: chart_title
-            },
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: [chart_title]
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: { readOnly: false },
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-            dataZoom: {
-                show: false,
-                start: 0,
-                end: 100
-            },
-            xAxis: [
-                {
-                    type: 'category',
-                    boundaryGap: true,
-                    data: (function () {
-                        var now = new Date();
-                        var res = [];
-                        var len = 20;
-                        while (len--) {
-                            res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
-                            now = new Date(now - 2000);
-                        }
-                        return res;
-                    })()
-                },
-                {
-                    type: 'category',
-                    boundaryGap: true,
-                    data: (function () {
-                        var res = [];
-                        var len = 20;
-                        while (len--) {
-                            //res.push(len + 1);
-                        }
-                        return res;
-                    })()
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    scale: true,
-                    name: '使用率',
-                    max: 100,
-                    min: 0,
-                    boundaryGap: [0.2, 0.2]
-                }
-            ],
-            series: [
-                {
-                    name: '使用率',
-                    type: 'line',
-                    data: (function () {
-                        var res = [];
-                        var len = 0;
-                        while (len < 20) {
-                            res.push((Math.random() * 10 + 20).toFixed(1) - 0);
-                            len++;
-                        }
-                        return res;
-                    })()
-                }
-            ]
-        };
-
-        clearInterval(app2.timeTicket);
-
-        app2.count = 22;
-
-        app2.timeTicket = setInterval(function () {            
-
-            $.get(redis_info_url, "name=" + redis_name + "&isCpu=0", function (redis_info_data) {
-                //
-                var data0 = option2.series[0].data;
-                if (redis_info_data.Code === 2) {
-                    data0.shift();
-                    data0.push(-1);
-                }
-                else {
-                    //
-                    data0.shift();
-                    data0.push(redis_info_data.Data);
-                }
-            });
-            option2.xAxis[0].data.shift();
-            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-            option2.xAxis[0].data.push(axisData);
-            myChart2.setOption(option2);
-
-        }, 1200);
-
-
-        if (option2 && typeof option2 === "object") {
-            var startTime = +new Date();
-            myChart2.setOption(option2, true);
-            var endTime = +new Date();
-            var updateTime = endTime - startTime;
-            // console.log("Time used:", updateTime);
-        }
-    }
-
 
     var chatData1 = 0;
-    
-    function LineChart11(eId, chart_title, redis_name) {        
+    var chatData2 = 0;
+    var chatData3 = 0;
+    var chatData41 = 0;
+    var chatData42 = 0;
 
-        var dom1 = document.getElementById(eId);
-        if (dom1 === undefined) return;
-        var myChart1 = echarts.init(dom1);
-        var app1 = {};
-        var option1 = null;
-        option1 = {
+    function LineChart1(eId, chart_title) {
+
+        var dom = document.getElementById(eId);
+        if (dom === undefined) return;
+        var myChart = echarts.init(dom);
+        var app = {};
+        var option = {
             title: {
                 text: chart_title
             },
@@ -284,10 +45,16 @@
                 start: 0,
                 end: 100
             },
+            grid: {
+                x: 50,
+                y: 60,
+                x2: 30,
+                y2: 35
+            },
             xAxis: [
                 {
                     type: 'category',
-                    boundaryGap: true,
+                    boundaryGap: false,
                     data: (function () {
                         var now = new Date();
                         var res = [];
@@ -316,16 +83,31 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '使用率',
+                    name: '%',
                     max: 100,
                     min: 0,
-                    boundaryGap: [0.2, 0.2]
+                    boundaryGap: [0, '100%']
                 }
             ],
             series: [
                 {
-                    name: '使用率',
+                    name: '%',
                     type: 'line',
+                    smooth: true,
+                    symbol: 'none',
+                    sampling: 'average',
+                    itemStyle: {
+                        color: 'rgb(255, 70, 131)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgb(255, 158, 68)'
+                        }, {
+                            offset: 1,
+                            color: 'rgb(255, 70, 131)'
+                        }])
+                    },
                     data: (function () {
                         var res = [];
                         var len = 0;
@@ -339,59 +121,38 @@
             ]
         };
 
-        clearInterval(app1.timeTicket);
+        clearInterval(app.timeTicket);
 
-        app1.count = 22;
+        app.count = 22;
 
-        app1.timeTicket = setInterval(function () {
+        app.timeTicket = setInterval(function () {
 
-            var data0 = option1.series[0].data;
+            var data0 = option.series[0].data;
             data0.shift();
             data0.push(chatData1);
-            option1.xAxis[0].data.shift();
+            option.xAxis[0].data.shift();
             var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-            option1.xAxis[0].data.push(axisData);
-            myChart1.setOption(option1);
+            option.xAxis[0].data.push(axisData);
+            myChart.setOption(option);
 
         }, 1100);
 
 
-        if (option1 && typeof option1 === "object") {
+        if (option && typeof option === "object") {
             var startTime = +new Date();
-            myChart1.setOption(option1, true);
+            myChart.setOption(option, true);
             var endTime = +new Date();
             var updateTime = endTime - startTime;
             // console.log("Time used:", updateTime);
         }
-
-        var ws = new WebSocket(`ws://${document.domain}:16666/`);
-        ws.onopen = function (evt) {
-            console.log("Connection open ...");
-            ws.send("getinfo");
-            ws.send(`{"Name":"${redis_name}","IsCpu":true}`);
-        };
-        ws.onmessage = function (event) {
-
-            var redis_info_data = JSON.parse(event.data);
-
-            if (redis_info_data.Code === 1) {
-
-                chatData1 = redis_info_data.Data;
-            }
-        };
     }
+    function LineChart2(eId, chart_title) {
 
-    var chatData2 = 0;
-
-    function LineChart22(eId, chart_title, redis_name) {
-
-        
-        var dom2 = document.getElementById(eId);
-        if (dom2 === undefined) return;
-        var myChart2 = echarts.init(dom2);
-        var app2 = {};
-        var option2 = null;
-        option2 = {
+        var dom = document.getElementById(eId);
+        if (dom === undefined) return;
+        var myChart = echarts.init(dom);
+        var app = {};
+        var option = {
             title: {
                 text: chart_title
             },
@@ -413,6 +174,140 @@
                 show: false,
                 start: 0,
                 end: 100
+            },
+            grid: {
+                x: 50,
+                y: 60,
+                x2: 30,
+                y2: 35
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: (function () {
+                        var now = new Date();
+                        var res = [];
+                        var len = 20;
+                        while (len--) {
+                            res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+                            now = new Date(now - 2000);
+                        }
+                        return res;
+                    })()
+                },
+                {
+                    type: 'category',
+                    boundaryGap: true,
+                    data: (function () {
+                        var res = [];
+                        var len = 20;
+                        while (len--) {
+                            //res.push(len + 1);
+                        }
+                        return res;
+                    })()
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    scale: true,
+                    name: 'mb',
+                    boundaryGap: [0, '100%']
+                }
+            ],
+            series: [
+                {
+                    name: 'mb',
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'none',
+                    sampling: 'average',
+                    itemStyle: {
+                        color: 'rgb(255, 70, 131)'
+                    },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgb(255, 158, 68)'
+                        }, {
+                            offset: 1,
+                            color: 'rgb(255, 70, 131)'
+                        }])
+                    },
+                    data: (function () {
+                        var res = [];
+                        var len = 0;
+                        while (len < 20) {
+                            res.push((Math.random() * 10 + 20).toFixed(1) - 0);
+                            len++;
+                        }
+                        return res;
+                    })()
+                }
+            ]
+        };
+
+        clearInterval(app.timeTicket);
+
+        app.count = 22;
+
+        app.timeTicket = setInterval(function () {
+
+            var data0 = option.series[0].data;
+            data0.shift();
+            data0.push(chatData2);
+            option.xAxis[0].data.shift();
+            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+            option.xAxis[0].data.push(axisData);
+            myChart.setOption(option);
+
+        }, 1100);
+
+
+        if (option && typeof option === "object") {
+            var startTime = +new Date();
+            myChart.setOption(option, true);
+            var endTime = +new Date();
+            var updateTime = endTime - startTime;
+            // console.log("Time used:", updateTime);
+        }
+    }
+    function LineChart3(eId, chart_title) {
+
+        var dom = document.getElementById(eId);
+        if (dom === undefined) return;
+        var myChart = echarts.init(dom);
+        var app = {};
+        var option = {
+            title: {
+                text: chart_title
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: [chart_title]
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: { readOnly: false },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            dataZoom: {
+                show: false,
+                start: 0,
+                end: 100
+            },
+            grid: {
+                x: 50,
+                y: 60,
+                x2: 30,
+                y2: 35
             },
             xAxis: [
                 {
@@ -446,15 +341,139 @@
                 {
                     type: 'value',
                     scale: true,
-                    name: '使用率',
-                    max: 100,
-                    min: 0,
-                    boundaryGap: [0.2, 0.2]
+                    name: 'times',
+                    boundaryGap: [0, '100%']
                 }
             ],
             series: [
                 {
-                    name: '使用率',
+                    name: 'times',
+                    type: 'bar',
+                    data: (function () {
+                        var res = [];
+                        var len = 0;
+                        while (len < 20) {
+                            res.push((Math.random() * 10 + 20).toFixed(1) - 0);
+                            len++;
+                        }
+                        return res;
+                    })()
+                }
+            ]
+        };
+
+        clearInterval(app.timeTicket);
+
+        app.count = 22;
+
+        app.timeTicket = setInterval(function () {
+
+            var data0 = option.series[0].data;
+            data0.shift();
+            data0.push(chatData3);
+            option.xAxis[0].data.shift();
+            var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
+            option.xAxis[0].data.push(axisData);
+            myChart.setOption(option);
+
+        }, 1100);
+
+
+        if (option && typeof option === "object") {
+            var startTime = +new Date();
+            myChart.setOption(option, true);
+            var endTime = +new Date();
+            var updateTime = endTime - startTime;
+            // console.log("Time used:", updateTime);
+        }
+    }
+    function LineChart4(eId, chart_title) {
+
+        var dom = document.getElementById(eId);
+        if (dom === undefined) return;
+        var myChart = echarts.init(dom);
+        var app = {};
+        var option = {
+            title: {
+                text: chart_title
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: [chart_title]
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: { readOnly: false },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            dataZoom: {
+                show: false,
+                start: 0,
+                end: 100
+            },
+            grid: {
+                x: 50,
+                y: 60,
+                x2: 30,
+                y2: 35
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: (function () {
+                        var now = new Date();
+                        var res = [];
+                        var len = 20;
+                        while (len--) {
+                            res.unshift(now.toLocaleTimeString().replace(/^\D*/, ''));
+                            now = new Date(now - 2000);
+                        }
+                        return res;
+                    })()
+                },
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: (function () {
+                        var res = [];
+                        var len = 20;
+                        while (len--) {
+                            //res.push(len + 1);
+                        }
+                        return res;
+                    })()
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value',
+                    scale: true,
+                    name: 'kb',
+                    boundaryGap: [0, '100%']
+                }
+            ],
+            series: [
+                {
+                    name: 'input',
+                    type: 'line',
+                    data: (function () {
+                        var res = [];
+                        var len = 0;
+                        while (len < 20) {
+                            res.push((Math.random() * 10 + 20).toFixed(1) - 0);
+                            len++;
+                        }
+                        return res;
+                    })()
+                },
+                {
+                    name: 'ouput',
                     type: 'line',
                     data: (function () {
                         var res = [];
@@ -469,54 +488,64 @@
             ]
         };
 
-        clearInterval(app2.timeTicket);
+        clearInterval(app.timeTicket);
 
-        app2.count = 22;
+        app.count = 22;
 
-        app2.timeTicket = setInterval(function () {
+        app.timeTicket = setInterval(function () {
 
-            var data0 = option2.series[0].data;
+            var data0 = option.series[0].data;
             data0.shift();
-            data0.push(chatData2);
-            option2.xAxis[0].data.shift();
+            data0.push(chatData41);
+
+            var data1 = option.series[1].data;
+            data1.shift();
+            data1.push(chatData42);
+
+            option.xAxis[0].data.shift();
             var axisData = (new Date()).toLocaleTimeString().replace(/^\D*/, '');
-            option2.xAxis[0].data.push(axisData);
-            myChart2.setOption(option2);
+            option.xAxis[0].data.push(axisData);
+            myChart.setOption(option);
 
-        }, 1200);
+        }, 1100);
 
 
-        if (option2 && typeof option2 === "object") {
+        if (option && typeof option === "object") {
             var startTime = +new Date();
-            myChart2.setOption(option2, true);
+            myChart.setOption(option, true);
             var endTime = +new Date();
             var updateTime = endTime - startTime;
             // console.log("Time used:", updateTime);
         }
-        var ws = new WebSocket(`ws://${document.domain}:16666/`);
-        ws.onopen = function (evt) {
-            console.log("Connection open ...");
-            ws.send("getinfo");
-            ws.send(`{"Name":"${redis_name}","IsCpu":false}`);
-        };
-        ws.onmessage = function (event) {
-
-            var redis_info_data = JSON.parse(event.data);
-
-            if (redis_info_data.Code === 1) {
-                chatData2 = redis_info_data.Data;
-            }
-        };
     }
-
     var name = decodeURI(GetRequest().name);
 
     //加载图表
-    //LineChart1("redis-cpu-div", "cpu使用情况", "/api/redis/getinfo", name);
-    //LineChart2("redis-mem-div", "memory使用情况", "/api/redis/getinfo", name);
 
-    LineChart11("redis-cpu-div", "cpu使用情况", name);
-    LineChart22("redis-mem-div", "memory使用情况", name);
+    LineChart1("redis-cpu-div", "cpu");
+    LineChart2("redis-mem-div", "memory");
+    LineChart3("redis-cmd-div", "cmd");
+    LineChart4("redis-net-div", "net");
+
+
+    var ws = new WebSocket(`ws://${document.domain}:16666/`);
+
+    ws.onopen = function (evt) {
+        console.log("Connection open ...");
+        ws.send(`${name}`);
+    };
+    ws.onmessage = function (event) {
+
+        var redis_info_data = JSON.parse(event.data);
+
+        if (redis_info_data.Code === 1) {
+            chatData1 = redis_info_data.Data.Cpu;
+            chatData2 = redis_info_data.Data.Memory;
+            chatData3 = redis_info_data.Data.Cmds;
+            chatData41 = redis_info_data.Data.Input;
+            chatData42 = redis_info_data.Data.Output;
+        }
+    };
 
 
     $("#redis_name").html(name);

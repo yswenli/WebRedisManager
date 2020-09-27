@@ -16,13 +16,9 @@
 *描    述：
 *****************************************************************************/
 using SAEA.Common;
-using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SAEA.WebRedisManager.Libs
 {
@@ -32,49 +28,32 @@ namespace SAEA.WebRedisManager.Libs
     public static class ServerInfoDataHelper
     {
         /// <summary>
-        /// 获取信息
+        /// GetInfo
         /// </summary>
         /// <param name="name"></param>
-        /// <param name="isCpu"></param>
         /// <returns></returns>
-        public static JsonResult<string> GetInfo(string name, bool isCpu)
+        public static JsonResult<RedisServerInfo> GetInfo(string name)
         {
             try
             {
-                var data = CurrentRedisClient.GetServerInfo(name);
+                RedisServerInfo redisServerInfo = new RedisServerInfo();
 
-                if (data != null)
-                {
-                    var result = "0";
+                redisServerInfo.Cpu = CurrentRedisClient.GetCpu(name).ToString();
 
-                    if (isCpu)
-                    {
-                        result = CurrentRedisClient.CpuUsed(name).ToString();
-                    }
-                    else
-                    {
-                        var totalmem = CurrentRedisClient.GetMaxMem(name);
+                redisServerInfo.Memory= CurrentRedisClient.GetUsedMem(name).ToString();
 
-                        var usemem = double.Parse(data.used_memory);
+                redisServerInfo.Cmds = CurrentRedisClient.GetOpsCmd(name).ToString();
 
-                        if (totalmem == 0)
-                        {
-                            result = totalmem.ToString();
-                        }
-                        else
-                        {
-                            result = (usemem / totalmem * 100).ToString();
-                        }
-                    }
+                redisServerInfo.Input = CurrentRedisClient.GetInput(name).ToString();
 
-                    return new JsonResult<string>() { Code = 1, Data = result, Message = "OK" };
-                }
-                return new JsonResult<string>() { Code = 2, Message = "暂未读取数据" };
+                redisServerInfo.Output = CurrentRedisClient.GetOutput(name).ToString();
+
+                return new JsonResult<RedisServerInfo>() { Code = 1, Data = redisServerInfo, Message = "OK" };                
             }
             catch (Exception ex)
             {
                 LogHelper.Error($"RedisController.GetInfo name:{name}", ex);
-                return new JsonResult<string>() { Code = 2, Message = ex.Message };
+                return new JsonResult<RedisServerInfo>() { Code = 2, Message = ex.Message };
             }
         }
     }

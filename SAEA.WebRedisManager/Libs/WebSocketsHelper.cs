@@ -36,8 +36,14 @@ namespace SAEA.WebRedisManager.Libs
         public WebSocketsHelper(int port = 16666)
         {
             _wsServer = new WSServer(port);
+            _wsServer.OnConnected += _wsServer_OnConnected;
             _wsServer.OnMessage += WsServer_OnMessage;
             _wsServer.OnDisconnected += WsServer_OnDisconnected;
+        }
+
+        private void _wsServer_OnConnected(string cid)
+        {
+            _dic1.TryAdd(cid, DateTimeHelper.Now);
         }
 
         private void WsServer_OnDisconnected(string cid)
@@ -51,75 +57,36 @@ namespace SAEA.WebRedisManager.Libs
             {
                 if (_dic1.ContainsKey(cid) && msg.Content != null && msg.Content.Any())
                 {
-                    var json = Encoding.UTF8.GetString(msg.Content);
+                    var name = Encoding.UTF8.GetString(msg.Content);
 
-                    var requestData = SerializeHelper.Deserialize<RequestData>(json);
 
-                    if (requestData == null)
+                    if (string.IsNullOrEmpty(name))
                     {
                         return;
                     }
-
-                    if (requestData.IsCpu)
-                        Task.Factory.StartNew(() =>
+                    Task.Factory.StartNew(() =>
+                    {
+                        while (_dic1.ContainsKey(cid))
                         {
-                            while (_dic1.ContainsKey(cid))
+                            try
                             {
-                                try
-                                {
-                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, true));
+                                var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(name));
 
-                                    _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
+                                _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
 
-                                }
-                                catch
-                                {
-                                    _dic1.TryRemove(cid, out DateTime v);
-                                    break;
-                                }
-                                ThreadHelper.Sleep(1000);
                             }
-                        });
-                    else
-                        Task.Factory.StartNew(() =>
-                        {
-                            while (_dic1.ContainsKey(cid))
+                            catch
                             {
-                                try
-                                {
-                                    var data = SerializeHelper.Serialize(ServerInfoDataHelper.GetInfo(requestData.Name, false));
-
-                                    _wsServer.Reply(cid, new WSProtocal(WSProtocalType.Text, Encoding.UTF8.GetBytes(data)));
-                                }
-                                catch
-                                {
-                                    _dic1.TryRemove(cid, out DateTime v);
-                                    break;
-                                }
-
-                                ThreadHelper.Sleep(1100);
+                                _dic1.TryRemove(cid, out DateTime v);
+                                break;
                             }
-                        });
-
-                    return;
+                            ThreadHelper.Sleep(1000);
+                        }
+                    });
                 }
                 else
                 {
-                    if (msg.Content != null && msg.Content.Any())
-                    {
-                        var s = Encoding.UTF8.GetString(msg.Content);
-
-                        if (s == "getinfo")
-                        {
-                            _dic1.TryAdd(cid, DateTimeHelper.Now);
-
-                            return;
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
+                    _wsServer.Disconnect(cid);
                 }
             }
         }
@@ -132,20 +99,6 @@ namespace SAEA.WebRedisManager.Libs
         public void Stop()
         {
             _wsServer.Stop();
-        }
-
-
-        public class RequestData
-        {
-            public string Name
-            {
-                get; set;
-            }
-
-            public bool IsCpu
-            {
-                get; set;
-            }
         }
     }
 }

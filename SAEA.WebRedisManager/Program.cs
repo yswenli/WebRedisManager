@@ -12,6 +12,10 @@ namespace SAEA.WebRedisManager
 
             var config = SAEAMvcApplicationConfigBuilder.Read();
 
+            //config.Port = 16379;
+
+            //config.IsStaticsCached = false;
+
             SAEAMvcApplicationConfigBuilder.Write(config);
 
             //启动api

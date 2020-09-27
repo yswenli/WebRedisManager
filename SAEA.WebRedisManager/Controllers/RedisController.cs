@@ -112,16 +112,6 @@ namespace SAEA.WebRedisManager.Controllers
             }
         }
 
-        /// <summary>
-        /// 获取信息
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="isCpu"></param>
-        /// <returns></returns>
-        public ActionResult GetInfo(string name, bool isCpu)
-        {
-            return Json(ServerInfoDataHelper.GetInfo(name, isCpu));
-        }
 
 
 
@@ -190,13 +180,7 @@ namespace SAEA.WebRedisManager.Controllers
             {
                 if (!string.IsNullOrEmpty(keys))
                 {
-
-                    var data = CurrentRedisClient.GetTTLs(name, dbIndex, keys);
-
-                    if (data == null || !data.Any())
-                    {
-                        data = CurrentRedisClient.GetTTLs2(name, dbIndex, keys).ToList();
-                    }
+                    var data = CurrentRedisClient.GetTTLs2(name, dbIndex, keys).ToList();                   
 
                     return Json(new JsonResult<List<int>>() { Code = 1, Data = data, Message = "OK" });
                 }

@@ -130,26 +130,57 @@ namespace SAEA.Redis.WebManager.Libs
 
         static ConcurrentDictionary<string, double> _cpuUsed = new ConcurrentDictionary<string, double>();
 
-        public static double CpuUsed(string name)
+
+        public static double GetCpu(string name)
         {
-            var data = CurrentRedisClient.GetServerInfo(name);
-
-            var before = 0D;
-
-            var now = double.Parse(data.used_cpu_sys);
-
-            if (_cpuUsed.ContainsKey(name))
+            if (_redisClients.ContainsKey(name))
             {
-                before = _cpuUsed[name];
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    var str = redisClient.Info("CPU");
+
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        return 0D;
+                    }
+
+                    var arr = str.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (arr == null || !arr.Any())
+                    {
+                        return 0D;
+                    }
+
+                    foreach (var item in arr)
+                    {
+                        var sarr = item.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (sarr[0] == "used_cpu_sys")
+                        {
+                            if (_cpuUsed.ContainsKey(name))
+                            {
+                                var result = double.Parse(sarr[1]) - _cpuUsed[name];
+                                _cpuUsed[name] = double.Parse(sarr[1]);
+                                return result;
+                            }
+                            else
+                            {
+                                _cpuUsed[name] = double.Parse(sarr[1]);
+                                return 0;
+                            }
+                        }
+                    }
+
+                }
             }
-
-            _cpuUsed[name] = now;
-
-            return (now - before) * 100;
+            return 0D;
         }
 
 
-        public static double GetMaxMem(string name)
+
+        public static double GetUsedMem(string name)
         {
             if (_redisClients.ContainsKey(name))
             {
@@ -175,9 +206,9 @@ namespace SAEA.Redis.WebManager.Libs
                     {
                         var sarr = item.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (sarr[0] == "maxmemory")
+                        if (sarr[0] == "used_memory")
                         {
-                            return double.Parse(sarr[1]);
+                            return double.Parse(sarr[1]) / 1024 / 1024;
                         }
                     }
 
@@ -186,6 +217,117 @@ namespace SAEA.Redis.WebManager.Libs
             return 0D;
         }
 
+
+        public static long GetOpsCmd(string name)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    var str = redisClient.Info("Stats");
+
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        return 0L;
+                    }
+
+                    var arr = str.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (arr == null || !arr.Any())
+                    {
+                        return 0L;
+                    }
+
+                    foreach (var item in arr)
+                    {
+                        var sarr = item.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (sarr[0] == "instantaneous_ops_per_sec")
+                        {
+                            return long.Parse(sarr[1]);
+                        }
+                    }
+
+                }
+            }
+            return 0L;
+        }
+
+
+        public static double GetInput(string name)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    var str = redisClient.Info("Stats");
+
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        return 0L;
+                    }
+
+                    var arr = str.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (arr == null || !arr.Any())
+                    {
+                        return 0L;
+                    }
+
+                    foreach (var item in arr)
+                    {
+                        var sarr = item.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (sarr[0] == "instantaneous_input_kbps")
+                        {
+                            return double.Parse(sarr[1]);
+                        }
+                    }
+
+                }
+            }
+            return 0L;
+        }
+        public static double GetOutput(string name)
+        {
+            if (_redisClients.ContainsKey(name))
+            {
+                var redisClient = _redisClients[name];
+
+                if (redisClient.IsConnected)
+                {
+                    var str = redisClient.Info("Stats");
+
+                    if (string.IsNullOrEmpty(str))
+                    {
+                        return 0L;
+                    }
+
+                    var arr = str.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                    if (arr == null || !arr.Any())
+                    {
+                        return 0L;
+                    }
+
+                    foreach (var item in arr)
+                    {
+                        var sarr = item.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (sarr[0] == "instantaneous_output_kbps")
+                        {
+                            return double.Parse(sarr[1]);
+                        }
+                    }
+
+                }
+            }
+            return 0L;
+        }
 
         public static bool IsCluster(string name)
         {

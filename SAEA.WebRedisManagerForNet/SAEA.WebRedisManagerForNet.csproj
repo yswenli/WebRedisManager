@@ -228,6 +228,9 @@
     <Compile Include="..\SAEA.WebRedisManager\Models\RedisData.cs">
       <Link>Models\RedisData.cs</Link>
     </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Models\RedisServerInfo.cs">
+      <Link>Models\RedisServerInfo.cs</Link>
+    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Models\User.cs">
       <Link>Models\User.cs</Link>
     </Compile>

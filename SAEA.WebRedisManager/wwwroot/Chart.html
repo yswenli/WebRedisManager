@@ -22,12 +22,12 @@
                 <div class="layui-card-header" style="font-size:18px;">
                     <span id="redis_name"></span>【<a href="javascript:;" id="redis_info">Redis Info</a>】 【<a href="javascript:;" id="redis_console">Redis Console</a>】【<a href="javascript:;" id="redis_clients">Redis Clients</a>】【<a href="javascript:;" id="alter_passwords">Alter Passwords</a>】
                 </div>
-                <div class="layui-card-body layuiadmin-card-list" style="height:400px;">
+                <div class="layui-card-body layuiadmin-card-list" style="height:757px;">
                     <div class="layui-col-sm6 layui-col-md6">
                         <div class="layui-card">
                             <div class="layui-card-header">
                                 CPU
-                                <span class="layui-badge layui-bg-blue layuiadmin-badge">秒</span>
+                                <span class="layui-badge layui-bg-blue layuiadmin-badge">Second</span>
                             </div>
                             <div class="layui-card-body layuiadmin-card-list">
                                 <div id='redis-cpu-div' style='height:320px;'></div>
@@ -37,11 +37,33 @@
                     <div class="layui-col-sm6 layui-col-md6">
                         <div class="layui-card">
                             <div class="layui-card-header">
-                                内存
-                                <span class="layui-badge layui-bg-blue layuiadmin-badge">秒</span>
+                                MEM
+                                <span class="layui-badge layui-bg-blue layuiadmin-badge">Second</span>
                             </div>
                             <div class="layui-card-body layuiadmin-card-list">
                                 <div id='redis-mem-div' style='height:320px;'></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6 layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                CMD
+                                <span class="layui-badge layui-bg-blue layuiadmin-badge">Second</span>
+                            </div>
+                            <div class="layui-card-body layuiadmin-card-list">
+                                <div id='redis-cmd-div' style='height:320px;'></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md6 layui-col-md6">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                NET
+                                <span class="layui-badge layui-bg-blue layuiadmin-badge">Second</span>
+                            </div>
+                            <div class="layui-card-body layuiadmin-card-list">
+                                <div id='redis-net-div' style='height:320px;'></div>
                             </div>
                         </div>
                     </div>
