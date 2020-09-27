@@ -157,11 +157,11 @@ namespace SAEA.Redis.WebManager.Libs
                     {
                         var sarr = item.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (sarr[0] == "used_cpu_sys")
+                        if (sarr[0] == "used_cpu_user")
                         {
                             if (_cpuUsed.ContainsKey(name))
                             {
-                                var result = double.Parse(sarr[1]) - _cpuUsed[name];
+                                var result = (double.Parse(sarr[1]) - _cpuUsed[name]) * 100;
                                 _cpuUsed[name] = double.Parse(sarr[1]);
                                 return result;
                             }
