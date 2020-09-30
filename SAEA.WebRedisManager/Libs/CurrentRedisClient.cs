@@ -385,7 +385,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                     if (redisClient.IsConnected)
                     {
-                        var count = 20;
+                        var count = 50;
 
                         if (!string.IsNullOrEmpty(key) && key != "*" && key != "[" && key != "]")
                         {
@@ -482,7 +482,7 @@ namespace SAEA.Redis.WebManager.Libs
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
-            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(20).ToList();
+            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(50).ToList();
 
             if (keys.Count > 0)
             {
