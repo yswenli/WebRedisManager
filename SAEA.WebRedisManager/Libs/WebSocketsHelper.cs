@@ -59,11 +59,11 @@ namespace SAEA.WebRedisManager.Libs
                 {
                     var name = Encoding.UTF8.GetString(msg.Content);
 
-
                     if (string.IsNullOrEmpty(name))
                     {
                         return;
                     }
+
                     Task.Factory.StartNew(() =>
                     {
                         while (_dic1.ContainsKey(cid))

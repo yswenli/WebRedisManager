@@ -81,7 +81,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
         var wordStr = cur.val();
 
         if ($("#autocomplete_div").html() === undefined) {
-            $("body").append("<div id='autocomplete_div' style='position:absolute;margin:0px;padding:3px;border:1px solid #ccc;display:block;width:150px;min-height:50px;height:auto;overflow:hidden;background:#fafafa;'></div>")
+            $("body").append("<div id='autocomplete_div' style='position:absolute;margin:0px;padding:3px;border:1px solid #ccc;display:block;min-width:150px;min-height:50px;height:auto;overflow:hidden;background:#fafafa;'></div>")
         }
 
         $("#autocomplete_div").css("left", cur.offset().left).css("top", cur.offset().top + 35);
@@ -98,15 +98,16 @@ layui.use(['jquery', 'layer', 'form'], function () {
                 data.Data.forEach(function (element) {
                     dhtml += `<div>${element}</div>`;
                 });
-                $("#autocomplete_div").html(dhtml).slideDown(300);
-                $("#autocomplete_div div").hover(function () { $(this).css({ "background": "#0563C1", "color": "#fff", "cursor":"pointer" }); }, function () { $(this).css({ "background": "#fff", "color": "#000" }); });
+                $("#autocomplete_div").html(dhtml).slideDown(100);
+                $("#autocomplete_div div").css({ "cursor": "pointer", "margin": "3px", "padding": "5px", "border": "1px solid #aaa", "border-radius": "4px", "background": "linear-gradient(to bottom, #fff 0%,#e6e6e6 100%)" });
+                $("#autocomplete_div div").hover(function () { $(this).css({ "background": "linear-gradient(to bottom, #0773e0 0%,#0563C1 100%)", "color": "#fff" }); }, function () { $(this).css({ "background": "linear-gradient(to bottom, #fff 0%,#e6e6e6 100%)", "color": "#000" }); });
             }
             else {
-                $("#autocomplete_div").slideUp(300);
+                $("#autocomplete_div").slideUp(50);
             }
             $("#autocomplete_div div").click(function () {
                 cur.val($(this).html());
-                $("#autocomplete_div").slideUp(300);
+                $("#autocomplete_div").slideUp(50);
             });
         });
     });

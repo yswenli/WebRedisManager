@@ -73,7 +73,11 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     var timer = null;
 
+    var ttlKeys = "";
+
     function loadList(searchKey) {
+
+        ttlKeys = "";
 
         layerIndex = layer.msg('加载中', {
             icon: 16
@@ -86,7 +90,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
             if (jdata.Code === 1) {
 
-                $("#redis-data-body").html("");
+                var redis_data_body = "";
 
                 for (var i = 0; i < jdata.Data.length; i++) {
 
@@ -105,20 +109,17 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                     <td class="redis-data-td" data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${tkey2}" data-type="${jdata.Data[i].Type}">
 <a href="javascript:;" class="view-link">查看</a> | <a href="javascript:;" class="del-link">删除</a></td>
                                                                                             </tr>`;
-                    $("#redis-data-body").append(thtml);
+                    redis_data_body += thtml;
+                    ttlKeys += tkey2 + ",";
                 }
 
+                $("#redis-data-body").html("");
+                $("#redis-data-body").html(redis_data_body);
+
                 //更新ttl
-                var ttlKeys = "";
-                $(".redis-data-td").each(function (tdindex) {
-                    var td_key = $(this).attr("data-key");
-                    ttlKeys = ttlKeys + td_key + ",";
-                });
 
-                var td_url = `/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`;
-
-                var getttl = function () {
-                    $.get(td_url, null, function (tddata) {
+                var getttl = function (req_url) {
+                    $.get(req_url, null, function (tddata) {
                         if (tddata.Code === 1) {
                             $(".ttl-td").each(function (tdindex) {
                                 $(this).html(tddata.Data[tdindex]);
@@ -128,9 +129,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 }
 
                 if (timer === null) {
-                    getttl();
+                    getttl(`/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`);
                     timer = setInterval(function () {
-                        getttl();
+                        getttl(`/api/redis/getttls?name=${redis_name}&dbindex=${db_index}&keys=${ttlKeys}`);
                     }, 3000);
                 }
 
