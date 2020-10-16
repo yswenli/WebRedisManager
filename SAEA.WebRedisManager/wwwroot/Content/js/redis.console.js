@@ -45,7 +45,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
 
             cmd = encodeURI(cmd);
 
-            layerIndex = layer.msg('加载中', {
+            layerIndex = layer.msg('loading', {
                 icon: 16
                 , shade: 0.01
             });
@@ -58,7 +58,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
 
                 var t2 = new Date();
 
-                var output = `Cost:${t2.getTime() - t1.getTime()},Result:\r\n${result}\r\n\r\n${$("#resultTxt").val()}`;
+                var output = `Cost:${t2.getTime() - t1.getTime()}ms,Result:\r\n${result}\r\n\r\n${$("#resultTxt").val()}`;
 
                 $("#resultTxt").val(input + output);
                 $("#resultTxt")[0].scrollTop = 0;
