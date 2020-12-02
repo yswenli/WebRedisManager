@@ -38,17 +38,17 @@ namespace SAEA.WebRedisManager.Libs
             {
                 RedisServerInfo redisServerInfo = new RedisServerInfo();
 
-                redisServerInfo.Cpu = CurrentRedisClient.GetCpu(name).ToString();
+                redisServerInfo.Cpu = CurrentRedisClient.GetCpu(name).ToString("f2");
 
-                redisServerInfo.Memory= CurrentRedisClient.GetUsedMem(name).ToString();
+                redisServerInfo.Memory= CurrentRedisClient.GetUsedMem(name).ToString("f2");
 
                 redisServerInfo.Cmds = CurrentRedisClient.GetOpsCmd(name).ToString();
 
-                redisServerInfo.Input = CurrentRedisClient.GetInput(name).ToString();
+                redisServerInfo.Input = CurrentRedisClient.GetInput(name).ToString("f2");
 
-                redisServerInfo.Output = CurrentRedisClient.GetOutput(name).ToString();
+                redisServerInfo.Output = CurrentRedisClient.GetOutput(name).ToString("f2");
 
-                return new JsonResult<RedisServerInfo>() { Code = 1, Data = redisServerInfo, Message = "OK" };                
+                return new JsonResult<RedisServerInfo>() { Code = 1, Data = redisServerInfo, Message = "OK" };
             }
             catch (Exception ex)
             {

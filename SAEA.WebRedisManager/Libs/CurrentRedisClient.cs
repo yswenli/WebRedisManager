@@ -20,9 +20,6 @@ namespace SAEA.Redis.WebManager.Libs
 
         static ConcurrentDictionary<string, RedisClient> _redisClients = new ConcurrentDictionary<string, RedisClient>();
 
-
-        static object _locker = new object();
-
         /// <summary>
         /// 连接到redis
         /// </summary>
@@ -36,6 +33,11 @@ namespace SAEA.Redis.WebManager.Libs
 
                 if (_redisClients.TryGetValue(config.Name, out redisClient))
                 {
+                    if (redisClient == null)
+                    {
+                        redisClient = new RedisClient(config.IP + ":" + config.Port, config.Password);
+                    }
+
                     if (!redisClient.IsConnected)
                     {
                         return redisClient.Connect();
