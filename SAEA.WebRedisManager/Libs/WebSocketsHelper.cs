@@ -16,6 +16,7 @@
 *描    述：
 *****************************************************************************/
 using SAEA.Common;
+using SAEA.Common.Serialization;
 using SAEA.WebSocket;
 using SAEA.WebSocket.Model;
 using SAEA.WebSocket.Type;

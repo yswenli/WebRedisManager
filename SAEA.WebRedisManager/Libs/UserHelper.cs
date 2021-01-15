@@ -16,6 +16,7 @@
 *描    述：
 *****************************************************************************/
 using SAEA.Common;
+using SAEA.Common.Serialization;
 using SAEA.MVC;
 using SAEA.WebRedisManager.Models;
 using System;

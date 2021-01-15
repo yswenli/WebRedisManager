@@ -1,4 +1,5 @@
 ﻿using SAEA.Common;
+using SAEA.Common.Serialization;
 using SAEA.Redis.WebManager.Models;
 using System.Collections.Generic;
 using System.IO;
