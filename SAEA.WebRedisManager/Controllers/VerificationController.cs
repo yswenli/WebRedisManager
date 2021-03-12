@@ -34,16 +34,12 @@ namespace SAEA.WebRedisManager.Controllers
         {
             try
             {
-                HttpContext.Current.Response.ContentType = "image/Gif";
-
-                using (MemoryStream m = new MemoryStream())
+                VerificationCode va = new VerificationCode(105, 30, 4, id);
+                using (var m = va.Create())
                 {
-                    VerificationCode va = new VerificationCode(105, 30, 4, id);
-                    var s = va.Create(m);
                     string code = va.IdentifyingCode;
                     HttpContext.Current.Session["code"] = code;
-                    HttpContext.Current.Response.BinaryWrite(m.ToArray());
-                    return new EmptyResult();
+                    return Data(m);
                 }
             }
             catch (Exception ex)

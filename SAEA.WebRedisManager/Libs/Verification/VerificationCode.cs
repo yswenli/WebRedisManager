@@ -127,24 +127,25 @@ namespace SAEA.WebRedisManager.Libs.Verification
 
         public Stream Create(Stream stream)
         {
+            GenerateIdentifyingCode(_defaultIdentifyingCodeLen);
+
             coder.Start(stream);
-            Process();
+            Process(IdentifyingCode);
             return stream;
         }
 
         public MemoryStream Create()
         {
+            GenerateIdentifyingCode(_defaultIdentifyingCodeLen);
+
             MemoryStream stream = new MemoryStream();
             coder.Start(stream);
-            Process();
+            Process(IdentifyingCode);
             return stream;
         }
 
-        private void Process()
+        private void Process(string str)
         {
-
-            GenerateIdentifyingCode(_defaultIdentifyingCodeLen);
-
             Rectangle rect = new Rectangle(0, 0, Width, Height);
 
             Font f = new Font(FontFamily.GenericSansSerif, 14, FontStyle.Bold);
@@ -163,7 +164,7 @@ namespace SAEA.WebRedisManager.Libs.Verification
 
                 int fH = (int)f.GetHeight();
 
-                int fW = (int)ga.MeasureString(IdentifyingCode, f).Width;
+                int fW = (int)ga.MeasureString(str, f).Width;
 
                 _color = Color.FromArgb(_random.Next(0, 128), _random.Next(0, 128), _random.Next(0, 128));
 
@@ -171,7 +172,7 @@ namespace SAEA.WebRedisManager.Libs.Verification
 
                 AddNoise(ga, _color);
 
-                ga.DrawString(IdentifyingCode, f, fb, new PointF(_random.Next(1, Width - 1 - fW), _random.Next(1, Height - 1 - fH)));
+                ga.DrawString(str, f, fb, new PointF(_random.Next(1, Width - 1 - fW), _random.Next(1, Height - 1 - fH)));
 
                 ga.Flush();
 
@@ -201,10 +202,9 @@ namespace SAEA.WebRedisManager.Libs.Verification
 
         public void Create(string path)
         {
-            //coder.Start(path);用它的这个方法,比用 stream 生成的要大!
             FileStream fs = new FileStream(path, FileMode.Create);
             coder.Start(fs);
-            Process();
+            Process(IdentifyingCode);
             fs.Close();
         }
         public void ProcessRequest(HttpContext context)

@@ -21,7 +21,6 @@ using SAEA.Redis.WebManager.Models;
 using SAEA.WebRedisManager.Libs;
 using SAEA.WebRedisManager.Models;
 using System.Diagnostics;
-using System.Text;
 
 namespace SAEA.WebRedisManager.Attr
 {
@@ -74,7 +73,7 @@ namespace SAEA.WebRedisManager.Attr
             return true;
         }
 
-        public override void OnActionExecuted(ActionResult result)
+        public override void OnActionExecuted(ref ActionResult result)
         {
             _stopwatch.Stop();
 
