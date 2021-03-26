@@ -9,6 +9,16 @@
     <title>ItemsView</title>
     <link href="/content/css/layui.css" rel="stylesheet" />
     <link href="/content/css/global.css" rel="stylesheet" />
+    <style type="text/css">
+        table {
+            table-layout: fixed;
+        }
+            table tbody tr td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+    </style>
 </head>
 <body>
     <div class="layui-fluid">
@@ -20,14 +30,13 @@
                         <div>
                             <div class="layui-col-md9">
                                 <div>
-                                    <label class="layui-form-label"><i class="layui-icon layui-icon-search"></i></label>
                                     <div class="layui-input-block">
                                         <input id="search-key" type="text" name="search_key" lay-verify="title" autocomplete="off" placeholder="请输入Key，*: 通配任意多个字符 ?: 通配单个字符 []: 通配括号内的某1个字符" class="layui-input">
                                     </div>
                                 </div>
                             </div>
                             <div class="layui-col-md3">
-                                <button id="search_btn" type="button" class="layui-btn">SCAN</button>
+                                <button id="search_btn" type="button" class="layui-btn"><i class="layui-icon layui-icon-search"></i>SCAN</button>
                             </div>
                         </div>
                     </div>

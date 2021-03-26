@@ -40,7 +40,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
     $.get(`/api/redis/getcount?name=${encodeURIComponent(redis_name)}&dbindex=${db_index}&type=${item_type}&ID=${encodeURIComponent(item_id)}`, null, function (gdata) {
 
-        $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data} 【<a href="javascript:;" id="redis_console" style="color:#009688;">Redis Console</a>】`);
+        $(".keys-header").html(`redis_name:${redis_name} db:${db_index} type:${item_typeStr} id:${item_id} count:${gdata.Data} 【<a href="javascript:;" id="redis_console" style="color:#009688;"><i class="layui-icon layui-icon-console"></i>Redis Console</a>】`);
 
         $("#redis_console").click(() => {
             layer.full(layer.open({
@@ -85,15 +85,15 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     case 2:
                         table_content = `<table class="layui-table">
                             <colgroup>
-                                <col width="150">
-                                <col width="200">
+                                <col width="250">
                                 <col>
+                                <col width="150">
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th>key</th>
-                                    <th style="width:80%;">value</th>
-                                    <th style="width:70px;">操作</th>
+                                    <th>value</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -104,7 +104,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                                 <td>${htmlEncode(datakey)}</td>
                                                                 <td>${htmlEncode(jdata.Data[datakey])}</td>
                                                                 <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-id="${encodeURIComponent(item_id)}" data-key="${encodeURIComponent(datakey)}" data-val="${encodeURIComponent(jdata.Data[datakey])}">
-<a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
+<a href="javascript:;" class="edit-link"><i class="layui-icon layui-icon-edit"></i> edit</a> | <a href="javascript:;" class="del-link"><i class="layui-icon layui-icon-delete"></i> delete</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
                         }
@@ -112,15 +112,15 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     case 3:
                         table_content = `<table class="layui-table">
                             <colgroup>
-                                <col width="150">
-                                <col width="200">
+                                <col width="250">
                                 <col>
+                                <col width="150">
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th>key</th>
-                                    <th style="width:80%;">value</th>
-                                    <th style="width:70px;">操作</th>
+                                    <th>value</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -131,7 +131,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                                 <td>${htmlEncode(item_id)}</td>
                                                                 <td>${htmlEncode(jdata.Data[i])}</td>
                                                                 <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${encodeURIComponent(item_id)}" data-val="${encodeURIComponent(jdata.Data[i])}">
-<a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
+<a href="javascript:;" class="edit-link"><i class="layui-icon layui-icon-edit"></i> edit</a> | <a href="javascript:;" class="del-link"><i class="layui-icon layui-icon-delete"></i> delete</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
                         }
@@ -139,15 +139,15 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     case 4:
                         table_content = `<table class="layui-table">
                             <colgroup>
-                                <col width="150">
-                                <col width="200">
+                                <col width="250">
                                 <col>
+                                <col width="150">
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th>score</th>
-                                    <th style="width:80%;">value</th>
-                                    <th style="width:70px;">操作</th>
+                                    <th>value</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -158,7 +158,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                         <td>${jdata.Data[i].Score}</td>
                                         <td>${htmlEncode(jdata.Data[i].Value)}</td>
                                         <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${jdata.Data[i].Score}" data-val="${encodeURIComponent(jdata.Data[i].Value)}">
-<a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
+<a href="javascript:;" class="edit-link"><i class="layui-icon layui-icon-edit"></i> edit</a> | <a href="javascript:;" class="del-link"><i class="layui-icon layui-icon-delete"></i> delete</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
                         }
@@ -166,15 +166,15 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     case 5:
                         table_content = `<table class="layui-table">
                             <colgroup>
-                                <col width="150">
-                                <col width="200">
+                                <col width="250">
                                 <col>
+                                <col width="150">
                             </colgroup>
                             <thead>
                                 <tr>
                                     <th>key</th>
-                                    <th style="width:80%;">value</th>
-                                    <th style="width:70px;">操作</th>
+                                    <th>value</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tbody id="redis-data-body"></tbody>
@@ -185,7 +185,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                                                 <td>${htmlEncode(item_id)}</td>
                                                                 <td>${htmlEncode(jdata.Data[i])}</td>
                                                                 <td data-name="${encodeURIComponent(redis_name)}" data-dbindex="${db_index}" data-key="${item_id}" data-index="${i}" data-val="${encodeURIComponent(jdata.Data[i])}">
-<a href="javascript:;" class="edit-link">编辑</a> | <a href="javascript:;" class="del-link">删除</a></td>
+<a href="javascript:;" class="edit-link"><i class="layui-icon layui-icon-edit"></i> edit</a> | <a href="javascript:;" class="del-link"><i class="layui-icon layui-icon-delete"></i> delete</a></td>
                                                             </tr>`;
                             $("#redis-data-body").append(thtml);
                         }
@@ -195,6 +195,9 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                         break;
                 }
 
+                $("td").each(function () {
+                    $(this).attr("title", $(this).text());
+                });
                 
                 var totalHeight = $(parent.window.document).find("iframe").height();
                 var bodyMaxHeight = totalHeight - 233;
@@ -264,12 +267,13 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                                             </form>`;
                             break;
                         case 5:
+                            var dindex = $(this).parent().attr("data-index");
                             edit_form_html = `<form id="edit_form" class="layui-form layui-form-pane" action="">
                                                 <input type="hidden" name="name" value="${redis_name}" />
                                                 <input type="hidden" name="dbindex" value="${db_index}" />
                                                 <input type="hidden" name="type" value="${item_type}" />
                                                 <input type="hidden" name="id" value="${item_id}" />
-                                                <input type="hidden" name="key" value="${key}" />
+                                                <input type="hidden" name="key" value="${dindex}" />
                                                 <div class="layui-form-item">
                                                     <label class="layui-form-label">value</label>
                                                     <div class="layui-input-block">
