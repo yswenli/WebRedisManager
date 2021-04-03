@@ -152,7 +152,7 @@
                                 var role = $("select[name='role']").val();
                                 var nickname = encodeURIComponent($("input[name='nickname']").val());
                                 var addUserData = `id=${uuid}&username=${username}&password=${password}&confirmPwd=${confirmPwd}&role=${role}&nickname=${nickname}`;
-                                $.post("/api/user/set", addUserData, function (adata) {
+                                $.post("/api/user/setuser", addUserData, function (adata) {
                                     if (adata.Code === 1) {
                                         layer.msg("操作成功", { time: 2000 }, function () { location.reload(); });
                                     }
@@ -233,7 +233,7 @@
                         var role = $("select[name='role']").val();
                         var nickname = encodeURIComponent($("input[name='nickname']").val());
                         var addUserData = `username=${username}&password=${password}&confirmPwd=${confirmPwd}&role=${role}&nickname=${nickname}`;
-                        $.post("/api/user/set", addUserData, function (adata) {
+                        $.post("/api/user/setuser", addUserData, function (adata) {
                             if (adata.Code === 1) {
                                 layer.msg("操作成功", { time: 2000 }, function () { location.reload(); });
                             }

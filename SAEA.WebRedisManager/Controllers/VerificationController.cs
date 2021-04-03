@@ -15,11 +15,11 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using System;
+
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Models;
 using SAEA.WebRedisManager.Libs.Verification;
-using System;
-using System.IO;
 
 namespace SAEA.WebRedisManager.Controllers
 {
