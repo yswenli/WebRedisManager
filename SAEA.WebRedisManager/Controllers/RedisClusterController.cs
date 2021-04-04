@@ -15,15 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using SAEA.Common;
 using SAEA.MVC;
-using SAEA.Redis.WebManager.Libs;
-using SAEA.Redis.WebManager.Models;
-using SAEA.RedisSocket.Model;
 using SAEA.WebRedisManager.Services;
 
 namespace SAEA.WebRedisManager.Controllers
