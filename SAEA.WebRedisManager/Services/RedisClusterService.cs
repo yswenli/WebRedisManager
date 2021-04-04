@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using SAEA.Common;
 using SAEA.Redis.WebManager.Libs;
@@ -27,7 +26,7 @@ using SAEA.RedisSocket.Model;
 
 namespace SAEA.WebRedisManager.Services
 {
-	class RedisClusterService
+    class RedisClusterService
 	{
 		/// <summary>
 		/// 获取cluster 节点信息
