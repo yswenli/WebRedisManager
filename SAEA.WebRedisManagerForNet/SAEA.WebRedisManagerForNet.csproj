@@ -240,6 +240,9 @@
     <Compile Include="..\SAEA.WebRedisManager\Services\ConfigService.cs">
       <Link>Services\ConfigService.cs</Link>
     </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Services\ConsoleService.cs">
+      <Link>Services\ConsoleService.cs</Link>
+    </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Services\RedisClusterService.cs">
       <Link>Services\RedisClusterService.cs</Link>
     </Compile>
