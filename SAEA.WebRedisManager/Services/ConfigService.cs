@@ -17,12 +17,15 @@
 *****************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 using SAEA.Common;
+using SAEA.Common.Serialization;
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Libs;
 using SAEA.Redis.WebManager.Models;
+using SAEA.WebRedisManager.Libs;
+using SAEA.WebRedisManager.Models;
 
 namespace SAEA.WebRedisManager.Services
 {
@@ -47,6 +50,155 @@ namespace SAEA.WebRedisManager.Services
             {
                 LogHelper.Error("ConfigService.Set", ex, config);
                 return new JsonResult<string>() { Code = 2, Data = string.Empty, Message = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 导入配置
+        /// </summary>
+        /// <param name="configs"></param>
+        /// <returns></returns>
+        public JsonResult<string> SetConfigs(string configs)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(configs))
+                {
+                    return new JsonResult<string>() { Code = 2, Data = string.Empty, Message = "配置不能为空" };
+                }
+
+                var confs = SerializeHelper.Deserialize<List<Config>>(configs);
+
+                var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                if (user.Role == Role.User)
+                {
+                    var old = ConfigHelper.ReadList();
+
+                    if (old != null && old.Any())
+                    {
+                        old.RemoveAll(b => b.Creator == user.ID);
+                    }
+
+                    if (confs != null && confs.Any())
+                    {
+                        confs = confs.Where(b => b.Creator == user.ID).ToList();
+
+                        if (confs != null || confs.Any())
+                        {
+                            old.AddRange(confs);
+                        }
+                    }
+                    ConfigHelper.Set(old);
+                }
+                else
+                {
+                    ConfigHelper.Set(confs);
+                }
+
+                return new JsonResult<string>() { Code = 1, Data = string.Empty, Message = "Ok" };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("ConfigService.SetConfigs", ex, configs);
+                return new JsonResult<string>() { Code = 2, Data = string.Empty, Message = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 获取全部配置
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult<List<Config>> GetList()
+        {
+            try
+            {
+                var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                if (user != null)
+                {
+                    if (user.Role == Role.Admin)
+                    {
+                        return new JsonResult<List<Config>>() { Code = 1, Data = ConfigHelper.ReadList(), Message = "Ok" };
+                    }
+                    else
+                    {
+                        var list = ConfigHelper.ReadList();
+
+                        if (list != null && list.Any())
+                        {
+                            list = list.Where(b => b.Creator == user.ID).ToList();
+
+                            return new JsonResult<List<Config>>() { Code = 1, Data = list, Message = "Ok" };
+                        }
+                    }
+                }
+                return new JsonResult<List<Config>>() { Code = 1, Data = new List<Config>(), Message = "Ok" };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("ConfigService.GetList", ex);
+                return new JsonResult<List<Config>>() { Code = 2, Message = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 获取配置
+        /// </summary>
+        /// <param name="name"></param>
+        public JsonResult<Config> Get(string name)
+        {
+            try
+            {
+                return new JsonResult<Config>() { Code = 1, Data = ConfigHelper.Get(name), Message = "Ok" };
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("ConfigService.Get", ex, name);
+                return new JsonResult<Config>() { Code = 2, Message = ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 删除配置
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public JsonResult<bool> Rem(string name)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name)) return new JsonResult<bool>() { Code = 2, Message = "传入的配置项名称不能为空！" };
+
+                var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+
+                if (user.Role == Role.Admin)
+                {
+                    ConfigHelper.Rem(name);
+                    return new JsonResult<bool>() { Code = 1, Data = true, Message = "Ok" };
+                }
+                else
+                {
+                    var config = ConfigHelper.Get(name);
+
+                    if (config == null) return new JsonResult<bool>() { Code = 2, Message = "找不到名称为" + name + "的配置！" };
+
+                    if (config.Creator == user.ID)
+                    {
+                        ConfigHelper.Rem(name);
+                        return new JsonResult<bool>() { Code = 1, Data = true, Message = "Ok" };
+                    }
+                    else
+                    {
+                        return new JsonResult<bool>() { Code = 4, Message = "权限不足，请联系管理员！" };
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("ConfigService.Rem", ex, name);
+                return new JsonResult<bool>() { Code = 2, Message = ex.Message };
             }
         }
     }
