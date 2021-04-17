@@ -1,21 +1,14 @@
-﻿using SAEA.Common;
-using SAEA.Common.Serialization;
-using SAEA.MVC;
-using SAEA.Redis.WebManager.Libs;
+﻿using SAEA.MVC;
 using SAEA.Redis.WebManager.Models;
-using SAEA.RedisSocket.Model;
-using SAEA.WebRedisManager.Libs;
+using SAEA.WebRedisManager.Attr;
 using SAEA.WebRedisManager.Services;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace SAEA.WebRedisManager.Controllers
 {
     /// <summary>
     /// redis相关api
     /// </summary>
+    [Auth(true)]
     public class RedisController : Controller
     {
         /// <summary>

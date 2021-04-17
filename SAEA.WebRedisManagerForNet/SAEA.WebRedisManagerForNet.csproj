@@ -78,6 +78,9 @@
     <StartupObject>SAEA.WebRedisManager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.11.32.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.32\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Pipelines.Sockets.Unofficial, Version=1.0.0.0, Culture=neutral, PublicKeyToken=42ea0a778e13fbe2, processorArchitecture=MSIL">
       <HintPath>..\packages\Pipelines.Sockets.Unofficial.2.2.0\lib\net461\Pipelines.Sockets.Unofficial.dll</HintPath>
     </Reference>
@@ -87,23 +90,23 @@
     <Reference Include="protobuf-net.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\packages\protobuf-net.Core.3.0.101\lib\net461\protobuf-net.Core.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Common, Version=6.1.2.9, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Common.6.1.2.9\lib\netstandard2.0\SAEA.Common.dll</HintPath>
+    <Reference Include="SAEA.Common, Version=6.2.6.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Common.6.2.6.2\lib\netstandard2.0\SAEA.Common.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Http, Version=6.1.2.9, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Http.6.1.2.9\lib\netstandard2.0\SAEA.Http.dll</HintPath>
+    <Reference Include="SAEA.Http, Version=6.2.6.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Http.6.2.6.2\lib\netstandard2.0\SAEA.Http.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.MVC, Version=6.1.2.9, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.MVC.6.1.2.9\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
+    <Reference Include="SAEA.MVC, Version=6.2.6.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.MVC.6.2.6.2\lib\netstandard2.0\SAEA.MVC.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.RedisSocket, Version=6.1.2.9, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.RedisSocket.6.1.2.9\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
+    <Reference Include="SAEA.RedisSocket, Version=6.2.6.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.RedisSocket.6.2.6.2\lib\netstandard2.0\SAEA.RedisSocket.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.Sockets, Version=6.1.2.9, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.Sockets.6.1.2.9\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
+    <Reference Include="SAEA.Sockets, Version=6.2.6.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.Sockets.6.2.6.2\lib\netstandard2.0\SAEA.Sockets.dll</HintPath>
     </Reference>
-    <Reference Include="SAEA.WebSocket, Version=6.1.2.9, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAEA.WebSocket.6.1.2.9\lib\netstandard2.0\SAEA.WebSocket.dll</HintPath>
+    <Reference Include="SAEA.WebSocket, Version=6.2.6.2, Culture=neutral, PublicKeyToken=01a82380791791ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\SAEA.WebSocket.6.2.6.2\lib\netstandard2.0\SAEA.WebSocket.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -173,6 +176,9 @@
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Controllers\RedisController.cs">
       <Link>Controllers\RedisController.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Controllers\UpdateController.cs">
+      <Link>Controllers\UpdateController.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Controllers\UserController.cs">
       <Link>Controllers\UserController.cs</Link>
@@ -248,6 +254,9 @@
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Services\RedisService.cs">
       <Link>Services\RedisService.cs</Link>
+    </Compile>
+    <Compile Include="..\SAEA.WebRedisManager\Services\UpdateService.cs">
+      <Link>Services\UpdateService.cs</Link>
     </Compile>
     <Compile Include="..\SAEA.WebRedisManager\Services\UserService.cs">
       <Link>Services\UserService.cs</Link>

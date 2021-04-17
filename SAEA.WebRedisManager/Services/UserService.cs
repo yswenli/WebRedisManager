@@ -191,7 +191,7 @@ namespace SAEA.WebRedisManager.Services
         {
             try
             {
-                if (HttpContext.Current.Session.Keys.Contains("uid"))
+                if (HttpContext.Current.Session.ContainsKey("uid"))
                 {
                     var cuid = HttpContext.Current.Session["uid"].ToString();
 
@@ -252,7 +252,7 @@ namespace SAEA.WebRedisManager.Services
         {
             try
             {
-                if (HttpContext.Current.Session.Keys != null && HttpContext.Current.Session.Keys.Contains("uid"))
+                if (HttpContext.Current.Session.ContainsKey("uid"))
                 {
                     return new JsonResult<bool>() { Code = 1, Data = true };
                 }

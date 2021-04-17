@@ -20,6 +20,7 @@ using SAEA.MVC;
 using SAEA.Redis.WebManager.Models;
 using SAEA.WebRedisManager.Libs;
 using SAEA.WebRedisManager.Models;
+
 using System.Diagnostics;
 
 namespace SAEA.WebRedisManager.Attr
@@ -48,7 +49,7 @@ namespace SAEA.WebRedisManager.Attr
         {
             _stopwatch = Stopwatch.StartNew();
 
-            if (!HttpContext.Current.Session.Keys.Contains("uid"))
+            if (!HttpContext.Current.Session.ContainsKey("uid"))
             {
                 HttpContext.Current.Response.SetCached(new JsonResult(new JsonResult<string>() { Code = 3, Message = "当前操作需要登录！" }));
 

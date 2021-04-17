@@ -65,6 +65,7 @@ namespace SAEA.WebRedisManager.Controllers
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [Auth(true)]
         public ActionResult Get(string name)
         {
             return Json(new ConfigService().Get(name));

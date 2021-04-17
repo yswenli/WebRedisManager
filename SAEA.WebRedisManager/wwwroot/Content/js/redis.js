@@ -23,8 +23,7 @@
             icon: 16
             , shade: 0.01
         });
-        //默认加载redis烈表
-
+        //默认加载redis列表
         $.get("/api/config/getlist", null, function (data) {
 
             layer.close(layerIndex);
@@ -123,6 +122,19 @@
             }
         });
 
+        //检查版本
+        $.get("/api/update/getlatest", null, function (res) {
+            if (res.Code === 1 && res.Data !== "") {
+                layer.open({
+                    type: 1,
+                    closeBtn: 0,
+                    area: ['440px', '220px'],
+                    anim: 2,
+                    shadeClose: true,
+                    content: `<p style="text-align:center;padding-top:70px;">检测到新版本，点击<a href="${res.Data}" style="color:#009688;">这里</a>下载</p>`
+                });
+            }
+        });
 
     });
 

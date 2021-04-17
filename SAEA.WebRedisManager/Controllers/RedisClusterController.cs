@@ -16,6 +16,7 @@
 *描    述：
 *****************************************************************************/
 using SAEA.MVC;
+using SAEA.WebRedisManager.Attr;
 using SAEA.WebRedisManager.Services;
 
 namespace SAEA.WebRedisManager.Controllers
@@ -23,6 +24,7 @@ namespace SAEA.WebRedisManager.Controllers
     /// <summary>
     /// Redis cluster controller
     /// </summary>
+    [Auth(true)]
     public class RedisClusterController : Controller
     {
         /// <summary>
