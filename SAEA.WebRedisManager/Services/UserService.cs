@@ -22,6 +22,7 @@ using System.Linq;
 using System.Text;
 
 using SAEA.Common;
+using SAEA.Http;
 using SAEA.MVC;
 using SAEA.Redis.WebManager.Models;
 using SAEA.WebRedisManager.Libs;
@@ -66,7 +67,7 @@ namespace SAEA.WebRedisManager.Services
 
                         UserHelper.Set(newUser);
 
-                        HttpContext.Current.Session["uid"] = newUser.ID;
+                        HttpContext.Current.Response.Cookies.Add("uid", new HttpCookie("uid", newUser.ID));
 
                         return new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + newUser.NickName + "地访问" };
                     }
@@ -77,7 +78,7 @@ namespace SAEA.WebRedisManager.Services
                 }
                 else
                 {
-                    HttpContext.Current.Session["uid"] = user.ID;
+                    HttpContext.Current.Response.Cookies.Add("uid", new HttpCookie("uid", user.ID));
 
                     return new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + user.NickName + "地访问" };
                 }
@@ -191,9 +192,9 @@ namespace SAEA.WebRedisManager.Services
         {
             try
             {
-                if (HttpContext.Current.Session.ContainsKey("uid"))
+                if (HttpContext.Current.Request.Cookies.ContainsKey("uid"))
                 {
-                    var cuid = HttpContext.Current.Session["uid"].ToString();
+                    var cuid = HttpContext.Current.Request.Cookies["uid"].Value;
 
                     if (cuid == uid)
                     {
@@ -252,7 +253,7 @@ namespace SAEA.WebRedisManager.Services
         {
             try
             {
-                if (HttpContext.Current.Session.ContainsKey("uid"))
+                if (HttpContext.Current.Request.Cookies.ContainsKey("uid"))
                 {
                     return new JsonResult<bool>() { Code = 1, Data = true };
                 }

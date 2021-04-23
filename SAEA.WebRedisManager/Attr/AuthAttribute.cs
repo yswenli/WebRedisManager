@@ -49,7 +49,7 @@ namespace SAEA.WebRedisManager.Attr
         {
             _stopwatch = Stopwatch.StartNew();
 
-            if (!HttpContext.Current.Session.ContainsKey("uid"))
+            if (!HttpContext.Current.Request.Cookies.ContainsKey("uid"))
             {
                 HttpContext.Current.Response.SetCached(new JsonResult(new JsonResult<string>() { Code = 3, Message = "当前操作需要登录！" }));
 
@@ -59,7 +59,7 @@ namespace SAEA.WebRedisManager.Attr
             }
             if (_isAdmin)
             {
-                var user = UserHelper.Get(HttpContext.Current.Session["uid"].ToString());
+                var user = UserHelper.Get(HttpContext.Current.Request.Cookies["uid"].Value);
 
                 if (user.Role != Role.Admin)
                 {
