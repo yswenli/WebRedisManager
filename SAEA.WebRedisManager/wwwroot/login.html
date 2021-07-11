@@ -31,7 +31,7 @@
                     <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
                     <input type="password" name="password" id="password" lay-verify="required" placeholder="Password" class="layui-input" maxlength="20" />
                 </div>
-                <div class="layui-form-item">
+                <div class="layui-form-item" style="display:none;">
                     <div class="layui-row">
                         <div class="layui-col-xs7">
                             <label class="layadmin-user-login-icon layui-icon layui-icon-vercode" for="LAY-user-login-vercode"></label>
@@ -44,9 +44,6 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="layui-form-item" style="margin-bottom: 20px;">
-                    <input type="checkbox" name="remember" lay-skin="primary" title="记住密码">
-                </div>-->
                 <div class="layui-form-item">
                     <button id="loginBtn" class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
                 </div>
@@ -54,7 +51,7 @@
         </div>
 
         <div class="layui-trans layadmin-user-login-footer">
-            <p>© 2021 <a href="https://github.com/yswenli/WebRedisManager" target="_blank">yswenli version:6.2.6.2</a></p>
+            <p>© 2021 <a href="https://github.com/yswenli/WebRedisManager" target="_blank">yswenli version:6.2.6.4</a></p>
         </div>
 
     </div>
@@ -95,19 +92,20 @@
 
             $("#loginBtn").click(function () {
 
-                var vercode = $("#vercode").val();
+                //var vercode = $("#vercode").val();
 
                 var username = $("#username").val();
 
                 var password = $("#password").val();
 
-                $.post("/api/user/login", `username=${username}&password=${password}&code=${encodeURIComponent(vercode)}`, function (data) {
+                //$.post("/api/user/login", `username=${username}&password=${password}&code=${encodeURIComponent(vercode)}`, function (data) {
+                $.post("/api/user/login", `username=${username}&password=${password}`, function (data) {
 
                     if (data.Code === 1) {
 
                         layer.msg('登录成功', { offset: '15px', icon: 1, time: 2000, shade: 0.3, shadeClose: false }, function () {
 
-                            location.href = '/'; 
+                            location.href = '/';
                         });
                     }
                     else {

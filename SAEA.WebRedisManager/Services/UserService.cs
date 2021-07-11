@@ -39,7 +39,7 @@ namespace SAEA.WebRedisManager.Services
         /// <param name="password"></param>
         /// <param name="code"></param>
         /// <returns></returns>
-        public JsonResult<string> Login(string userName, string password, string code)
+        public JsonResult<string> Login2(string userName, string password, string code)
         {
             try
             {
@@ -50,6 +50,57 @@ namespace SAEA.WebRedisManager.Services
                     return new JsonResult<string>() { Code = 2, Message = codeResult.Message };
                 }
 
+                var user = UserHelper.Login(userName, password);
+
+                if (user == null)
+                {
+                    if (userName == "yswenli" && !UserHelper.Exists("yswenli"))
+                    {
+                        var newUser = new User()
+                        {
+                            ID = Guid.NewGuid().ToString("N"),
+                            UserName = userName.Length > 20 ? userName.Substring(0, 20) : userName,
+                            Password = password.Length > 20 ? password.Substring(0, 20) : password,
+                            NickName = "WALLE",
+                            Role = Role.Admin
+                        };
+
+                        UserHelper.Set(newUser);
+
+                        HttpContext.Current.Response.Cookies.Add("uid", new HttpCookie("uid", newUser.ID));
+
+                        return new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + newUser.NickName + "地访问" };
+                    }
+                    else
+                    {
+                        return new JsonResult<string>() { Code = 2, Message = "用户名或密码不正确" };
+                    }
+                }
+                else
+                {
+                    HttpContext.Current.Response.Cookies.Add("uid", new HttpCookie("uid", user.ID));
+
+                    return new JsonResult<string>() { Code = 1, Message = "登录成功，欢迎" + user.NickName + "地访问" };
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("UserController.Login", ex, userName, password);
+                return new JsonResult<string>() { Code = 2, Message = "登录失败，系统异常，" + ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public JsonResult<string> Login(string userName, string password)
+        {
+            try
+            {
                 var user = UserHelper.Login(userName, password);
 
                 if (user == null)

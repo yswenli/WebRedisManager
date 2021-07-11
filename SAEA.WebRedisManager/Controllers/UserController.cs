@@ -33,12 +33,27 @@ namespace SAEA.WebRedisManager.Controllers
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
+        /// <param name="code"></param>
         /// <returns></returns>
-        public ActionResult Login(string userName, string password, string code)
+        //public ActionResult Login(string userName, string password, string code)
+        //{
+        //    if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)) return Json(new JsonResult<string>() { Code = 2, Message = "用户名或密码不能为空" });
+
+        //    return Json(new UserService().Login(userName, password, code));
+        //}
+
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public ActionResult Login(string userName, string password)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)) return Json(new JsonResult<string>() { Code = 2, Message = "用户名或密码不能为空" });
 
-            return Json(new UserService().Login(userName, password, code));
+            return Json(new UserService().Login(userName, password));
         }
 
         /// <summary>
