@@ -37,10 +37,11 @@ namespace SAEA.WebRedisManager.Libs
             if (isWinPlantform)
             {
                 return Host.CreateDefaultBuilder(args)
-                       .ConfigureServices((hostContext, services) =>
+                    .UseWindowsService()
+                    .ConfigureServices((hostContext, services) =>
                        {
                            services.AddHostedService<T>();
-                       }).UseWindowsService();
+                       });
             }
             else
             {
