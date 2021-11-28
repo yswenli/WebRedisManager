@@ -45,17 +45,13 @@ namespace SAEA.WebRedisManager.Attr
         }
 
 
-        public override bool OnActionExecuting()
+        public override ActionResult OnActionExecuting()
         {
             _stopwatch = Stopwatch.StartNew();
 
             if (!HttpContext.Current.Request.Cookies.ContainsKey("uid"))
             {
-                HttpContext.Current.Response.SetCached(new JsonResult(new JsonResult<string>() { Code = 3, Message = "当前操作需要登录！" }));
-
-                HttpContext.Current.Response.End();
-
-                return false;
+                return new JsonResult(new JsonResult<string>() { Code = 3, Message = "当前操作需要登录！" });
             }
             if (_isAdmin)
             {
@@ -63,15 +59,11 @@ namespace SAEA.WebRedisManager.Attr
 
                 if (user.Role != Role.Admin)
                 {
-                    HttpContext.Current.Response.SetCached(new JsonResult(new JsonResult<string>() { Code = 4, Message = "当前操作权限不足，请联系管理员！" }));
-
-                    HttpContext.Current.Response.End();
-
-                    return false;
+                    return new JsonResult(new JsonResult<string>() { Code = 4, Message = "当前操作权限不足，请联系管理员！" });
                 }
             }
 
-            return true;
+            return EmptyResult.Default;
         }
 
         public override void OnActionExecuted(ref ActionResult result)

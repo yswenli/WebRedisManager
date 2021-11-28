@@ -179,7 +179,10 @@ namespace SAEA.WebRedisManager.Services
         {
             try
             {
-                HttpContext.Current.Session.Remove("uid");
+                if (HttpContext.Current.Request.Cookies.ContainsKey("uid"))
+                {
+                    HttpContext.Current.Response.Cookies.Add("uid", new HttpCookie("uid", null, DateTimeHelper.Now.AddDays(-1)));
+                }
 
                 return new JsonResult<string>() { Code = 1, Message = "注销成功" };
             }

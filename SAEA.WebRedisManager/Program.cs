@@ -26,7 +26,11 @@ namespace SAEA.WebRedisManager
     {
         static void Main(string[] args)
         {
-            ConsoleHelper.Title = "SAEA.WebRedisManager " + SAEAVersion.ToString();
+            try
+            {
+                ConsoleHelper.Title = "SAEA.WebRedisManager " + SAEAVersion.ToString();
+            }
+            catch { }            
 
             WorkerServiceHelper.CreateHostBuilder<AppService>(args).Build().Run();
         }

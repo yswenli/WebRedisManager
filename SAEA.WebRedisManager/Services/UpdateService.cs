@@ -26,6 +26,13 @@ namespace SAEA.WebRedisManager.Services
 
                 var alinks = doc.DocumentNode.SelectNodes("//div[@class='markdown-body']/p/a");
 
+                if (alinks == null)
+                {
+                    result.Message = "找不到相关连接地址";
+                    result.Code = 2;
+                    return result;
+                }
+
                 foreach (var item in alinks)
                 {
                     var str = item.InnerText;
