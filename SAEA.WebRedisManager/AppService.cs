@@ -52,9 +52,13 @@ namespace SAEA.WebRedisManager
 
             webSocketsHelper.Start();
 
-            ConsoleHelper.WriteLine("SAEA.WebRedisManager Already started");
+            try
+            {
+                ConsoleHelper.WriteLine("SAEA.WebRedisManager Already started");
 
-            ConsoleHelper.WriteLine($"Please open on Browser：http://127.0.0.1:{config.Port}/");
+                ConsoleHelper.WriteLine($"Please open on Browser：http://127.0.0.1:{config.Port}/");
+            }
+            catch { }
         }
     }
 }
