@@ -200,8 +200,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 });
                 
                 var totalHeight = $(parent.window.document).find("iframe").height();
-                var bodyMaxHeight = totalHeight - 233;
-                $("#table-container").css({ "max-height": bodyMaxHeight, "overflow": "scroll" });
+                $("#table-container").css({ "max-height": "500px", "overflow": "scroll" });
 
                 //编辑
                 var edit_form_html = "";
