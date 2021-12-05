@@ -4,7 +4,7 @@ WebRedisManager是使用的SAEA.RedisSocket、SAEA.MVC等实现Redis的简便管
 QQ群：788260487
 
 ## WebRedisManager core 版
-安装dnc3.1后，输入 dotnet WebRedisManager.dll 即可运行！
+安装net core5.0后，输入 dotnet WebRedisManager.dll或点击WebRedisManager.exe 即可运行！
 <br/>
 # 下载地址
 <a href="https://github.com/yswenli/WebRedisManager/releases" target="_blank">https://github.com/yswenli/WebRedisManager/releases</a>
