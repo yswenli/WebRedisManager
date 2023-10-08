@@ -21,6 +21,8 @@ namespace SAEA.Redis.WebManager.Libs
 
         static ConcurrentDictionary<string, RedisClient> _redisClients = new ConcurrentDictionary<string, RedisClient>();
 
+        const string LSETVALUE = "---VALUE REMOVED BY WEBREDISMANAGER---";
+
         /// <summary>
         /// 连接到redis
         /// </summary>
@@ -340,7 +342,7 @@ namespace SAEA.Redis.WebManager.Libs
 
             if (redisClient.IsConnected)
             {
-                for (int i = 0; i < 16; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     if (redisClient.Select(i))
                     {
@@ -373,7 +375,7 @@ namespace SAEA.Redis.WebManager.Libs
 
                     if (redisClient.IsConnected)
                     {
-                        var count = 50;
+                        var count = 1000;
 
                         if (!string.IsNullOrEmpty(key) && key != "*" && key != "[" && key != "]")
                         {
@@ -470,7 +472,7 @@ namespace SAEA.Redis.WebManager.Libs
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
 
-            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(50).ToList();
+            var keys = GetKeys(offset, name, dbIndex, key).Distinct().Take(1000).ToList();
 
             if (keys.Count > 0)
             {
@@ -600,7 +602,7 @@ namespace SAEA.Redis.WebManager.Libs
                 {
                     do
                     {
-                        var keys = GetAllKeys(ref offset, name, dbIndex, key, 50).Distinct().ToArray();
+                        var keys = GetAllKeys(ref offset, name, dbIndex, key, 1000).Distinct().ToArray();
 
                         if (keys != null && keys.Any())
                         {
@@ -1007,8 +1009,8 @@ namespace SAEA.Redis.WebManager.Libs
                             redisClient.GetDataBase(redisData.DBIndex).ZRemove(redisData.ID, new string[] { redisData.Value });
                             break;
                         case 5:
-                            redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.Key, int.Parse(redisData.Key), "---VALUE REMOVED BY WEBREDISMANAGER---");
-                            redisClient.GetDataBase(redisData.DBIndex).LRemove(redisData.Key, 0, "---VALUE REMOVED BY WEBREDISMANAGER---");
+                            redisClient.GetDataBase(redisData.DBIndex).LSet(redisData.Key, int.Parse(redisData.Key), LSETVALUE);
+                            redisClient.GetDataBase(redisData.DBIndex).LRemove(redisData.Key, 0, LSETVALUE);
                             break;
                     }
                 }
