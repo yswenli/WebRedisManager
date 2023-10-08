@@ -198,9 +198,12 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 $("td").each(function () {
                     $(this).attr("title", $(this).text());
                 });
-                
-                var totalHeight = $(parent.window.document).find("iframe").height();
-                $("#table-container").css({ "max-height": "400px", "overflow": "scroll" });
+
+
+                var totalHeight = document.body.clientHeight;
+                var height = totalHeight * 0.78;
+                debugger;
+                $("#table-container").css({ "max-height": height + "px", "overflow": "scroll" });
 
                 //编辑
                 var edit_form_html = "";
@@ -382,6 +385,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
             else {
                 layer.msg("操作失败:" + sdata.Message, { time: 2000 });
             }
+            //
             //
             layer.close(layerIndex);
         });
