@@ -867,7 +867,7 @@ namespace SAEA.Redis.WebManager.Libs
                     switch (redisData.Type)
                     {
                         case 2:
-                            var hresult = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, offset, redisData.Key, 10);
+                            var hresult = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, offset, redisData.Key, 100);
                             if (hresult.Data == null && hresult.Offset > 0)
                             {
                                 hresult = redisClient.GetDataBase(redisData.DBIndex).HScan(redisData.ID, hresult.Offset, redisData.Key, 1000000);
@@ -875,7 +875,7 @@ namespace SAEA.Redis.WebManager.Libs
                             result = hresult.Data;
                             break;
                         case 3:
-                            var sresult = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 10);
+                            var sresult = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 100);
                             if (sresult.Data == null && sresult.Offset > 0)
                             {
                                 sresult = redisClient.GetDataBase(redisData.DBIndex).SScan(redisData.ID, offset, redisData.Key, 1000000);
@@ -883,7 +883,7 @@ namespace SAEA.Redis.WebManager.Libs
                             result = sresult.Data;
                             break;
                         case 4:
-                            var zresult = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 10);
+                            var zresult = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 100);
                             if (zresult.Data == null && zresult.Offset > 0)
                             {
                                 zresult = redisClient.GetDataBase(redisData.DBIndex).ZScan(redisData.ID, offset, redisData.Key, 1000000);
@@ -891,7 +891,7 @@ namespace SAEA.Redis.WebManager.Libs
                             result = zresult.Data;
                             break;
                         case 5:
-                            result = redisClient.GetDataBase(redisData.DBIndex).LRang(redisData.ID, offset, 10);
+                            result = redisClient.GetDataBase(redisData.DBIndex).LRang(redisData.ID, offset, 100);
                             break;
                     }
                 }
