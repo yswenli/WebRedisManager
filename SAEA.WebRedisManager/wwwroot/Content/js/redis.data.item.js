@@ -202,7 +202,6 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
                 var totalHeight = document.body.clientHeight;
                 var height = totalHeight * 0.78;
-                debugger;
                 $("#table-container").css({ "max-height": height + "px", "overflow": "scroll" });
 
                 //编辑
