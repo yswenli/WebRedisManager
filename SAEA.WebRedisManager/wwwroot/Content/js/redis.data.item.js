@@ -200,7 +200,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 });
 
 
-                var totalHeight = document.body.clientHeight;
+                var totalHeight = document.documentElement.clientHeight;
                 var height = totalHeight * 0.78;
                 $("#table-container").css({ "max-height": height + "px", "overflow": "scroll" });
 
