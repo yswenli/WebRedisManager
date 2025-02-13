@@ -67,6 +67,7 @@
     <script src="content/js/requestpamars.js"></script>
     <script src="Content/js/datetimehelper.js"></script>
     <script src="content/js/layui.js"></script>
+    <script src="content/js/requestpamars.js"></script>
     <script>
         layui.use(['jquery', 'layer', 'form', 'laydate'], function () {
 
@@ -124,7 +125,7 @@
                 var item_data_ttl = datetimehelper_getSecondsFromNow($("#redis_ttl").val());
 
                 var url = `/api/redis/set?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_data_id}&key=${item_data_key}&value=${item_data_val}&ttl=${item_data_ttl}`;
-                $.post(url, null, function (sdata) {
+                HttpPost(url, null, function (sdata) {
                     if (sdata.Code == 1) {
                         parent.location.reload();
                     }

@@ -10,4 +10,43 @@ function GetRequest() {
         }
     }
     return theRequest;
-} 
+}
+
+function HttpGet(url, data, success, error) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    fetch(url, {
+        method: 'GET',
+        headers: headers,
+        cache: 'no-store'
+    })
+        .then(response => response.json())
+        .then((result) => {
+            console.log("Success:", result);
+            success(result);
+        })
+        .catch(e => {
+            console.log('Error:', e);
+            if (error) error(e);
+        });
+}
+
+
+function HttpPost(url, data, success, error) {
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: data
+    })
+        .then(response => response.json())
+        .then((result) => {
+            console.log("Success:", result);
+            success(result);
+        })
+        .catch(e => {
+            console.log('Error:', e);
+            if (error) error(e);
+        });
+}

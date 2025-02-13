@@ -48,7 +48,7 @@ namespace SAEA.WebRedisManager
 
             //启动websocket
 
-            WebSocketsHelper webSocketsHelper = new WebSocketsHelper(port: 16666);
+            WebSocketsHelper webSocketsHelper = new WebSocketsHelper(port: 26379);
 
             webSocketsHelper.Start();
 

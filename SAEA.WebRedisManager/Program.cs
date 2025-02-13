@@ -28,9 +28,9 @@ namespace SAEA.WebRedisManager
         {
             try
             {
-                ConsoleHelper.Title = "SAEA.WebRedisManager " + SAEAVersion.ToString();
+                ConsoleHelper.Title = $"SAEA.WebRedisManager {DateTimeHelper.Now}";
             }
-            catch { }            
+            catch { }
 
             WorkerServiceHelper.CreateHostBuilder<AppService>(args).Build().Run();
         }

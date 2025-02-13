@@ -8,7 +8,7 @@
     $(function () {
 
         var atimer = setInterval(function () {
-            $.get("/user/authenticated", null, function (adata) {
+            HttpGet("/user/authenticated", null, function (adata) {
                 if (adata.Code === 1 && adata.Data === false) {
                     layer.msg("当前操作需要登录", { time: 2000 }, function () {
                         clearInterval(atimer);
@@ -24,7 +24,7 @@
             , shade: 0.01
         });
         //默认加载redis列表
-        $.get("/api/config/getlist", null, function (data) {
+        HttpGet("/api/config/getlist", null, function (data) {
 
             layer.close(layerIndex);
 
@@ -78,7 +78,7 @@
                             , shade: 0.01
                             , time: 30000
                         });
-                        $.post("/api/redis/connect?name=" + encodeURI(name), null, function (dbData) {
+                        HttpPost("/api/redis/connect?name=" + encodeURI(name), null, function (dbData) {
                             layer.close(layerIndex);
                             if (dbData.Code === 1) {
                                 if (dbData.Data !== undefined && dbData.Data.length > 0) {
@@ -124,7 +124,7 @@
         });
 
         //检查版本
-        $.get("/api/update/getlatest", null, function (res) {
+        HttpGet("/api/update/getlatest", null, function (res) {
             if (res.Code === 1 && res.Data !== "") {
                 layer.open({
                     type: 1,
@@ -200,7 +200,7 @@
         var port = encodeURIComponent($("input[name='port']").val());
         var password = encodeURIComponent($("input[name='password']").val());
         var str = `name=${name}&ip=${ip}&port=${port}&password=${password}`;
-        $.post("/api/config/set", str, function (data) {
+        HttpPost("/api/config/set", str, function (data) {
             if (data.Code === 1) {
                 parent.location.reload();
             }
@@ -218,7 +218,7 @@
             function (index) {
                 layer.close(index);
                 var json = $("#add_form").serialize();
-                $.post("/api/config/rem", json, function (data) {
+                HttpPost("/api/config/rem", json, function (data) {
                     if (data.Code === 1) {
                         parent.location.reload();
                     }
@@ -233,7 +233,7 @@
     $("#conf_btn").on("click", function () {
         var configs = encodeURIComponent($("textarea[name='configs']").val());
         var str = `configs=${configs}`;
-        $.post("/api/config/SetConfigs", str, function (data) {
+        HttpPost("/api/config/SetConfigs", str, function (data) {
             if (data.Code === 1) {
                 parent.location.reload();
             }

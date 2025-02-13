@@ -41,7 +41,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
     var searchKey = $("#search-key").val();
 
     //keys列表
-    $.get(`/api/redis/getdbsize?name=${redis_name}&dbindex=${db_index}`, null, function (gdata) {
+    HttpGet(`/api/redis/getdbsize?name=${redis_name}&dbindex=${db_index}`, null, function (gdata) {
 
         layer.close(layerIndex);
 
@@ -86,7 +86,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
         var rurl = `/api/redis/getkeytypes?name=${redis_name}&dbindex=${db_index}&key=${searchKey}&offset=${dataOffset}`;
 
-        $.get(rurl, null, function (jdata) {
+        HttpGet(rurl, null, function (jdata) {
 
             if (jdata.Code === 1) {
 
@@ -121,7 +121,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                 //更新ttl
 
                 var getttl = function (req_url) {
-                    $.get(req_url, null, function (tddata) {
+                    HttpGet(req_url, null, function (tddata) {
                         if (tddata.Code === 1) {
                             $(".ttl-td").each(function (tdindex) {
                                 $(this).html(tddata.Data[tdindex]);
@@ -163,7 +163,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
                         var info_url = `/api/redis/get?name=${redis_name}&dbindex=${db_index}&key=${key}`;
 
-                        $.get(info_url, null, function (vdata) {
+                        HttpGet(info_url, null, function (vdata) {
 
                             if (vdata.Code === 1) {
 
@@ -205,7 +205,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
                     },
                         function (index) {
                             layer.close(index);
-                            $.post(`/api/redis/del?name=${redis_name}&dbindex=${db_index}&key=${key}`, null, function (data) {
+                            HttpPost(`/api/redis/del?name=${redis_name}&dbindex=${db_index}&key=${key}`, null, function (data) {
                                 if (data.Code === 1) {
                                     $("#search_btn").click();
                                 }
@@ -271,7 +271,7 @@ layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
                     var brurl = `/api/redis/batchremove?name=${redis_name}&dbindex=${db_index}&key=${searchKey}`;
 
-                    $.get(brurl, null, function (olen) {
+                    HttpGet(brurl, null, function (olen) {
                         layer.msg(`批量删除已完成，已成功删除${olen.Data}条`, {
                             icon: 1, time: 2000
                         }, function () {

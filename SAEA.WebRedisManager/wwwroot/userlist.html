@@ -40,6 +40,7 @@
         </div>
     </div>
     <script src="content/js/layui.js"></script>
+    <script src="content/js/requestpamars.js"></script>
     <script type="text/javascript">
         layui.use(['jquery', 'layer', 'form', 'laypage'], function () {
 
@@ -52,7 +53,7 @@
                 , shade: 0.01
             });
 
-            $.get("/api/user/getuserlist", null, function (data) {
+            HttpGet("/api/user/getuserlist", null, function (data) {
 
                 layer.close(layerIndex);
 
@@ -63,9 +64,9 @@
                     for (var i = 0; i < data.Data.length; i++) {
 
                         var thtml = `<tr><td>${data.Data[i].ID}</td><td>${data.Data[i].UserName}</td><td>${data.Data[i].Password}</td><td>${data.Data[i].Role === 1 ? "Admin" : "User"}</td><td>${data.Data[i].NickName}</td><td>
-                                        <a href="javascript:;" class="update-link" data-id="${data.Data[i].ID}" data-username="${encodeURIComponent(data.Data[i].UserName)}" data-password="${encodeURIComponent(data.Data[i].Password)}" data-role="${data.Data[i].Role}" data-nickname="${encodeURIComponent(data.Data[i].NickName)}">Update</a> |
-                                        <a href="javascript:;" class="del-link" data-id="${data.Data[i].ID}">Delete</a>
-                                    </td></tr>`;
+                                            <a href="javascript:;" class="update-link" data-id="${data.Data[i].ID}" data-username="${encodeURIComponent(data.Data[i].UserName)}" data-password="${encodeURIComponent(data.Data[i].Password)}" data-role="${data.Data[i].Role}" data-nickname="${encodeURIComponent(data.Data[i].NickName)}">Update</a> |
+                                            <a href="javascript:;" class="del-link" data-id="${data.Data[i].ID}">Delete</a>
+                                        </td></tr>`;
 
                         $("#redis-data-body").append(thtml);
                     }
@@ -75,7 +76,7 @@
                         var uid = dellink.attr("data-id");
                         layer.confirm('确认要删除此用户吗？', { icon: 3, title: '提示' }, function (index) {
 
-                            $.post("/api/user/rem", "uid=" + uid, function (rdata) {
+                            HttpPost("/api/user/rem", "uid=" + uid, function (rdata) {
                                 if (rdata.Code === 1) {
                                     layer.msg("操作成功", { time: 2000 });
                                     dellink.parent().parent().remove();
@@ -110,40 +111,40 @@
                             maxmin: false,
                             anim: 1,
                             content: `<form id="update_user_form" class="layui-form" action="" style="width:480px;padding-top:15px;">
-                                            <div class="layui-form-item">
-                                            <label class="layui-form-label">UserName</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" value="${uusername}" maxlength="20" />
-                                            </div>
-                                            </div>
-                                            <div class="layui-form-item">
-                                            <label class="layui-form-label">Password</label>
-                                            <div class="layui-input-block">
-                                                <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" value="${upassword}" maxlength="20" />
-                                            </div>
-                                            </div>
-                                            <div class="layui-form-item">
-                                            <label class="layui-form-label">Confirm Password</label>
-                                            <div class="layui-input-block">
-                                                <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input" maxlength="20" />
-                                            </div>
-                                            </div>
-                                            <div class="layui-form-item">
-                                            <label class="layui-form-label">Role</label>
+                                                <div class="layui-form-item">
+                                                <label class="layui-form-label">UserName</label>
                                                 <div class="layui-input-block">
-                                                    <select name="role" style="display:block;width: 370px;height: 36px;border: 1px solid #e6e6e6;color: #757575;">
-                                                    <option value="1" ${urole == 1 ? "selected" : ""}>Admin</option>
-                                                    <option value="2" ${urole == 1 ? "" : "selected"}>User</option>
-                                                    </select>
+                                                    <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" value="${uusername}" maxlength="20" />
                                                 </div>
-                                            </div>
-                                            <div class="layui-form-item">
-                                            <label class="layui-form-label">NickName</label>
-                                            <div class="layui-input-block">
-                                                <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" value="${unickname}" maxlength="20" />
-                                            </div>
-                                            </div>
-                                    </form>`,
+                                                </div>
+                                                <div class="layui-form-item">
+                                                <label class="layui-form-label">Password</label>
+                                                <div class="layui-input-block">
+                                                    <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" value="${upassword}" maxlength="20" />
+                                                </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                <label class="layui-form-label">Confirm Password</label>
+                                                <div class="layui-input-block">
+                                                    <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input" maxlength="20" />
+                                                </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                <label class="layui-form-label">Role</label>
+                                                    <div class="layui-input-block">
+                                                        <select name="role" style="display:block;width: 370px;height: 36px;border: 1px solid #e6e6e6;color: #757575;">
+                                                        <option value="1" ${urole == 1 ? "selected" : ""}>Admin</option>
+                                                        <option value="2" ${urole == 1 ? "" : "selected"}>User</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="layui-form-item">
+                                                <label class="layui-form-label">NickName</label>
+                                                <div class="layui-input-block">
+                                                    <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" value="${unickname}" maxlength="20" />
+                                                </div>
+                                                </div>
+                                        </form>`,
                             btn: ['OK', 'Cancel'],
                             btn1: function (index, layero) {
                                 var username = encodeURIComponent($("input[name='username']").val());
@@ -152,7 +153,7 @@
                                 var role = $("select[name='role']").val();
                                 var nickname = encodeURIComponent($("input[name='nickname']").val());
                                 var addUserData = `id=${uuid}&username=${username}&password=${password}&confirmPwd=${confirmPwd}&role=${role}&nickname=${nickname}`;
-                                $.post("/api/user/setuser", addUserData, function (adata) {
+                                HttpPost("/api/user/setuser", addUserData, function (adata) {
                                     if (adata.Code === 1) {
                                         layer.msg("操作成功", { time: 2000 }, function () { location.reload(); });
                                     }
@@ -191,40 +192,40 @@
                     maxmin: false,
                     anim: 1,
                     content: `<form id="add_user_form" class="layui-form" action="" style="width:480px;padding-top:15px;">
-                                <div class="layui-form-item">
-                                <label class="layui-form-label">UserName</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" maxlength="20" />
-                                </div>
-                                </div>
-                                <div class="layui-form-item">
-                                <label class="layui-form-label">Password</label>
-                                <div class="layui-input-block">
-                                    <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" maxlength="20" />
-                                </div>
-                                </div>
-                                <div class="layui-form-item">
-                                <label class="layui-form-label">Confirm Password</label>
-                                <div class="layui-input-block">
-                                    <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input" maxlength="20" />
-                                </div>
-                                </div>
-                                <div class="layui-form-item">
-                                <label class="layui-form-label">Role</label>
+                                    <div class="layui-form-item">
+                                    <label class="layui-form-label">UserName</label>
                                     <div class="layui-input-block">
-                                        <select name="role" style="display:block;width: 370px;height: 36px;border: 1px solid #e6e6e6;color: #757575;">
-                                        <option value="1">Admin</option>
-                                        <option value="2" selected>User</option>
-                                        </select>
+                                        <input type="text" name="username" required  lay-verify="required" placeholder="UserName" autocomplete="off" class="layui-input" maxlength="20" />
                                     </div>
-                                </div>
-                                <div class="layui-form-item">
-                                <label class="layui-form-label">NickName</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" maxlength="20" />
-                                </div>
-                                </div>
-                        </form>`,
+                                    </div>
+                                    <div class="layui-form-item">
+                                    <label class="layui-form-label">Password</label>
+                                    <div class="layui-input-block">
+                                        <input type="password" name="password" required  lay-verify="required" placeholder="Password" autocomplete="off" class="layui-input" maxlength="20" />
+                                    </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                    <label class="layui-form-label">Confirm Password</label>
+                                    <div class="layui-input-block">
+                                        <input type="password" name="confirmPwd" required  lay-verify="required" placeholder="Confirm Password" autocomplete="off" class="layui-input" maxlength="20" />
+                                    </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                    <label class="layui-form-label">Role</label>
+                                        <div class="layui-input-block">
+                                            <select name="role" style="display:block;width: 370px;height: 36px;border: 1px solid #e6e6e6;color: #757575;">
+                                            <option value="1">Admin</option>
+                                            <option value="2" selected>User</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                    <label class="layui-form-label">NickName</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="nickname" required  lay-verify="required" placeholder="NickName" autocomplete="off" class="layui-input" maxlength="20" />
+                                    </div>
+                                    </div>
+                            </form>`,
                     btn: ['OK', 'Cancel'],
                     btn1: function (index, layero) {
                         var username = encodeURIComponent($("input[name='username']").val());
@@ -233,7 +234,7 @@
                         var role = $("select[name='role']").val();
                         var nickname = encodeURIComponent($("input[name='nickname']").val());
                         var addUserData = `username=${username}&password=${password}&confirmPwd=${confirmPwd}&role=${role}&nickname=${nickname}`;
-                        $.post("/api/user/setuser", addUserData, function (adata) {
+                        HttpPost("/api/user/setuser", addUserData, function (adata) {
                             if (adata.Code === 1) {
                                 layer.msg("操作成功", { time: 2000 }, function () { location.reload(); });
                             }
@@ -249,7 +250,7 @@
             $("#logout_btn").click(function () {
                 layer.confirm('确定要注销吗?', { icon: 3, title: '提示' }, function (index) {
 
-                    $.post("/api/user/logout", null, function (data) {
+                    HttpPost("/api/user/logout", null, function (data) {
                         if (data.Code === 1) {
                             layer.msg(data.Message, { time: 2000 }, function () {
                                 top.location.href = "/login.html";

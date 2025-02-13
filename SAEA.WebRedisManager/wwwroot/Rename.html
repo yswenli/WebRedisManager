@@ -41,6 +41,7 @@
     </div>
     <script src="content/js/requestpamars.js"></script>
     <script src="content/js/layui.js"></script>
+    <script src="content/js/requestpamars.js"></script>
     <script>
         layui.use(['jquery', 'layer', 'form'], function () {
 
@@ -66,7 +67,7 @@
 
                         var newid = $("input[name='newid']").val();
                         var url = `/api/redis/rename?name=${redis_name}&dbindex=${db_index}&type=${item_type}&id=${item_id}&newid=${newid}`;
-                        $.get(url, null, function (rdata) {
+                        HttpGet(url, null, function (rdata) {
                             if (rdata.Code == 1) {
                                 parent.location.href = `/ItemsView.html?name=${redis_name}&dbindex=${db_index}&id=${newid}&type=${item_type}`;
                             }

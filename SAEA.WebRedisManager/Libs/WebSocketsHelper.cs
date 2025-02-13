@@ -34,7 +34,7 @@ namespace SAEA.WebRedisManager.Libs
 
         WSServer _wsServer = null;
 
-        public WebSocketsHelper(int port = 16666)
+        public WebSocketsHelper(int port = 26379)
         {
             _wsServer = new WSServer(port);
             _wsServer.OnConnected += _wsServer_OnConnected;

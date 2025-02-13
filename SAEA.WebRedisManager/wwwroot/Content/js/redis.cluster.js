@@ -9,7 +9,7 @@
     //redis cluster
     function getClusterNodes() {
         var redis_nodes_url = "/api/rediscluster/getclusternodes?name=" + name;
-        $.get(redis_nodes_url, null, function (rdata) {
+        HttpGet(redis_nodes_url, null, function (rdata) {
             if (rdata.Code === 1) {
 
                 var tbody = "";
@@ -57,7 +57,7 @@
                         btn: ['yes', 'no'],
                         yes: function (index, layero) {
 
-                            $.post(`/api/rediscluster/addslave?name=${encodeURI(name)}&slavenodeid=${nodeid}`, $("#add_node_form").serialize(), function (rdata) {
+                            HttpPost(`/api/rediscluster/addslave?name=${encodeURI(name)}&slavenodeid=${nodeid}`, $("#add_node_form").serialize(), function (rdata) {
                                 if (rdata.Code === 1) {
                                     if (rdata.Data === true) {
                                         layer.msg("操作成功!");
@@ -85,7 +85,7 @@
                     var nodeid = $(this).attr("data-nodeid");
 
                     layer.confirm('Are you sure you want to do this?', { icon: 3, title: 'WebRedisManager' }, function (index) {
-                        $.post(`/api/rediscluster/deletenode?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
+                        HttpPost(`/api/rediscluster/deletenode?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
                             if (rdata.Code === 1) {
                                 if (rdata.Data === true) {
                                     layer.msg("操作成功!");
@@ -122,7 +122,7 @@
                         content: html,
                         btn: ['yes', 'no'],
                         yes: function (index, layero) {
-                            $.post(`/api/rediscluster/addslots?nodeid=${nodeid}&name=${encodeURI(name)}`, $("#add_slots").serialize(), function (rdata) {
+                            HttpPost(`/api/rediscluster/addslots?nodeid=${nodeid}&name=${encodeURI(name)}`, $("#add_slots").serialize(), function (rdata) {
                                 if (rdata.Code === 1) {
                                     if (rdata.Data === true) {
                                         layer.msg("操作成功!");
@@ -163,7 +163,7 @@
                         btn: ['yes', 'no'],
                         yes: function (index, layero) {
 
-                            $.post(`/api/rediscluster/delslots?nodeid=${nodeid}&name=${encodeURI(name)}`, $("#delete_slots").serialize(), function (rdata) {
+                            HttpPost(`/api/rediscluster/delslots?nodeid=${nodeid}&name=${encodeURI(name)}`, $("#delete_slots").serialize(), function (rdata) {
                                 if (rdata.Code === 1) {
                                     if (rdata.Data === true) {
                                         layer.msg("操作成功!");
@@ -188,7 +188,7 @@
                 //save config
                 $(".save_config").click(function () {
                     var nodeid = $(this).attr("data-nodeid");
-                    $.post(`/api/rediscluster/saveconfig?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
+                    HttpPost(`/api/rediscluster/saveconfig?nodeid=${nodeid}&name=${encodeURI(name)}`, null, function (rdata) {
                         if (rdata.Code === 1) {
                             if (rdata.Data === true) {
                                 layer.msg("操作成功!");
@@ -230,7 +230,7 @@
             btn: ['yes', 'no'],
             yes: function (index, layero) {
 
-                $.post(`/api/rediscluster/addmaster?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
+                HttpPost(`/api/rediscluster/addmaster?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
                     if (rdata.Code === 1) {
                         if (rdata.Data === true) {
                             layer.msg("操作成功!");

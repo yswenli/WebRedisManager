@@ -528,7 +528,7 @@
     LineChart4("redis-net-div", "net");
 
 
-    var ws = new WebSocket(`ws://${document.domain}:16666/`);
+    var ws = new WebSocket(`ws://${document.domain}:26379/`);
 
     ws.onopen = function (evt) {
         console.log("Connection open ...");
@@ -555,7 +555,7 @@
 
     $("#redis_info").on("click", function () {
         var redis_info_url = "/api/redis/getinfostring?name=" + name;
-        $.get(redis_info_url, null, function (rdata) {
+        HttpGet(redis_info_url, null, function (rdata) {
             if (rdata.Code === 1) {
                 layer.alert("#当前配置信息：<br/>" + JSON.stringify(rdata.Data.Config) + "<br/>" + rdata.Data.Info, { icon: 1, title: 'Redis服务器信息', area: 'auto', maxWidth: '500px', resize: false, scrollbar: true });
             }
@@ -583,7 +583,7 @@
 
     $("#redis_clients").on("click", function () {
         var redis_info_url = "/api/redis/getclients?name=" + name;
-        $.get(redis_info_url, null, function (rdata) {
+        HttpGet(redis_info_url, null, function (rdata) {
             if (rdata.Code === 1) {
                 layer.alert(rdata.Data, { icon: 1, title: 'Redis当前客户端连接信息', area: '500px', resize: false, scrollbar: true });
             }
@@ -615,7 +615,7 @@
             btn: ['yes', 'no'],
             yes: function (index, layero) {
 
-                $.post(`/api/redis/alterpwd?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
+                HttpPost(`/api/redis/alterpwd?name=${encodeURI(name)}`, $("#add_node_form").serialize(), function (rdata) {
                     if (rdata.Code === 1) {
                         if (rdata.Data === true) {
                             layer.msg("操作成功!");

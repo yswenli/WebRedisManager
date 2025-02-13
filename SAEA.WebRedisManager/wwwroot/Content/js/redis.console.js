@@ -54,7 +54,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
 
             var input = `${t1.Format("yyyy-MM-dd hh:mm:ss.S")}\r\nCommand:${decodeURI(cmd)},`;
 
-            $.post("/console/sendcmd", `name=${redis_name}&cmd=${cmd}`, (result) => {
+            HttpPost("/console/sendcmd", `name=${redis_name}&cmd=${cmd}`, (result) => {
 
                 var t2 = new Date();
 
@@ -92,7 +92,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
 
         $("#autocomplete_div").html("");
 
-        $.post("/api/console/getcmd?t=" + (new Date().getMilliseconds()), { input: wordStr }, function (data) {
+        HttpPost("/api/console/getcmd?t=" + (new Date().getMilliseconds()), { input: wordStr }, function (data) {
             if (data.Code === 1) {
                 var dhtml = "";
                 data.Data.forEach(function (element) {
