@@ -40,7 +40,14 @@ function HttpPost(url, data, success, error) {
         headers: headers,
         body: data
     })
-        .then(response => response.json())
+        .then(response => {
+            if ((response.headers.get("content-type") == "application/json; charset=utf-8")) {
+                return response.json();
+            }
+            else {
+                return response.text();
+            }
+        })
         .then((result) => {
             console.log("Success:", result);
             success(result);
