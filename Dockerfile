@@ -9,6 +9,8 @@ COPY . ./
 
 RUN dotnet nuget add source https://nuget.cdn.azure.cn/v3/index.json -n azure
 RUN dotnet restore && dotnet publish -c Release -o out --os linux
+
+COPY /app/out .
  
 # 暴露端口
 EXPOSE 80
