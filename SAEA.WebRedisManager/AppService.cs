@@ -42,7 +42,7 @@ namespace SAEA.WebRedisManager
 
             //启动api
 
-            SAEAMvcApplication mvcApplication = new SAEAMvcApplication(config);
+            SAEAMvcApplication mvcApplication = new(config);
 
             mvcApplication.Start();
 
