@@ -15,6 +15,7 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -32,33 +33,38 @@ namespace SAEA.WebRedisManager
         {
             await Task.Yield();
 
-            var config = SAEAMvcApplicationConfigBuilder.Read();
-
-            config.Port = 16379;
-
-            config.IsStaticsCached = false;
-
-            SAEAMvcApplicationConfigBuilder.Write(config);
-
-            //启动api
-
-            SAEAMvcApplication mvcApplication = new(config);
-
-            mvcApplication.Start();
-
-            //启动websocket
-
-            WebSocketsHelper webSocketsHelper = new WebSocketsHelper(port: 26379);
-
-            webSocketsHelper.Start();
-
             try
             {
+                var config = SAEAMvcApplicationConfigBuilder.Read();
+
+                config.Port = 16379;
+
+                config.MaxConnects = 10;
+
+                config.IsStaticsCached = false;
+
+                SAEAMvcApplicationConfigBuilder.Write(config);
+
+                //启动api
+
+                SAEAMvcApplication mvcApplication = new(config);
+
+                mvcApplication.Start();
+
+                //启动websocket
+
+                WebSocketsHelper webSocketsHelper = new WebSocketsHelper(port: 26379);
+
+                webSocketsHelper.Start();
+
                 ConsoleHelper.WriteLine("SAEA.WebRedisManager Already started");
 
                 ConsoleHelper.WriteLine($"Please open on Browser：http://127.0.0.1:{config.Port}/");
             }
-            catch { }
+            catch (Exception ex)
+            {
+                LogHelper.Error("AppService", ex);
+            }
         }
     }
 }
