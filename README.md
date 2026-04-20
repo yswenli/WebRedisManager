@@ -4,10 +4,12 @@
 
 **让 Redis 管理像喝水一样简单**
 
-<img src="https://img.shields.io/github/release/yswenli/webredismanager.svg?style=flat-square">
-<img src="https://img.shields.io/github/stars/yswenli/WebRedisManager.svg?style=flat-square">
-<img src="https://img.shields.io/github/license/yswenli/WebRedisManager.svg?style=flat-square">
-<img src="https://img.shields.io/badge/.NET-8.0-512BD4.svg?style=flat-square">
+[![GitHub release](https://img.shields.io/github/release/yswenli/webredismanager.svg?style=flat-square)](https://github.com/yswenli/WebRedisManager/releases)
+[![GitHub stars](https://img.shields.io/github/stars/yswenli/WebRedisManager.svg?style=flat-square)](https://github.com/yswenli/WebRedisManager/stargazers)
+[![License](https://img.shields.io/github/license/yswenli/WebRedisManager.svg?style=flat-square)](https://github.com/yswenli/WebRedisManager/blob/master/LICENSE)
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4.svg?style=flat-square)](https://dotnet.microsoft.com/download/dotnet/8.0)
+
+[🇨🇳 中文文档](README.md) | [🇺🇸 English](README_en.md)
 
 ---
 
