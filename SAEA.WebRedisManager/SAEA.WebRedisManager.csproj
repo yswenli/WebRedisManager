@@ -258,14 +258,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.72" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="9.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.2" />
-    <PackageReference Include="SAEA.MVC" Version="7.26.2.2" />
-    <PackageReference Include="SAEA.RedisSocket" Version="7.26.2.2" />
-    <PackageReference Include="SAEA.WebSocket" Version="7.26.2.2" />
-    <PackageReference Include="System.Drawing.Common" Version="9.0.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="10.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.6" />
+    <PackageReference Include="SAEA.MVC" Version="7.26.4.21" />
+    <PackageReference Include="SAEA.RedisSocket" Version="7.26.4.21" />
+    <PackageReference Include="SAEA.WebSocket" Version="7.26.4.21" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.6" />
   </ItemGroup>
 
   <ItemGroup>
