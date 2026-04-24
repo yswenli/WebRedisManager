@@ -15,95 +15,90 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.MVC;
-using SAEA.WebRedisManager.Attr;
-using SAEA.WebRedisManager.Services;
+namespace SAEA.WebRedisManager.Controllers;
 
-namespace SAEA.WebRedisManager.Controllers
+/// <summary>
+/// Redis cluster controller
+/// </summary>
+[Auth(true)]
+public class RedisClusterController : Controller
 {
     /// <summary>
-    /// Redis cluster controller
+    /// 获取cluster 节点信息
     /// </summary>
-    [Auth(true)]
-    public class RedisClusterController : Controller
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public ActionResult GetClusterNodes(string name)
     {
-        /// <summary>
-        /// 获取cluster 节点信息
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public ActionResult GetClusterNodes(string name)
-        {
-            return Json(new RedisClusterService().GetClusterNodes(name));
-        }
+        return Json(new RedisClusterService().GetClusterNodes(name));
+    }
 
-        /// <summary>
-        /// 添加节点
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="ipPort"></param>
-        /// <returns></returns>
-        public ActionResult AddMaster(string name, string ipPort)
-        {
-            return Json(new RedisClusterService().AddMaster(name, ipPort));
-        }
+    /// <summary>
+    /// 添加节点
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="ipPort"></param>
+    /// <returns></returns>
+    public ActionResult AddMaster(string name, string ipPort)
+    {
+        return Json(new RedisClusterService().AddMaster(name, ipPort));
+    }
 
-        /// <summary>
-        /// 添加从节点
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="slaveNodeID"></param>
-        /// <param name="masterID"></param>
-        /// <returns></returns>
-        public ActionResult AddSlave(string name, string slaveNodeID, string masterID)
-        {
-            return Json(new RedisClusterService().AddSlave(name, slaveNodeID, masterID));
-        }
+    /// <summary>
+    /// 添加从节点
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="slaveNodeID"></param>
+    /// <param name="masterID"></param>
+    /// <returns></returns>
+    public ActionResult AddSlave(string name, string slaveNodeID, string masterID)
+    {
+        return Json(new RedisClusterService().AddSlave(name, slaveNodeID, masterID));
+    }
 
-        /// <summary>
-        /// 删除节点
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="nodeID"></param>
-        /// <returns></returns>
-        public ActionResult DeleteNode(string name, string nodeID)
-        {
-            return Json(new RedisClusterService().DeleteNode(name, nodeID));
-        }
+    /// <summary>
+    /// 删除节点
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="nodeID"></param>
+    /// <returns></returns>
+    public ActionResult DeleteNode(string name, string nodeID)
+    {
+        return Json(new RedisClusterService().DeleteNode(name, nodeID));
+    }
 
-        /// <summary>
-        /// 添加槽点
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="nodeID"></param>
-        /// <param name="slotStr"></param>
-        /// <returns></returns>
-        public ActionResult AddSlots(string name, string nodeID, string slotStr)
-        {
-            return Json(new RedisClusterService().AddSlots(name, nodeID, slotStr));
-        }
+    /// <summary>
+    /// 添加槽点
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="nodeID"></param>
+    /// <param name="slotStr"></param>
+    /// <returns></returns>
+    public ActionResult AddSlots(string name, string nodeID, string slotStr)
+    {
+        return Json(new RedisClusterService().AddSlots(name, nodeID, slotStr));
+    }
 
-        /// <summary>
-        /// 删除槽点
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="nodeID"></param>
-        /// <param name="slotStr"></param>
-        /// <returns></returns>
-        public ActionResult DelSlots(string name, string nodeID, string slotStr)
-        {
-            return Json(new RedisClusterService().DelSlots(name, nodeID, slotStr));
-        }
+    /// <summary>
+    /// 删除槽点
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="nodeID"></param>
+    /// <param name="slotStr"></param>
+    /// <returns></returns>
+    public ActionResult DelSlots(string name, string nodeID, string slotStr)
+    {
+        return Json(new RedisClusterService().DelSlots(name, nodeID, slotStr));
+    }
 
-        /// <summary>
-        /// 保存配置
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="nodeID"></param>
-        /// <returns></returns>
-        public ActionResult SaveConfig(string name, string nodeID)
-        {
-            return Json(new RedisClusterService().SaveConfig(name, nodeID));
-        }
+    /// <summary>
+    /// 保存配置
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="nodeID"></param>
+    /// <returns></returns>
+    public ActionResult SaveConfig(string name, string nodeID)
+    {
+        return Json(new RedisClusterService().SaveConfig(name, nodeID));
     }
 }

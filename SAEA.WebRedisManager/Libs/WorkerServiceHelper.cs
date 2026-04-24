@@ -15,44 +15,40 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using System.Runtime.InteropServices;
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
-namespace SAEA.WebRedisManager.Libs
+namespace SAEA.WebRedisManager.Libs;
+
+public static class WorkerServiceHelper
 {
-    public static class WorkerServiceHelper
+    /// <summary>
+    /// 创建传统类型的服务容器
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="args"></param>
+    /// <returns></returns>
+    public static IHostBuilder CreateHostBuilder<T>(string[] args) where T : class, IHostedService
     {
-        /// <summary>
-        /// 创建传统类型的服务容器
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public static IHostBuilder CreateHostBuilder<T>(string[] args) where T : class, IHostedService
+        bool isWinPlantform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        if (isWinPlantform)
         {
-            bool isWinPlantform = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            return Host.CreateDefaultBuilder(args)
+                .UseWindowsService()
+                .ConfigureServices((hostContext, services) =>
+                   {
+                       services.AddHostedService<T>();
+                   });
+        }
+        else
+        {
+            return Host.CreateDefaultBuilder(args)
+                .UseSystemd()
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddHostedService<T>();
+                });
 
-            if (isWinPlantform)
-            {
-                return Host.CreateDefaultBuilder(args)
-                    .UseWindowsService()
-                    .ConfigureServices((hostContext, services) =>
-                       {
-                           services.AddHostedService<T>();
-                       });
-            }
-            else
-            {
-                return Host.CreateDefaultBuilder(args)
-                    .UseSystemd()
-                    .ConfigureServices((hostContext, services) =>
-                    {
-                        services.AddHostedService<T>();
-                    });
-
-            }
         }
     }
 }

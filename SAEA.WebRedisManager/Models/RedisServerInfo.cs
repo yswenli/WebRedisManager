@@ -16,21 +16,20 @@
 *描    述：
 *****************************************************************************/
 
-namespace SAEA.Redis.WebManager.Models
+namespace SAEA.WebRedisManager.Models;
+
+/// <summary>
+/// redis 服务器信息
+/// </summary>
+public class RedisServerInfo
 {
-    /// <summary>
-    /// redis 服务器信息
-    /// </summary>
-    public class RedisServerInfo
-    {
-        public string Cpu { get; set; }
+    public string Cpu { get; set; }
 
-        public string Memory { get; set; }
+    public string Memory { get; set; }
 
-        public string Cmds { get; set; }
+    public string Cmds { get; set; }
 
-        public string Input { get; set; }
+    public string Input { get; set; }
 
-        public string Output { get; set; }
-    }
+    public string Output { get; set; }
 }

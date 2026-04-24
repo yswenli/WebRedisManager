@@ -15,62 +15,54 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.Common;
-using SAEA.MVC;
-using SAEA.Redis.WebManager.Models;
-using SAEA.WebRedisManager.Libs;
-using SAEA.WebRedisManager.Models;
 
-using System.Diagnostics;
+namespace SAEA.WebRedisManager.Attr;
 
-namespace SAEA.WebRedisManager.Attr
+/// <summary>
+/// 验证并记录日志
+/// </summary>
+public class AuthAttribute : ActionFilterAttribute
 {
-    /// <summary>
-    /// 验证并记录日志
-    /// </summary>
-    public class AuthAttribute : ActionFilterAttribute
+    Stopwatch _stopwatch;
+
+    bool _isAdmin = false;
+
+    public AuthAttribute(bool isEnabled)
     {
-        Stopwatch _stopwatch;
 
-        bool _isAdmin = false;
+    }
 
-        public AuthAttribute(bool isEnabled)
+    public AuthAttribute(bool isAdmin, bool isEnabled) : this(isEnabled)
+    {
+        _isAdmin = isAdmin;
+    }
+
+
+    public override ActionResult OnActionExecuting()
+    {
+        _stopwatch = Stopwatch.StartNew();
+
+        if (!HttpContext.Current.Request.Cookies.ContainsKey("uid"))
         {
-
+            return new JsonResult(new JsonResult<string>() { Code = 3, Message = "当前操作需要登录！" });
         }
-
-        public AuthAttribute(bool isAdmin, bool isEnabled) : this(isEnabled)
+        if (_isAdmin)
         {
-            _isAdmin = isAdmin;
-        }
+            var user = UserHelper.Get(HttpContext.Current.Request.Cookies["uid"].Value);
 
-
-        public override ActionResult OnActionExecuting()
-        {
-            _stopwatch = Stopwatch.StartNew();
-
-            if (!HttpContext.Current.Request.Cookies.ContainsKey("uid"))
+            if (user.Role != Role.Admin)
             {
-                return new JsonResult(new JsonResult<string>() { Code = 3, Message = "当前操作需要登录！" });
+                return new JsonResult(new JsonResult<string>() { Code = 4, Message = "当前操作权限不足，请联系管理员！" });
             }
-            if (_isAdmin)
-            {
-                var user = UserHelper.Get(HttpContext.Current.Request.Cookies["uid"].Value);
-
-                if (user.Role != Role.Admin)
-                {
-                    return new JsonResult(new JsonResult<string>() { Code = 4, Message = "当前操作权限不足，请联系管理员！" });
-                }
-            }
-
-            return EmptyResult.Default;
         }
 
-        public override void OnActionExecuted(ref ActionResult result)
-        {
-            _stopwatch.Stop();
+        return EmptyResult.Default;
+    }
 
-            LogHelper.Info(HttpContext.Current.Request.Url, HttpContext.Current.Request.Parmas, result, _stopwatch.ElapsedMilliseconds);
-        }
+    public override void OnActionExecuted(ref ActionResult result)
+    {
+        _stopwatch.Stop();
+
+        LogHelper.Info(HttpContext.Current.Request.Url, HttpContext.Current.Request.Parmas, result, _stopwatch.ElapsedMilliseconds);
     }
 }

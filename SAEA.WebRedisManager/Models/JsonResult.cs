@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SAEA.WebRedisManager.Models;
 
-namespace SAEA.Redis.WebManager.Models
+public class JsonResult<T>
 {
-    public class JsonResult<T>
+    public int Code
     {
-        public int Code
-        {
-            get; set;
-        }
+        get; set;
+    }
 
-        public string Message
-        {
-            get; set;
-        }
+    public string Message
+    {
+        get; set;
+    }
 
-        public T Data
-        {
-            get; set;
-        }
+    public T Data
+    {
+        get; set;
     }
 }

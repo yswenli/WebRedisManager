@@ -15,56 +15,47 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using System;
-using System.Collections.Generic;
+namespace SAEA.WebRedisManager.Services;
 
-using SAEA.Common;
-using SAEA.Redis.WebManager.Libs;
-using SAEA.Redis.WebManager.Models;
-using SAEA.WebRedisManager.Libs;
-
-namespace SAEA.WebRedisManager.Services
+class ConsoleService
 {
-    class ConsoleService
+    /// <summary>
+    /// 发送命令
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="cmd"></param>
+    /// <returns></returns>
+    public string SendCmd(string name, string cmd)
     {
-        /// <summary>
-        /// 发送命令
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        public string SendCmd(string name, string cmd)
+        try
         {
-            try
+            if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(cmd))
             {
-                if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(cmd))
-                {
-                    return CurrentRedisClient.Send(name, cmd);
-                }
-                return "输入的命令不能为空~";
+                return CurrentRedisClient.Send(name, cmd);
             }
-            catch (Exception ex)
-            {
-                LogHelper.Error("ConsoleService.SendCmd", ex, name, cmd);
-                return "请求发生异常:" + ex.Message;
-            }
+            return "输入的命令不能为空~";
         }
-        /// <summary>
-        /// 获取输入的命令
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public JsonResult<IEnumerable<string>> GetCMD(string input)
+        catch (Exception ex)
         {
-            try
-            {
-                return new JsonResult<IEnumerable<string>>() { Code = 1, Data = RedisCmdHelper.GetList(input) };
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("ConsoleService.GetCMD", ex, input);
-                return new JsonResult<IEnumerable<string>>() { Code = 2, Message = ex.Message };
-            }
+            LogHelper.Error("ConsoleService.SendCmd", ex, name, cmd);
+            return "请求发生异常:" + ex.Message;
+        }
+    }
+    /// <summary>
+    /// 获取输入的命令
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public JsonResult<IEnumerable<string>> GetCMD(string input)
+    {
+        try
+        {
+            return new JsonResult<IEnumerable<string>>() { Code = 1, Data = RedisCmdHelper.GetList(input) };
+        }
+        catch (Exception ex)
+        {
+            LogHelper.Error("ConsoleService.GetCMD", ex, input);
+            return new JsonResult<IEnumerable<string>>() { Code = 2, Message = ex.Message };
         }
     }
 }

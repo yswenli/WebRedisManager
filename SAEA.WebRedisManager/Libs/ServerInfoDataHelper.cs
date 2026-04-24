@@ -15,46 +15,44 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.Common;
-using SAEA.Redis.WebManager.Libs;
-using SAEA.Redis.WebManager.Models;
-using System;
 
-namespace SAEA.WebRedisManager.Libs
+using RedisServerInfo = SAEA.WebRedisManager.Models.RedisServerInfo;
+
+
+namespace SAEA.WebRedisManager.Libs;
+
+/// <summary>
+/// redis server info
+/// </summary>
+public static class ServerInfoDataHelper
 {
     /// <summary>
-    /// redis server info
+    /// GetInfo
     /// </summary>
-    public static class ServerInfoDataHelper
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static JsonResult<RedisServerInfo> GetInfo(string name)
     {
-        /// <summary>
-        /// GetInfo
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public static JsonResult<RedisServerInfo> GetInfo(string name)
+        try
         {
-            try
-            {
-                RedisServerInfo redisServerInfo = new RedisServerInfo();
+            RedisServerInfo redisServerInfo = new RedisServerInfo();
 
-                redisServerInfo.Cpu = CurrentRedisClient.GetCpu(name).ToString("f2");
+            redisServerInfo.Cpu = CurrentRedisClient.GetCpu(name).ToString("f2");
 
-                redisServerInfo.Memory= CurrentRedisClient.GetUsedMem(name).ToString("f2");
+            redisServerInfo.Memory = CurrentRedisClient.GetUsedMem(name).ToString("f2");
 
-                redisServerInfo.Cmds = CurrentRedisClient.GetOpsCmd(name).ToString();
+            redisServerInfo.Cmds = CurrentRedisClient.GetOpsCmd(name).ToString();
 
-                redisServerInfo.Input = CurrentRedisClient.GetInput(name).ToString("f2");
+            redisServerInfo.Input = CurrentRedisClient.GetInput(name).ToString("f2");
 
-                redisServerInfo.Output = CurrentRedisClient.GetOutput(name).ToString("f2");
+            redisServerInfo.Output = CurrentRedisClient.GetOutput(name).ToString("f2");
 
-                return new JsonResult<RedisServerInfo>() { Code = 1, Data = redisServerInfo, Message = "OK" };
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error($"RedisController.GetInfo name:{name}", ex);
-                return new JsonResult<RedisServerInfo>() { Code = 2, Message = ex.Message };
-            }
+            return new JsonResult<RedisServerInfo>() { Code = 1, Data = redisServerInfo, Message = "OK" };
+        }
+        catch (Exception ex)
+        {
+            LogHelper.Error($"RedisController.GetInfo name:{name}", ex);
+            return new JsonResult<RedisServerInfo>() { Code = 2, Message = ex.Message };
         }
     }
 }

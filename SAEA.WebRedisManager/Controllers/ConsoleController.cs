@@ -15,32 +15,28 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.MVC;
-using SAEA.WebRedisManager.Services;
+namespace SAEA.WebRedisManager.Controllers;
 
-namespace SAEA.WebRedisManager.Controllers
+public class ConsoleController : Controller
 {
-    public class ConsoleController : Controller
+    /// <summary>
+    /// 发送命令
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="cmd"></param>
+    /// <returns></returns>
+    public ActionResult SendCmd(string name, string cmd)
     {
-        /// <summary>
-        /// 发送命令
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="cmd"></param>
-        /// <returns></returns>
-        public ActionResult SendCmd(string name, string cmd)
-        {
-            return Content(new ConsoleService().SendCmd(name, cmd));
-        }
+        return Content(new ConsoleService().SendCmd(name, cmd));
+    }
 
-        /// <summary>
-        /// 获取输入的命令
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public ActionResult GetCMD(string input)
-        {
-            return Json(new ConsoleService().GetCMD(input));
-        }
+    /// <summary>
+    /// 获取输入的命令
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public ActionResult GetCMD(string input)
+    {
+        return Json(new ConsoleService().GetCMD(input));
     }
 }

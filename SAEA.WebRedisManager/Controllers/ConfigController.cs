@@ -15,73 +15,67 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.MVC;
-using SAEA.Redis.WebManager.Models;
-using SAEA.WebRedisManager.Attr;
-using SAEA.WebRedisManager.Services;
+namespace SAEA.WebRedisManager.Controllers;
 
-namespace SAEA.WebRedisManager.Controllers
+/// <summary>
+/// 配置处理api
+/// </summary>
+public class ConfigController : Controller
 {
     /// <summary>
-    /// 配置处理api
+    /// 设置配置
     /// </summary>
-    public class ConfigController : Controller
+    /// <param name="config"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [Auth(false, true)]
+    public ActionResult Set(Config config)
     {
-        /// <summary>
-        /// 设置配置
-        /// </summary>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Auth(false, true)]
-        public ActionResult Set(Config config)
-        {
-            return Json(new ConfigService().Set(config));
-        }
-
-        /// <summary>
-        /// 导入配置
-        /// </summary>
-        /// <param name="configs"></param>
-        /// <returns></returns>
-        [Auth(false, true)]
-        [HttpPost]
-        public ActionResult SetConfigs(string configs)
-        {
-            return Json(new ConfigService().SetConfigs(configs));
-        }
-        /// <summary>
-        /// 获取全部配置
-        /// </summary>
-        /// <returns></returns>
-        [Auth(false, true)]
-        public ActionResult GetList()
-        {
-            return Json(new ConfigService().GetList());
-        }
-
-        /// <summary>
-        /// 获取配置
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [Auth(true)]
-        public ActionResult Get(string name)
-        {
-            return Json(new ConfigService().Get(name));
-        }
-
-        /// <summary>
-        /// 删除配置
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [Auth(false, true)]
-        [HttpPost]
-        public ActionResult Rem(string name)
-        {
-            return Json(new ConfigService().Rem(name));
-        }
-
+        return Json(new ConfigService().Set(config));
     }
+
+    /// <summary>
+    /// 导入配置
+    /// </summary>
+    /// <param name="configs"></param>
+    /// <returns></returns>
+    [Auth(false, true)]
+    [HttpPost]
+    public ActionResult SetConfigs(string configs)
+    {
+        return Json(new ConfigService().SetConfigs(configs));
+    }
+    /// <summary>
+    /// 获取全部配置
+    /// </summary>
+    /// <returns></returns>
+    [Auth(false, true)]
+    public ActionResult GetList()
+    {
+        return Json(new ConfigService().GetList());
+    }
+
+    /// <summary>
+    /// 获取配置
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [Auth(true)]
+    public ActionResult Get(string name)
+    {
+        return Json(new ConfigService().Get(name));
+    }
+
+    /// <summary>
+    /// 删除配置
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    [Auth(false, true)]
+    [HttpPost]
+    public ActionResult Rem(string name)
+    {
+        return Json(new ConfigService().Rem(name));
+    }
+
 }

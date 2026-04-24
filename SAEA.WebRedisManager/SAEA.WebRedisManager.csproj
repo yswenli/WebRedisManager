@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
     <StartupObject>SAEA.WebRedisManager.Program</StartupObject>
   </PropertyGroup>
@@ -258,14 +258,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Encrypt.Library" Version="2026.2.26.1" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="10.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.6" />
-    <PackageReference Include="SAEA.MVC" Version="7.26.4.21" />
-    <PackageReference Include="SAEA.RedisSocket" Version="7.26.4.21" />
-    <PackageReference Include="SAEA.WebSocket" Version="7.26.4.21" />
-    <PackageReference Include="System.Drawing.Common" Version="10.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="10.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.7" />
+    <PackageReference Include="SAEA.MVC" Version="26.4.23.1" />
+    <PackageReference Include="SAEA.RedisSocket" Version="26.4.23.1" />
+    <PackageReference Include="SAEA.WebSocket" Version="26.4.23.1" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.7" />
   </ItemGroup>
 
   <ItemGroup>

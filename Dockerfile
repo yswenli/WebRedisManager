@@ -1,20 +1,16 @@
-# 准备环境，构建项目
-# 指定基础镜像
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env 
-# 设置工作目录
-WORKDIR /app 
-# 复制所有文件并生成输出
-COPY . ./
-RUN dotnet nuget add source https://nuget.cdn.azure.cn/v3/index.json -n azure
-RUN dotnet restore 
-RUN dotnet publish -c Release -o out --os linux
- 
-# 构建镜像
-# 指定基础镜像
-FROM mcr.microsoft.com/dotnet/runtime:8.0
+# 使用官方 .NET 10 SDK 镜像作为构建环境
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY ["SAEA.WebRedisManager/SAEA.WebRedisManager.csproj", "SAEA.WebRedisManager/"]
+RUN dotnet restore "SAEA.WebRedisManager/SAEA.WebRedisManager.csproj"
+COPY . .
+WORKDIR "/src/SAEA.WebRedisManager"
+RUN dotnet publish "SAEA.WebRedisManager.csproj" -c Release -o /app/publish --no-restore
+
+# 使用更小的运行时镜像
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
-# 暴露端口
-EXPOSE 80 
-# 设置启动命令
+COPY --from=build /app/publish .
+COPY SAEA.WebRedisManager/wwwroot ./wwwroot
+EXPOSE 16379
 ENTRYPOINT ["dotnet", "SAEA.WebRedisManager.dll"]

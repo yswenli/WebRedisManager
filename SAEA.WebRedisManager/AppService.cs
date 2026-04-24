@@ -15,56 +15,47 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
-using Microsoft.Extensions.Hosting;
 
-using SAEA.Common;
-using SAEA.MVC;
-using SAEA.WebRedisManager.Libs;
+namespace SAEA.WebRedisManager;
 
-namespace SAEA.WebRedisManager
+public class AppService : BackgroundService
 {
-    public class AppService : BackgroundService
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        await Task.Yield();
+
+        try
         {
-            await Task.Yield();
+            var config = SAEAMvcApplicationConfigBuilder.Read();
 
-            try
-            {
-                var config = SAEAMvcApplicationConfigBuilder.Read();
+            config.Port = 16379;
 
-                config.Port = 16379;
+            config.MaxConnects = 10;
 
-                config.MaxConnects = 10;
+            config.IsStaticsCached = false;
 
-                config.IsStaticsCached = false;
+            SAEAMvcApplicationConfigBuilder.Write(config);
 
-                SAEAMvcApplicationConfigBuilder.Write(config);
+            //启动api
 
-                //启动api
+            SAEAMvcApplication mvcApplication = new(config);
 
-                SAEAMvcApplication mvcApplication = new(config);
+            mvcApplication.Start();
 
-                mvcApplication.Start();
+            //启动websocket
 
-                //启动websocket
+            WebSocketsHelper webSocketsHelper = new WebSocketsHelper(port: 26379);
 
-                WebSocketsHelper webSocketsHelper = new WebSocketsHelper(port: 26379);
+            webSocketsHelper.Start();
 
-                webSocketsHelper.Start();
+            ConsoleHelper.WriteLine("SAEA.WebRedisManager Already started");
 
-                ConsoleHelper.WriteLine("SAEA.WebRedisManager Already started");
-
-                ConsoleHelper.WriteLine($"Please open on Browser：http://127.0.0.1:{config.Port}/");
-            }
-            catch (Exception ex)
-            {
-                LogHelper.Error("AppService", ex);
-            }
+            ConsoleHelper.WriteLine($"Please open on Browser：http://127.0.0.1:{config.Port}/");
+        }
+        catch (Exception ex)
+        {
+            LogHelper.Error("AppService", ex);
         }
     }
 }

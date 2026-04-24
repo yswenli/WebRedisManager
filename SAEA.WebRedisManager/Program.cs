@@ -15,24 +15,25 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using Microsoft.Extensions.Hosting;
 
-using SAEA.Common;
-using SAEA.WebRedisManager.Libs;
 
-namespace SAEA.WebRedisManager
+namespace SAEA.WebRedisManager;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        try
         {
-            try
-            {
-                ConsoleHelper.Title = $"SAEA.WebRedisManager {DateTimeHelper.Now}";
-            }
-            catch { }
+            ConsoleHelper.Title = $"SAEA.WebRedisManager {DateTimeHelper.Now}";
+
 
             WorkerServiceHelper.CreateHostBuilder<AppService>(args).Build().Run();
         }
+        catch (Exception ex)
+        {
+            LogHelper.Error("SAEA.WebRedisManager发生异常", ex);
+        }
+
     }
 }

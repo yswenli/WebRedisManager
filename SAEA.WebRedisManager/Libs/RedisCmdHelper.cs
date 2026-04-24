@@ -15,29 +15,22 @@
 *版 本 号： V1.0.0.0
 *描    述：
 *****************************************************************************/
-using SAEA.RedisSocket.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+namespace SAEA.WebRedisManager.Libs;
 
-namespace SAEA.WebRedisManager.Libs
+public static class RedisCmdHelper
 {
-    public static class RedisCmdHelper
+    static IEnumerable<string> _list;
+    static RedisCmdHelper()
     {
-        static IEnumerable<string> _list;
-        static RedisCmdHelper()
-        {
-            _list = Enum.GetNames(typeof(RequestType)).Select(b => b.Replace("_", " "));
-        }
+        _list = Enum.GetNames(typeof(RequestType)).Select(b => b.Replace("_", " "));
+    }
 
-        public static IEnumerable<string> GetList(string input, int max = 10)
-        {
-            if (string.IsNullOrEmpty(input))
+    public static IEnumerable<string> GetList(string input, int max = 10)
+    {
+        if (string.IsNullOrEmpty(input))
 
-                return _list.OrderBy(b => b).Take(max);
+            return _list.OrderBy(b => b).Take(max);
 
-            return _list.Where(b => b.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1).OrderBy(b => b).Take(max);
-        }
+        return _list.Where(b => b.IndexOf(input, StringComparison.InvariantCultureIgnoreCase) > -1).OrderBy(b => b).Take(max);
     }
 }

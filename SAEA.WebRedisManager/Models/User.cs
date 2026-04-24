@@ -16,24 +16,23 @@
 *描    述：
 *****************************************************************************/
 
-namespace SAEA.WebRedisManager.Models
+namespace SAEA.WebRedisManager.Models;
+
+public class User
 {
-    public class User
-    {
-        public string ID { get; set; }
+    public string ID { get; set; }
 
-        public string UserName { get; set; }
+    public string UserName { get; set; }
 
-        public string NickName { get; set; }
+    public string NickName { get; set; }
 
-        public string Password { get; set; }
+    public string Password { get; set; }
 
-        public Role Role { get; set; }
-    }
+    public Role Role { get; set; }
+}
 
-    public enum Role
-    {
-        Admin = 1,
-        User = 2
-    }
+public enum Role
+{
+    Admin = 1,
+    User = 2
 }
